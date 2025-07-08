@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="fr" data-bs-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>L'Ancre Présente</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .step { display: none; }
+        .step.active { display: block; }
+        .card-body {
+            transition: opacity 0.5s ease-in-out;
+        }
+    </style>
+</head>
+<body>
+    <div class="container my-5" style="max-width: 700px;">
+        <a href="index.html" class="btn btn-outline-secondary btn-sm mb-4">← Retour au portail</a>
+        <div class="text-center">
+            <h1>L'Ancre Présente</h1>
+            <p class="lead text-white-50">Un exercice de 2 minutes pour vous ramener à l'ici et maintenant.</p>
+        </div>
+
+        <div class="card my-4">
+            <div id="exercise-card" class="card-body text-center">
+                <!-- Étapes de l'exercice -->
+                <div id="step-0" class="step active">
+                    <h4 class="mb-3">Prêt à vous ancrer ?</h4>
+                    <p>Cet exercice simple vous aidera à vous reconnecter à vos sens et à apaiser votre esprit.</p>
+                    <button id="start-btn" class="btn btn-primary btn-lg">Commencer l'exercice (5-4-3-2-1)</button>
+                </div>
+                <div id="step-1" class="step">
+                    <h2 class="display-1 text-info">5</h2>
+                    <h4>Observez 5 choses autour de vous.</h4>
+                    <p class="text-white-50">Nommez-les silencieusement dans votre tête. Prenez le temps de vraiment les voir (une texture, une couleur, une forme...).</p>
+                </div>
+                <div id="step-2" class="step">
+                    <h2 class="display-1 text-info">4</h2>
+                    <h4>Ressentez 4 sensations physiques.</h4>
+                    <p class="text-white-50">Le contact de vos pieds sur le sol, de vos vêtements sur votre peau, la température de l'air, le poids de votre corps sur la chaise...</p>
+                </div>
+                <div id="step-3" class="step">
+                    <h2 class="display-1 text-info">3</h2>
+                    <h4>Écoutez 3 sons différents.</h4>
+                    <p class="text-white-50">Tendez l'oreille pour capter les sons proches et lointains que vous ignorez habituellement (le bruit d'un ventilateur, des oiseaux, le silence...).</p>
+                </div>
+                 <div id="step-4" class="step">
+                    <h2 class="display-1 text-info">2</h2>
+                    <h4>Sentez 2 odeurs distinctes.</h4>
+                    <p class="text-white-50">L'odeur du café, du bois, du papier, de l'air frais par la fenêtre... Approchez-vous d'un objet si nécessaire.</p>
+                </div>
+                <div id="step-5" class="step">
+                    <h2 class="display-1 text-info">1</h2>
+                    <h4>Identifiez 1 chose que vous pouvez goûter.</h4>
+                    <p class="text-white-50">Le goût résiduel de votre dernier repas, ou prenez une gorgée d'eau et concentrez-vous sur sa saveur.</p>
+                </div>
+
+                <!-- Formulaire de sauvegarde -->
+                <div id="step-6" class="step">
+                     <h4>Exercice terminé.</h4>
+                    <div class="mb-3 text-start">
+                         <label for="savor-input" class="form-label">Quelle est la sensation (visuelle, auditive, tactile...) la plus agréable ou intéressante que vous ayez remarquée ?</label>
+                         <input type="text" class="form-control" id="savor-input" placeholder="Ex: La chaleur du soleil sur ma main...">
+                    </div>
+                     <button id="save-btn" class="btn btn-success">Sauvegarder ce moment</button>
+                </div>
+
+                <!-- Boutons de navigation -->
+                <div id="nav-buttons" class="mt-4" style="display: none;">
+                    <button id="next-btn" class="btn btn-outline-light">Suivant →</button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Archive des moments -->
+        <div class="mt-5">
+            <h3>Mon Journal d'Ancrage</h3>
+            <div id="past-anchors-container" class="list-group">
+                <p class="text-muted">Aucun moment sauvegardé pour le moment.</p>
+            </div>
+        </div>
+    </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    const startBtn = document.getElementById('start-btn');
+    const nextBtn = document.getElementById('next-btn');
+    const saveBtn = document.getElementById('save-btn');
+    const navButtons = document.getElementById('nav-buttons');
+    const savorInput = document.getElementById('savor-input');
+    const pastAnchorsContainer = document.getElementById('past-anchors-container');
+    const exerciseCard = document.getElementById('exercise-card');
+
+    let currentStep = 0;
+    const totalSteps = 6;
+
+    function showStep(stepNumber) {
+        document.querySelectorAll('.step').forEach(step => step.classList.remove('active'));
+        const newStep = document.getElementById(`step-${stepNumber}`);
+        if(newStep) {
+            newStep.classList.add('active');
+        }
+        
+        exerciseCard.style.opacity = '0';
+        setTimeout(() => { exerciseCard.style.opacity = '1'; }, 50);
+
+        if (stepNumber > 0 && stepNumber < totalSteps) {
+            navButtons.style.display = 'block';
+        } else {
+            navButtons.style.display = 'none';
+        }
+    }
+
+    startBtn.addEventListener('click', () => {
+        currentStep = 1;
+        showStep(currentStep);
+    });
+
+    nextBtn.addEventListener('click', () => {
+        if (currentStep < totalSteps) {
+            currentStep++;
+            showStep(currentStep);
+        }
+    });
+
+    saveBtn.addEventListener('click', () => {
+        const savorText = savorInput.value.trim();
+        if (!savorText) {
+            alert('Veuillez décrire la sensation que vous souhaitez sauvegarder.');
+            return;
+        }
+
+        const anchors = JSON.parse(localStorage.getItem('presentAnchors') || '[]');
+        anchors.push({
+            id: Date.now(),
+            text: savorText
+        });
+        localStorage.setItem('presentAnchors', JSON.stringify(anchors));
+
+        savorInput.value = '';
+        currentStep = 0;
+        showStep(currentStep);
+        renderPastAnchors();
+    });
+
+    function renderPastAnchors() {
+        const anchors = JSON.parse(localStorage.getItem('presentAnchors') || '[]');
+        if (anchors.length === 0) {
+            pastAnchorsContainer.innerHTML = '<p class="text-muted">Aucun moment sauvegardé.</p>';
+            return;
+        }
+        pastAnchorsContainer.innerHTML = anchors.slice().reverse().map(anchor => `
+            <div class="list-group-item d-flex justify-content-between align-items-center">
+                <span class="fst-italic">"${anchor.text}"</span>
+                <small class="text-muted">${new Date(anchor.id).toLocaleString('fr-FR', {dateStyle: 'short', timeStyle: 'short'})}</small>
+            </div>
+        `).join('');
+    }
+
+    // Initialisation
+    renderPastAnchors();
+});
+</script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
