@@ -5,74 +5,26 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>L'Ancre Présente</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <style>
-        .step { display: none; }
-        .step.active { display: block; }
-        .card-body {
-            transition: opacity 0.5s ease-in-out;
-        }
-    </style>
 </head>
 <body>
     <div class="container my-5" style="max-width: 700px;">
         <a href="index.html" class="btn btn-outline-secondary btn-sm mb-4">← Retour au portail</a>
         <div class="text-center">
             <h1>L'Ancre Présente</h1>
-            <p class="lead text-white-50">Un exercice de 2 minutes pour vous ramener à l'ici et maintenant.</p>
+            <p class="lead text-white-50">Une micro-pratique pour vous ramener à l'ici et maintenant.</p>
         </div>
 
         <div class="card my-4">
-            <div id="exercise-card" class="card-body text-center">
-                <!-- Étapes de l'exercice -->
-                <div id="step-0" class="step active">
-                    <h4 class="mb-3">Prêt à vous ancrer ?</h4>
-                    <p>Cet exercice simple vous aidera à vous reconnecter à vos sens et à apaiser votre esprit.</p>
-                    <button id="start-btn" class="btn btn-primary btn-lg">Commencer l'exercice (5-4-3-2-1)</button>
-                </div>
-                <div id="step-1" class="step">
-                    <h2 class="display-1 text-info">5</h2>
-                    <h4>Observez 5 choses autour de vous.</h4>
-                    <p class="text-white-50">Nommez-les silencieusement dans votre tête. Prenez le temps de vraiment les voir (une texture, une couleur, une forme...).</p>
-                </div>
-                <div id="step-2" class="step">
-                    <h2 class="display-1 text-info">4</h2>
-                    <h4>Ressentez 4 sensations physiques.</h4>
-                    <p class="text-white-50">Le contact de vos pieds sur le sol, de vos vêtements sur votre peau, la température de l'air, le poids de votre corps sur la chaise...</p>
-                </div>
-                <div id="step-3" class="step">
-                    <h2 class="display-1 text-info">3</h2>
-                    <h4>Écoutez 3 sons différents.</h4>
-                    <p class="text-white-50">Tendez l'oreille pour capter les sons proches et lointains que vous ignorez habituellement (le bruit d'un ventilateur, des oiseaux, le silence...).</p>
-                </div>
-                 <div id="step-4" class="step">
-                    <h2 class="display-1 text-info">2</h2>
-                    <h4>Sentez 2 odeurs distinctes.</h4>
-                    <p class="text-white-50">L'odeur du café, du bois, du papier, de l'air frais par la fenêtre... Approchez-vous d'un objet si nécessaire.</p>
-                </div>
-                <div id="step-5" class="step">
-                    <h2 class="display-1 text-info">1</h2>
-                    <h4>Identifiez 1 chose que vous pouvez goûter.</h4>
-                    <p class="text-white-50">Le goût résiduel de votre dernier repas, ou prenez une gorgée d'eau et concentrez-vous sur sa saveur.</p>
-                </div>
-
-                <!-- Formulaire de sauvegarde -->
-                <div id="step-6" class="step">
-                     <h4>Exercice terminé.</h4>
-                    <div class="mb-3 text-start">
-                         <label for="savor-input" class="form-label">Quelle est la sensation (visuelle, auditive, tactile...) la plus agréable ou intéressante que vous ayez remarquée ?</label>
-                         <input type="text" class="form-control" id="savor-input" placeholder="Ex: La chaleur du soleil sur ma main...">
-                    </div>
-                     <button id="save-btn" class="btn btn-success">Sauvegarder ce moment</button>
-                </div>
-
-                <!-- Boutons de navigation -->
-                <div id="nav-buttons" class="mt-4" style="display: none;">
-                    <button id="next-btn" class="btn btn-outline-light">Suivant →</button>
+            <div class="card-body text-center">
+                <h4 class="card-title text-primary mb-3" id="exercise-title">Prêt à vous ancrer ?</h4>
+                <p id="exercise-description">Cliquez sur "Nouvelle Pratique" pour commencer.</p>
+                <div class="mt-4">
+                    <button id="save-btn" class="btn btn-success">Terminé & Sauvegarder</button>
+                    <button id="new-exercise-btn" class="btn btn-outline-light">Nouvelle Pratique</button>
                 </div>
             </div>
         </div>
         
-        <!-- Archive des moments -->
         <div class="mt-5">
             <h3>Mon Journal d'Ancrage</h3>
             <div id="past-anchors-container" class="list-group">
@@ -83,64 +35,105 @@
 
 <script>
 document.addEventListener('DOMContentLoaded', () => {
-    const startBtn = document.getElementById('start-btn');
-    const nextBtn = document.getElementById('next-btn');
+    const exercises = [
+        { title: "Le 5-4-3-2-1 Classique", description: "Observez 5 choses, ressentez 4 sensations, écoutez 3 sons, sentez 2 odeurs, identifiez 1 goût." },
+        { title: "Focus sur l'Ouïe", description: "Fermez les yeux pendant 60 secondes et essayez d'identifier le plus de sons possible, du plus proche au plus lointain." },
+        { title: "Focus sur le Toucher", description: "Choisissez un objet à portée de main. Explorez sa texture, son poids, sa température pendant 60 secondes." },
+        { title: "Scan Corporel Rapide", description: "Portez votre attention successivement sur vos pieds, vos jambes, votre dos, vos bras, votre nuque. Que ressentez-vous ?" },
+        { title: "Contemplation d'un Objet", description: "Choisissez un objet simple. Observez-le comme si vous ne l'aviez jamais vu. Remarquez ses couleurs, ses reflets, ses imperfections." },
+        { title: "Chasse aux Couleurs", description: "Choisissez une couleur et trouvez 5 choses de cette couleur autour de vous." },
+        { title: "Sensation du Souffle", description: "Concentrez-vous uniquement sur la sensation de l'air qui entre et sort de vos narines pendant 10 respirations." },
+        { title: "Fenêtre sur le Monde", description: "Regardez par la fenêtre pendant 2 minutes. Remarquez le mouvement (nuages, feuilles, gens) sans juger." },
+        { title: "Ancrage par les Pieds", description: "Tenez-vous debout et concentrez-vous entièrement sur la sensation de vos pieds sur le sol. Sentez la pression, la stabilité." },
+        { title: "La Main Consciente", description: "Regardez une de vos mains. Observez les lignes, les plis, les ombres. Bougez lentement vos doigts." },
+        { title: "La Gorgée Consciente", description: "Prenez une gorgée d'eau ou d'une autre boisson. Notez sa température, son goût, la sensation dans votre gorge." },
+        { title: "La Marche Consciente", description: "Levez-vous et faites 10 pas très lentement, en sentant chaque partie de votre pied toucher le sol." },
+        { title: "L'Étirement Conscient", description: "Étirez vos bras au-dessus de votre tête. Concentrez-vous sur la sensation d'étirement dans vos muscles, sans forcer." },
+        { title: "Ouvrir et Fermer la Main", description: "Ouvrez et fermez votre poing très lentement 5 fois, en étant attentif à chaque sensation." },
+        { title: "La Bouchée Consciente", description: "Au prochain repas, mangez la première bouchée en pleine conscience, en savourant les textures et les saveurs." },
+        { title: "Le Geste Quotidien", description: "Effectuez un geste simple (ouvrir une porte, prendre un livre) avec une attention totale." },
+        { title: "Se Laver les Mains en Conscience", description: "Concentrez-vous sur la sensation de l'eau, du savon, du frottement." },
+        { title: "Respiration et Mouvement", description: "Levez les bras en inspirant, baissez-les en expirant. Répétez 5 fois." },
+        { title: "Changer de Posture", description: "Ajustez votre posture sur votre chaise de manière délibérée et consciente." },
+        { title: "Le Sourire Conscient", description: "Esquissez un léger sourire et notez comment cela change les sensations de votre visage." },
+        { title: "Le Regard du Touriste", description: "Imaginez que vous entrez dans la pièce pour la toute première fois. Qu'est-ce qui attire votre attention ?" },
+        { title: "Jeu des Ombres", description: "Trouvez 3 ombres intéressantes dans la pièce et observez leurs formes." },
+        { title: "Le Micro-Détail", description: "Zoomez sur un centimètre carré de n'importe quelle surface et observez tous les détails." },
+        { title: "Écoute des Silences", description: "Tendez l'oreille non pas vers les sons, mais vers les pauses et les silences entre les sons." },
+        { title: "Observation de la Lumière", description: "Remarquez comment la lumière interagit avec les surfaces autour de vous (reflets, zones claires, zones sombres)." },
+        { title: "Trouver la Symétrie", description: "Identifiez 3 exemples de symétrie dans votre environnement immédiat." },
+        { title: "Trouver l'Asymétrie", description: "Identifiez 3 exemples d'imperfection 'parfaite'." },
+        { title: "Le Point le Plus Éloigné", description: "Regardez le point le plus éloigné que vous puissiez voir, et maintenez votre regard dessus pendant 30 secondes." },
+        { title: "Changement de Perspective", description: "Levez-vous ou accroupissez-vous pour voir la pièce sous un angle différent." },
+        { title: "La Plante Verte", description: "Si vous en avez une, observez une feuille en détail. Sa forme, ses nervures, sa couleur." },
+        { title: "La Météo Intérieure", description: "Sans juger, décrivez votre état émotionnel actuel comme une météo (ensoleillé, nuageux, orageux, brumeux...)." },
+        { title: "Nommer les Pensées", description: "Pendant 60 secondes, étiquetez simplement vos pensées lorsqu'elles apparaissent : 'planification', 'souvenir', 'jugement', 'inquiétude'..." },
+        { title: "Le Ciel Mental", description: "Imaginez vos pensées comme des nuages qui traversent le ciel bleu de votre conscience, sans vous y accrocher." },
+        { title: "Ancrage sur un Son", description: "Choisissez un son constant dans votre environnement (ex: le bruit d'un ordinateur) et utilisez-le comme ancre pour votre attention pendant une minute." },
+        { title: "Scan de Gratitude Rapide", description: "Identifiez 3 choses dans votre champ de vision pour lesquelles vous éprouvez de la gratitude." },
+        { title: "Une Respiration de Gentillesse", description: "Inspirez pour vous-même, expirez en envoyant une pensée de bienveillance à quelqu'un." },
+        { title: "Lâcher une Tension", description: "Scannez votre corps. Trouvez un point de tension (mâchoire, épaules) et relâchez-le consciemment à l'expiration." },
+        { title: "Reconnaître l'Agitation", description: "Si vous vous sentez agité, reconnaissez-le simplement en disant mentalement 'il y a de l'agitation', sans avoir à la changer." },
+        { title: "Le Son de Votre Propre Respiration", description: "Écoutez attentivement le son subtil de votre propre souffle." },
+        { title: "Où suis-je ?", description: "Posez-vous cette question et répondez-y avec tous vos sens. 'Je suis ici, sur cette chaise, sentant X, voyant Y...'" },
+        { title: "Le Haïku du Moment", description: "Essayez de résumer le moment présent en 3 lignes (5-7-5 syllabes)." },
+        { title: "La Bande-Son du Moment", description: "Si ce moment avait une bande-son, serait-elle rapide, lente, joyeuse, mélancolique ?" },
+        { title: "La Couleur du Moment", description: "Quelle couleur associeriez-vous à votre humeur ou à l'ambiance actuelle ?" },
+        { title: "Le Mot du Moment", description: "Trouvez un seul mot qui encapsule le mieux votre état actuel." },
+        { title: "Dessiner l'Air", description: "Avec votre doigt, tracez lentement la forme d'un objet devant vous dans l'air." },
+        { title: "Écoute d'un seul instrument", description: "Mettez une chanson et essayez de suivre un seul instrument du début à la fin." },
+        { title: "Le Début et la Fin d'un Son", description: "Concentrez-vous sur un son et essayez d'identifier précisément quand il commence et quand il se termine." },
+        { title: "Imaginer l'Histoire d'un Objet", description: "Regardez un objet et imaginez son parcours avant d'arriver jusqu'à vous." },
+        { title: "La Température de la Respiration", description: "Notez si l'air que vous inspirez est plus frais que l'air que vous expirez." },
+        { title: "Remercier son Corps", description: "Prenez un instant pour remercier une partie de votre corps pour sa fonction (vos yeux pour voir, vos jambes pour vous porter)." }
+    ];
+
+    const titleEl = document.getElementById('exercise-title');
+    const descriptionEl = document.getElementById('exercise-description');
+    const newExerciseBtn = document.getElementById('new-exercise-btn');
     const saveBtn = document.getElementById('save-btn');
-    const navButtons = document.getElementById('nav-buttons');
-    const savorInput = document.getElementById('savor-input');
     const pastAnchorsContainer = document.getElementById('past-anchors-container');
-    const exerciseCard = document.getElementById('exercise-card');
 
-    let currentStep = 0;
-    const totalSteps = 6;
+    let currentExercise = null;
 
-    function showStep(stepNumber) {
-        document.querySelectorAll('.step').forEach(step => step.classList.remove('active'));
-        const newStep = document.getElementById(`step-${stepNumber}`);
-        if(newStep) {
-            newStep.classList.add('active');
+    function shuffleArray(array) {
+        const shuffled = [...array]; 
+        for (let i = shuffled.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
         }
-        
-        exerciseCard.style.opacity = '0';
-        setTimeout(() => { exerciseCard.style.opacity = '1'; }, 50);
-
-        if (stepNumber > 0 && stepNumber < totalSteps) {
-            navButtons.style.display = 'block';
-        } else {
-            navButtons.style.display = 'none';
-        }
+        return shuffled;
     }
 
-    startBtn.addEventListener('click', () => {
-        currentStep = 1;
-        showStep(currentStep);
-    });
-
-    nextBtn.addEventListener('click', () => {
-        if (currentStep < totalSteps) {
-            currentStep++;
-            showStep(currentStep);
+    function getNewExercise() {
+        let shuffledExercises = JSON.parse(localStorage.getItem('shuffledAnchorExercises') || '[]');
+        if (shuffledExercises.length === 0) {
+            shuffledExercises = shuffleArray(exercises);
         }
-    });
+        currentExercise = shuffledExercises.pop();
+        localStorage.setItem('shuffledAnchorExercises', JSON.stringify(shuffledExercises));
+        
+        titleEl.textContent = currentExercise.title;
+        descriptionEl.textContent = currentExercise.description;
+        localStorage.setItem('currentAnchorExercise', JSON.stringify(currentExercise));
+    }
+
+    newExerciseBtn.addEventListener('click', getNewExercise);
 
     saveBtn.addEventListener('click', () => {
-        const savorText = savorInput.value.trim();
-        if (!savorText) {
-            alert('Veuillez décrire la sensation que vous souhaitez sauvegarder.');
+        if (!currentExercise || titleEl.textContent === 'Prêt à vous ancrer ?') {
+            alert('Veuillez d\'abord lancer une pratique avec le bouton "Nouvelle Pratique".');
             return;
         }
 
         const anchors = JSON.parse(localStorage.getItem('presentAnchors') || '[]');
         anchors.push({
             id: Date.now(),
-            text: savorText
+            title: currentExercise.title
         });
         localStorage.setItem('presentAnchors', JSON.stringify(anchors));
-
-        savorInput.value = '';
-        currentStep = 0;
-        showStep(currentStep);
         renderPastAnchors();
+        getNewExercise(); // Passer à l'exercice suivant après sauvegarde
     });
 
     function renderPastAnchors() {
@@ -151,13 +144,19 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         pastAnchorsContainer.innerHTML = anchors.slice().reverse().map(anchor => `
             <div class="list-group-item d-flex justify-content-between align-items-center">
-                <span class="fst-italic">"${anchor.text}"</span>
+                <span>${anchor.title}</span>
                 <small class="text-muted">${new Date(anchor.id).toLocaleString('fr-FR', {dateStyle: 'short', timeStyle: 'short'})}</small>
             </div>
         `).join('');
     }
 
     // Initialisation
+    const savedExercise = JSON.parse(localStorage.getItem('currentAnchorExercise'));
+    if (savedExercise) {
+        currentExercise = savedExercise;
+        titleEl.textContent = currentExercise.title;
+        descriptionEl.textContent = currentExercise.description;
+    }
     renderPastAnchors();
 });
 </script>
