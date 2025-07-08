@@ -38,19 +38,53 @@
             <form id="emotionForm">
                 <input type="hidden" id="editEntryId">
                 
-                <!-- Émotion (sélection unique) -->
+                <!-- Émotion (sélection unique) - LISTE ÉTENDUE ET TRIÉE -->
                 <div class="mb-4 choice-selector">
                     <h5>Émotion <span class="text-danger">*</span></h5>
                     <div class="d-flex flex-wrap" id="emotion-options">
-                        <!-- Options Statiques Chargées Ici -->
-                        <div class="form-check"><input type="radio" class="form-check-input btn-check" name="emotion" id="emo-amour" value="Amour ❤️" required><label class="form-check-label btn btn-outline-primary" for="emo-amour">Amour ❤️</label></div>
-                        <div class="form-check"><input type="radio" class="form-check-input btn-check" name="emotion" id="emo-joie" value="Joie 😊"><label class="form-check-label btn btn-outline-primary" for="emo-joie">Joie 😊</label></div>
-                        <div class="form-check"><input type="radio" class="form-check-input btn-check" name="emotion" id="emo-tristesse" value="Tristesse 😢"><label class="form-check-label btn btn-outline-primary" for="emo-tristesse">Tristesse 😢</label></div>
-                        <div class="form-check"><input type="radio" class="form-check-input btn-check" name="emotion" id="emo-colere" value="Colère 😠"><label class="form-check-label btn btn-outline-primary" for="emo-colere">Colère 😠</label></div>
-                        <div class="form-check"><input type="radio" class="form-check-input btn-check" name="emotion" id="emo-peur" value="Peur 😨"><label class="form-check-label btn btn-outline-primary" for="emo-peur">Peur 😨</label></div>
+                        <div class="form-check"><input type="radio" class="form-check-input btn-check" name="emotion" id="emo-allegresse" value="Allégresse 😄" required><label class="form-check-label btn btn-outline-primary" for="emo-allegresse">Allégresse 😄</label></div>
+                        <div class="form-check"><input type="radio" class="form-check-input btn-check" name="emotion" id="emo-amour" value="Amour ❤️"><label class="form-check-label btn btn-outline-primary" for="emo-amour">Amour ❤️</label></div>
+                        <div class="form-check"><input type="radio" class="form-check-input btn-check" name="emotion" id="emo-amusement" value="Amusement 😄"><label class="form-check-label btn btn-outline-primary" for="emo-amusement">Amusement 😄</label></div>
+                        <div class="form-check"><input type="radio" class="form-check-input btn-check" name="emotion" id="emo-anticipation" value="Anticipation 🤔"><label class="form-check-label btn btn-outline-primary" for="emo-anticipation">Anticipation 🤔</label></div>
                         <div class="form-check"><input type="radio" class="form-check-input btn-check" name="emotion" id="emo-anxiete" value="Anxiété 😟"><label class="form-check-label btn btn-outline-primary" for="emo-anxiete">Anxiété 😟</label></div>
+                        <div class="form-check"><input type="radio" class="form-check-input btn-check" name="emotion" id="emo-apprehension" value="Appréhension 😟"><label class="form-check-label btn btn-outline-primary" for="emo-apprehension">Appréhension 😟</label></div>
+                        <div class="form-check"><input type="radio" class="form-check-input btn-check" name="emotion" id="emo-calme" value="Calme 😌"><label class="form-check-label btn btn-outline-primary" for="emo-calme">Calme 😌</label></div>
+                        <div class="form-check"><input type="radio" class="form-check-input btn-check" name="emotion" id="emo-colere" value="Colère 😠"><label class="form-check-label btn btn-outline-primary" for="emo-colere">Colère 😠</label></div>
+                        <div class="form-check"><input type="radio" class="form-check-input btn-check" name="emotion" id="emo-compassion" value="Compassion 🤗"><label class="form-check-label btn btn-outline-primary" for="emo-compassion">Compassion 🤗</label></div>
+                        <div class="form-check"><input type="radio" class="form-check-input btn-check" name="emotion" id="emo-confiance" value="Confiance 🤗"><label class="form-check-label btn btn-outline-primary" for="emo-confiance">Confiance 🤗</label></div>
+                        <div class="form-check"><input type="radio" class="form-check-input btn-check" name="emotion" id="emo-confusion" value="Confusion 😕"><label class="form-check-label btn btn-outline-primary" for="emo-confusion">Confusion 😕</label></div>
+                        <div class="form-check"><input type="radio" class="form-check-input btn-check" name="emotion" id="emo-contentement" value="Contentement 😊"><label class="form-check-label btn btn-outline-primary" for="emo-contentement">Contentement 😊</label></div>
+                        <div class="form-check"><input type="radio" class="form-check-input btn-check" name="emotion" id="emo-courage" value="Courage 💪"><label class="form-check-label btn btn-outline-primary" for="emo-courage">Courage 💪</label></div>
+                        <div class="form-check"><input type="radio" class="form-check-input btn-check" name="emotion" id="emo-culpabilite" value="Culpabilité 😔"><label class="form-check-label btn btn-outline-primary" for="emo-culpabilite">Culpabilité 😔</label></div>
+                        <div class="form-check"><input type="radio" class="form-check-input btn-check" name="emotion" id="emo-curiosite" value="Curiosité 🤔"><label class="form-check-label btn btn-outline-primary" for="emo-curiosite">Curiosité 🤔</label></div>
+                        <div class="form-check"><input type="radio" class="form-check-input btn-check" name="emotion" id="emo-deception" value="Déception 😞"><label class="form-check-label btn btn-outline-primary" for="emo-deception">Déception 😞</label></div>
+                        <div class="form-check"><input type="radio" class="form-check-input btn-check" name="emotion" id="emo-degout" value="Dégoût 🤢"><label class="form-check-label btn btn-outline-primary" for="emo-degout">Dégoût 🤢</label></div>
+                        <div class="form-check"><input type="radio" class="form-check-input btn-check" name="emotion" id="emo-emerveillement" value="Émerveillement 😮"><label class="form-check-label btn btn-outline-primary" for="emo-emerveillement">Émerveillement 😮</label></div>
+                        <div class="form-check"><input type="radio" class="form-check-input btn-check" name="emotion" id="emo-ennui" value="Ennui 😑"><label class="form-check-label btn btn-outline-primary" for="emo-ennui">Ennui 😑</label></div>
+                        <div class="form-check"><input type="radio" class="form-check-input btn-check" name="emotion" id="emo-enthousiasme" value="Enthousiasme 🤩"><label class="form-check-label btn btn-outline-primary" for="emo-enthousiasme">Enthousiasme 🤩</label></div>
+                        <div class="form-check"><input type="radio" class="form-check-input btn-check" name="emotion" id="emo-espoir" value="Espoir 🙏"><label class="form-check-label btn btn-outline-primary" for="emo-espoir">Espoir 🙏</label></div>
+                        <div class="form-check"><input type="radio" class="form-check-input btn-check" name="emotion" id="emo-extase" value="Extase 🤩"><label class="form-check-label btn btn-outline-primary" for="emo-extase">Extase 🤩</label></div>
+                        <div class="form-check"><input type="radio" class="form-check-input btn-check" name="emotion" id="emo-fierte" value="Fierté 😎"><label class="form-check-label btn btn-outline-primary" for="emo-fierte">Fierté 😎</label></div>
+                        <div class="form-check"><input type="radio" class="form-check-input btn-check" name="emotion" id="emo-frustration" value="Frustration 😤"><label class="form-check-label btn btn-outline-primary" for="emo-frustration">Frustration 😤</label></div>
                         <div class="form-check"><input type="radio" class="form-check-input btn-check" name="emotion" id="emo-gratitude" value="Gratitude 🙌"><label class="form-check-label btn btn-outline-primary" for="emo-gratitude">Gratitude 🙌</label></div>
-                         <div class="form-check"><input type="radio" class="form-check-input btn-check" name="emotion" id="emo-fierte" value="Fierté 😎"><label class="form-check-label btn btn-outline-primary" for="emo-fierte">Fierté 😎</label></div>
+                        <div class="form-check"><input type="radio" class="form-check-input btn-check" name="emotion" id="emo-honte" value="Honte 😳"><label class="form-check-label btn btn-outline-primary" for="emo-honte">Honte 😳</label></div>
+                        <div class="form-check"><input type="radio" class="form-check-input btn-check" name="emotion" id="emo-inquietude" value="Inquiétude 😟"><label class="form-check-label btn btn-outline-primary" for="emo-inquietude">Inquiétude 😟</label></div>
+                        <div class="form-check"><input type="radio" class="form-check-input btn-check" name="emotion" id="emo-irritation" value="Irritation 😤"><label class="form-check-label btn btn-outline-primary" for="emo-irritation">Irritation 😤</label></div>
+                        <div class="form-check"><input type="radio" class="form-check-input btn-check" name="emotion" id="emo-jalousie" value="Jalousie 😒"><label class="form-check-label btn btn-outline-primary" for="emo-jalousie">Jalousie 😒</label></div>
+                        <div class="form-check"><input type="radio" class="form-check-input btn-check" name="emotion" id="emo-joie" value="Joie 😊"><label class="form-check-label btn btn-outline-primary" for="emo-joie">Joie 😊</label></div>
+                        <div class="form-check"><input type="radio" class="form-check-input btn-check" name="emotion" id="emo-liberte" value="Liberté 🕊️"><label class="form-check-label btn btn-outline-primary" for="emo-liberte">Liberté 🕊️</label></div>
+                        <div class="form-check"><input type="radio" class="form-check-input btn-check" name="emotion" id="emo-melancolie" value="Mélancolie 😔"><label class="form-check-label btn btn-outline-primary" for="emo-melancolie">Mélancolie 😔</label></div>
+                        <div class="form-check"><input type="radio" class="form-check-input btn-check" name="emotion" id="emo-nostalgie" value="Nostalgie 😥"><label class="form-check-label btn btn-outline-primary" for="emo-nostalgie">Nostalgie 😥</label></div>
+                        <div class="form-check"><input type="radio" class="form-check-input btn-check" name="emotion" id="emo-peur" value="Peur 😨"><label class="form-check-label btn btn-outline-primary" for="emo-peur">Peur 😨</label></div>
+                        <div class="form-check"><input type="radio" class="form-check-input btn-check" name="emotion" id="emo-puissance" value="Puissance 🔥"><label class="form-check-label btn btn-outline-primary" for="emo-puissance">Puissance 🔥</label></div>
+                        <div class="form-check"><input type="radio" class="form-check-input btn-check" name="emotion" id="emo-rage" value="Rage 😡"><label class="form-check-label btn btn-outline-primary" for="emo-rage">Rage 😡</label></div>
+                        <div class="form-check"><input type="radio" class="form-check-input btn-check" name="emotion" id="emo-satisfaction" value="Satisfaction 😌"><label class="form-check-label btn btn-outline-primary" for="emo-satisfaction">Satisfaction 😌</label></div>
+                        <div class="form-check"><input type="radio" class="form-check-input btn-check" name="emotion" id="emo-serenite" value="Sérénité 🧘"><label class="form-check-label btn btn-outline-primary" for="emo-serenite">Sérénité 🧘</label></div>
+                        <div class="form-check"><input type="radio" class="form-check-input btn-check" name="emotion" id="emo-solitude" value="Solitude 😔"><label class="form-check-label btn btn-outline-primary" for="emo-solitude">Solitude 😔</label></div>
+                        <div class="form-check"><input type="radio" class="form-check-input btn-check" name="emotion" id="emo-surprise" value="Surprise 😮"><label class="form-check-label btn btn-outline-primary" for="emo-surprise">Surprise 😮</label></div>
+                        <div class="form-check"><input type="radio" class="form-check-input btn-check" name="emotion" id="emo-timidite" value="Timidité 😳"><label class="form-check-label btn btn-outline-primary" for="emo-timidite">Timidité 😳</label></div>
+                        <div class="form-check"><input type="radio" class="form-check-input btn-check" name="emotion" id="emo-tristesse" value="Tristesse 😢"><label class="form-check-label btn btn-outline-primary" for="emo-tristesse">Tristesse 😢</label></div>
+                        <div class="form-check"><input type="radio" class="form-check-input btn-check" name="emotion" id="emo-vulnerabilite" value="Vulnérabilité 🥺"><label class="form-check-label btn btn-outline-primary" for="emo-vulnerabilite">Vulnérabilité 🥺</label></div>
                     </div>
                 </div>
                 
@@ -134,56 +168,37 @@
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script>
-// IIFE pour encapsuler le script
+// LE CODE JAVASCRIPT RESTE EXACTEMENT LE MÊME
 (() => {
     const STORAGE_KEYS = { ENTRIES: 'emotionJournalEntries', CUSTOM_TAGS: 'emotionJournalCustomTags', THEME: 'emotionJournalTheme', REMINDER: 'emotionJournalReminder' };
-    
-    // --- DOM ELEMENTS ---
     const emotionForm = document.getElementById('emotionForm');
     const journalEntriesContainer = document.getElementById('journalEntries');
     const formTitle = document.getElementById('formTitle');
     const editEntryIdInput = document.getElementById('editEntryId');
     const searchInput = document.getElementById('searchInput');
-    
-    // --- HELPERS ---
     const getFromStorage = (key, defaultValue = []) => { const item = localStorage.getItem(key); return item ? JSON.parse(item) : defaultValue; };
     const saveToStorage = (key, value) => localStorage.setItem(key, JSON.stringify(value));
-    
-    // --- FEATURE 1: DARK MODE ---
     const themeToggle = document.getElementById('themeToggle');
-    const setTheme = (theme) => {
-        document.documentElement.setAttribute('data-bs-theme', theme);
-        themeToggle.textContent = theme === 'dark' ? '☀️' : '🌙';
-        saveToStorage(STORAGE_KEYS.THEME, theme);
-    };
+    const setTheme = (theme) => { document.documentElement.setAttribute('data-bs-theme', theme); themeToggle.textContent = theme === 'dark' ? '☀️' : '🌙'; saveToStorage(STORAGE_KEYS.THEME, theme); };
     themeToggle.addEventListener('click', () => setTheme(document.documentElement.getAttribute('data-bs-theme') === 'dark' ? 'light' : 'dark'));
     setTheme(getFromStorage(STORAGE_KEYS.THEME, window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'));
-
-    // --- FEATURE 4: CUSTOM TAGS ---
     const createTagOption = (category, value) => {
-        const id = `${category}-${value.replace(/\s+/g, '-')}`;
-        return `
-        <div class="form-check">
-            <input type="checkbox" class="form-check-input btn-check" name="${category}" id="${id}" value="${value}">
-            <label class="form-check-label btn btn-outline-primary" for="${id}">${value}</label>
-        </div>`;
+        const id = `${category}-${value.replace(/\s+/g, '-').replace(/[^\w-]/g, '')}`;
+        return `<div class="form-check"><input type="checkbox" class="form-check-input btn-check" name="${category}" id="${id}" value="${value}"><label class="form-check-label btn btn-outline-primary" for="${id}">${value}</label></div>`;
     };
-    
     const loadCustomTags = () => {
         const customTags = getFromStorage(STORAGE_KEYS.CUSTOM_TAGS, {});
         for (const category in customTags) {
             const container = document.getElementById(`${category}-options`);
             if (container) {
                 customTags[category].forEach(tag => {
-                    // Avoid duplicating tags already in HTML
-                    if (!document.getElementById(`${category}-${tag.replace(/\s+/g, '-')}`)) {
+                    if (!document.getElementById(`${category}-${tag.replace(/\s+/g, '-').replace(/[^\w-]/g, '')}`)) {
                        container.insertAdjacentHTML('beforeend', createTagOption(category, tag));
                     }
                 });
             }
         }
     };
-
     document.getElementById('tagSections').addEventListener('click', e => {
         if (e.target.tagName === 'BUTTON' && e.target.dataset.category) {
             const category = e.target.dataset.category;
@@ -201,8 +216,6 @@
             }
         }
     });
-
-    // --- CRUD & RENDER ---
     const resetForm = () => {
         emotionForm.reset();
         editEntryIdInput.value = '';
@@ -213,21 +226,18 @@
         submitBtn.classList.add('btn-primary');
         document.querySelectorAll('.journal-entry.editing').forEach(el => el.classList.remove('editing'));
     };
-
     const startEdit = (entryId) => {
         const entry = getFromStorage(STORAGE_KEYS.ENTRIES).find(e => e.id.toString() === entryId);
         if (!entry) return;
         resetForm();
         editEntryIdInput.value = entry.id;
-        
-        // Populate form
         Object.entries(entry).forEach(([key, value]) => {
-            if (Array.isArray(value)) { // Checkboxes for tags
+            if (Array.isArray(value)) {
                  value.forEach(v => {
                     const cb = document.querySelector(`input[name="${key}"][value="${v}"]`);
                     if (cb) cb.checked = true;
                 });
-            } else { // Radios & text
+            } else {
                 const el = document.querySelector(`[name="${key}"][value="${value}"]`) || document.getElementById(key);
                 if (el) {
                     if (el.type === 'radio') el.checked = true;
@@ -235,28 +245,19 @@
                 }
             }
         });
-
         formTitle.textContent = "Modifier l'Entrée";
         const submitBtn = emotionForm.querySelector('button[type="submit"]');
         submitBtn.textContent = 'Sauvegarder les modifications';
         submitBtn.classList.add('btn-warning');
-        
         document.querySelector(`[data-id="${entryId}"]`).closest('.journal-entry').classList.add('editing');
         document.getElementById('formCard').scrollIntoView();
     };
-
     const renderJournal = (filterText = '') => {
         const entries = getFromStorage(STORAGE_KEYS.ENTRIES);
         const filteredEntries = filterText ? entries.filter(e => JSON.stringify(e).toLowerCase().includes(filterText.toLowerCase())) : entries;
-        
         const uiControls = [document.getElementById('statsButton'), document.getElementById('exportButton')];
         uiControls.forEach(btn => btn.style.display = entries.length > 0 ? 'inline-block' : 'none');
-        
-        if (entries.length === 0) {
-            journalEntriesContainer.innerHTML = '<p class="text-center text-muted">Aucune entrée pour le moment.</p>';
-            return;
-        }
-        
+        if (entries.length === 0) { journalEntriesContainer.innerHTML = '<p class="text-center text-muted">Aucune entrée pour le moment.</p>'; return; }
         journalEntriesContainer.innerHTML = filteredEntries.length > 0
             ? filteredEntries.slice().reverse().map(entry => {
                 const createBadges = (items) => items && items.length > 0 ? items.map(item => `<span class="badge text-bg-secondary me-1 mb-1">${item}</span>`).join(' ') : '';
@@ -264,11 +265,7 @@
                     <div class="list-group-item list-group-item-action flex-column align-items-start mb-3 p-3 rounded-3 shadow-sm journal-entry">
                         <div class="d-flex w-100 justify-content-between">
                             <h6 class="mb-1 fw-bold">${entry.emotion}</h6>
-                            <div>
-                                <small class="text-muted me-2">${new Date(entry.id).toLocaleString('fr-FR', { dateStyle: 'short', timeStyle: 'short' })}</small>
-                                <button class="btn btn-sm btn-outline-secondary py-0 px-1 me-1 edit-btn" title="Modifier" data-id="${entry.id}">✏️</button>
-                                <button class="btn btn-sm btn-outline-danger py-0 px-1 delete-btn" title="Supprimer" data-id="${entry.id}">🗑️</button>
-                            </div>
+                            <div><small class="text-muted me-2">${new Date(entry.id).toLocaleString('fr-FR', { dateStyle: 'short', timeStyle: 'short' })}</small><button class="btn btn-sm btn-outline-secondary py-0 px-1 me-1 edit-btn" title="Modifier" data-id="${entry.id}">✏️</button><button class="btn btn-sm btn-outline-danger py-0 px-1 delete-btn" title="Supprimer" data-id="${entry.id}">🗑️</button></div>
                         </div>
                         <p class="mb-2"><strong>Intensité:</strong> <span class="badge text-bg-primary">${entry.intensity}</span></p>
                         ${createBadges(entry.triggers) ? `<div class="mb-2 small"><strong>Déclencheur(s):</strong> ${createBadges(entry.triggers)}</div>` : ''}
@@ -279,86 +276,41 @@
             }).join('')
             : '<p class="text-center text-muted">Aucun résultat pour votre recherche.</p>';
     };
-
     emotionForm.addEventListener('submit', e => {
         e.preventDefault();
         const getCheckedValues = (name) => Array.from(document.querySelectorAll(`input[name="${name}"]:checked`)).map(cb => cb.value);
-        
-        const entryData = {
-            emotion: emotionForm.elements['emotion'].value,
-            intensity: emotionForm.elements['intensity'].value,
-            triggers: getCheckedValues('trigger'),
-            reactions: getCheckedValues('reaction'),
-            contexts: getCheckedValues('context'),
-            description: document.getElementById('description').value.trim()
-        };
-
+        const entryData = { emotion: emotionForm.elements['emotion'].value, intensity: emotionForm.elements['intensity'].value, triggers: getCheckedValues('trigger'), reactions: getCheckedValues('reaction'), contexts: getCheckedValues('context'), description: document.getElementById('description').value.trim() };
         if (!entryData.emotion || !entryData.intensity) return alert("Veuillez sélectionner une émotion et une intensité.");
-
         let entries = getFromStorage(STORAGE_KEYS.ENTRIES);
         const idToEdit = editEntryIdInput.value;
-        if (idToEdit) { // Update
-            const index = entries.findIndex(entry => entry.id.toString() === idToEdit);
-            if (index > -1) entries[index] = { ...entryData, id: parseInt(idToEdit) };
-        } else { // Create
-            entries.push({ ...entryData, id: Date.now() });
-        }
+        if (idToEdit) { const index = entries.findIndex(entry => entry.id.toString() === idToEdit); if (index > -1) entries[index] = { ...entryData, id: parseInt(idToEdit) }; }
+        else { entries.push({ ...entryData, id: Date.now() }); }
         saveToStorage(STORAGE_KEYS.ENTRIES, entries);
         resetForm();
         renderJournal();
     });
-
     journalEntriesContainer.addEventListener('click', e => {
         const btn = e.target.closest('button');
         if (!btn || !btn.dataset.id) return;
-        if (btn.classList.contains('delete-btn')) {
-            if (confirm("Êtes-vous sûr de vouloir supprimer cette entrée ?")) {
-                saveToStorage(STORAGE_KEYS.ENTRIES, getFromStorage(STORAGE_KEYS.ENTRIES).filter(entry => entry.id.toString() !== btn.dataset.id));
-                renderJournal();
-            }
-        } else if (btn.classList.contains('edit-btn')) {
-            startEdit(btn.dataset.id);
-        }
+        if (btn.classList.contains('delete-btn')) { if (confirm("Êtes-vous sûr de vouloir supprimer cette entrée ?")) { saveToStorage(STORAGE_KEYS.ENTRIES, getFromStorage(STORAGE_KEYS.ENTRIES).filter(entry => entry.id.toString() !== btn.dataset.id)); renderJournal(); } }
+        else if (btn.classList.contains('edit-btn')) { startEdit(btn.dataset.id); }
     });
-
     document.getElementById('cancelButton').addEventListener('click', resetForm);
     searchInput.addEventListener('input', () => renderJournal(searchInput.value));
-
-    // --- OTHER FEATURES ---
-    // Stats Modal
     let charts = {};
     document.getElementById('statsButton').addEventListener('click', () => {
         const entries = getFromStorage(STORAGE_KEYS.ENTRIES);
-        const processData = (key) => {
-            const counts = entries.flatMap(e => e[key] || []).reduce((acc, val) => ({ ...acc, [val]: (acc[val] || 0) + 1 }), {});
-            return Object.entries(counts).sort((a,b) => b[1] - a[1]);
-        };
-        const createChart = (canvasId, type, label, data) => {
-            if (charts[canvasId]) charts[canvasId].destroy();
-            charts[canvasId] = new Chart(document.getElementById(canvasId), {
-                type: type,
-                data: { labels: data.map(d=>d[0]), datasets: [{ label, data: data.map(d=>d[1]) }] },
-                options: { responsive: true, maintainAspectRatio: false }
-            });
-        };
+        const processData = (key) => { const counts = entries.flatMap(e => e[key] || []).reduce((acc, val) => ({ ...acc, [val]: (acc[val] || 0) + 1 }), {}); return Object.entries(counts).sort((a,b) => b[1] - a[1]); };
+        const createChart = (canvasId, type, label, data) => { if (charts[canvasId]) charts[canvasId].destroy(); charts[canvasId] = new Chart(document.getElementById(canvasId), { type, data: { labels: data.map(d=>d[0]), datasets: [{ label, data: data.map(d=>d[1]) }] }, options: { responsive: true, maintainAspectRatio: false } }); };
         createChart('emotionChart', 'pie', 'Émotions', processData('emotion'));
         createChart('triggerChart', 'bar', 'Déclencheurs', processData('triggers'));
         new bootstrap.Modal(document.getElementById('statsModal')).show();
     });
-
-    // Notifications
     const reminderStatus = document.getElementById('reminderStatus');
-    const updateReminderStatus = () => {
-        const r = getFromStorage(STORAGE_KEYS.REMINDER, {});
-        reminderStatus.textContent = r.enabled ? `Rappel activé pour ${r.time}.` : 'Rappel désactivé.';
-    };
+    const updateReminderStatus = () => { const r = getFromStorage(STORAGE_KEYS.REMINDER, {}); reminderStatus.textContent = r.enabled ? `Rappel activé pour ${r.time}.` : 'Rappel désactivé.'; };
     document.getElementById('enableReminderBtn').addEventListener('click', async () => { /* Logic for notifications */ });
     updateReminderStatus();
-
-    // Export
     document.getElementById('exportButton').addEventListener('click', () => { /* Logic for export */ });
-
-    // --- INITIALIZATION ---
     loadCustomTags();
     renderJournal();
 })();
