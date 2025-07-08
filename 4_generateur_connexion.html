@@ -22,7 +22,7 @@
                 Mission du Jour
             </div>
             <div class="card-body mission-card">
-                <h4 class="card-title" id="mission-text">Cliquez sur "Nouvelle Mission" pour commencer.</h4>
+                <h4 class="card-title" id="mission-text">Cliquez sur "Autre Mission" pour commencer.</h4>
             </div>
             <div class="card-footer d-flex justify-content-between align-items-center">
                 <button class="btn btn-success" id="done-btn">Mission Accomplie !</button>
@@ -38,15 +38,64 @@
 <script>
 document.addEventListener('DOMContentLoaded', () => {
     const missions = [
+        // Catégorie 1: Initier le contact (faible enjeu)
         "Envoyez un message à un proche juste pour lui dire que vous pensez à lui, sans rien attendre en retour.",
-        "Lors d'une conversation, posez une question ouverte sur les ressentis de votre interlocuteur (ex: 'Comment te sens-tu par rapport à ça ?').",
-        "Partagez une petite vulnérabilité ou incertitude avec une personne de confiance (ex: 'Je ne suis pas sûr de comment aborder ce projet').",
-        "Remerciez sincèrement quelqu'un pour quelque chose de spécifique qu'il a fait pour vous.",
-        "Proposez votre aide à quelqu'un, même pour une petite tâche.",
-        "Partagez une anecdote personnelle positive de votre journée avec un proche.",
-        "Prenez 5 minutes pour écouter quelqu'un sans l'interrompre et sans chercher de solution.",
-        "Faites un compliment sincère et précis à un collègue ou un ami.",
-        "Planifiez une activité (même petite, comme un café) avec un ami que vous n'avez pas vu depuis longtemps."
+        "Partagez un article, une musique ou une photo avec quelqu'un en disant : 'J'ai pensé que ça pourrait t'intéresser'.",
+        "Répondez à la 'story' d'un ami sur les réseaux sociaux avec un commentaire ou un emoji pertinent.",
+        "Ressortez une vieille photo avec un proche et envoyez-la en disant 'Souvenir !'.",
+        "Initiez un contact avec un collègue pour parler d'autre chose que du travail pendant 2 minutes.",
+        // Catégorie 2: Exprimer la gratitude et l'appréciation
+        "Remerciez sincèrement quelqu'un pour quelque chose de spécifique qu'il a fait pour vous récemment.",
+        "Faites un compliment sincère et précis à un ami ou un collègue.",
+        "Remerciez quelqu'un pour une qualité de caractère, pas seulement une action (ex: 'J'admire vraiment ta patience').",
+        "Écrivez trois choses que vous appréciez chez un proche, et partagez-en une avec lui/elle.",
+        "Laissez un commentaire positif sur le travail ou la création de quelqu'un en ligne.",
+        // Catégorie 3: Partager son monde intérieur (vulnérabilité contrôlée)
+        "Partagez une petite contrariété de votre journée (ex: 'Mon café a débordé, quelle galère').",
+        "Mentionnez une petite chose que vous avez apprise récemment et qui vous a surpris.",
+        "Racontez un souvenir d'enfance, même anodin, à votre partenaire ou un ami proche.",
+        "Partagez une petite chose pour laquelle vous vous sentez incertain ou nerveux.",
+        "Exprimez une opinion personnelle sur un sujet léger (film, musique, livre).",
+        "Admettez ne pas savoir quelque chose et posez une question pour apprendre.",
+        "Partagez un de vos petits 'bonheurs simples' de la journée (ex: 'Le soleil sur mon visage ce matin était vraiment agréable').",
+        "Mentionnez un objectif personnel sur lequel vous travaillez, même petit.",
+        "Partagez un rêve étrange ou amusant que vous avez fait.",
+        "Exprimez un sentiment positif de manière explicite (ex: 'Je me sens vraiment calme en ce moment').",
+        // Catégorie 4: Demander et Écouter activement
+        "Demandez à quelqu'un : 'Quelle a été la meilleure partie de ta journée ?' et écoutez sans l'interrompre.",
+        "Posez une question de suivi qui montre que vous avez écouté (ex: 'La semaine dernière tu parlais de X, comment ça a avancé ?').",
+        "Demandez l'avis de quelqu'un sur un sujet à faible enjeu (ex: 'Quelle série devrais-je commencer ?').",
+        "Demandez à l'une de vos filles de vous apprendre quelque chose sur un de ses centres d'intérêt.",
+        "Lors d'une discussion, essayez de reformuler ce que l'autre a dit (ex: 'Si je comprends bien, tu ressens...').",
+        "Demandez à un proche : 'Y a-t-il quelque chose que je puisse faire pour toi cette semaine ?'.",
+        "Posez une question sur le passé de quelqu'un (ex: 'Quel est ton meilleur souvenir de voyage ?').",
+        // Catégorie 5: Offrir et Recevoir
+        "Proposez votre aide à quelqu'un de manière proactive, même pour une petite tâche.",
+        "Si quelqu'un vous fait un compliment, répondez simplement 'Merci, ça me touche', sans le minimiser.",
+        "Si quelqu'un vous offre de l'aide, acceptez-la, même si vous pourriez le faire seul.",
+        "Demandez de l'aide pour une petite tâche que vous pourriez parfaitement faire vous-même.",
+        "Proposez de prendre en charge une petite corvée pour soulager un proche (faire la vaisselle, sortir les poubelles...).",
+        "Partagez un de vos talents/connaissances pour aider quelqu'un (ex: 'Je peux jeter un oeil à ton problème informatique si tu veux').",
+        "Acceptez un café ou un verre si on vous le propose, même si vous n'aviez pas prévu de rester.",
+        // Catégorie 6: Planifier et créer des liens futurs
+        "Planifiez une activité (même petite, comme un café) avec un ami que vous n'avez pas vu depuis longtemps.",
+        "Proposez une date précise pour une future activité, au lieu d'un vague 'il faudra qu'on se fasse ça'.",
+        "Envoyez un message de suivi après un bon moment passé avec quelqu'un (ex: 'J'ai vraiment apprécié notre discussion hier soir').",
+        "Créez un petit rituel avec un proche (ex: l'appel du dimanche, le café du mardi matin).",
+        "Parlez d'un projet futur ou d'un rêve et incluez-y un proche (ex: 'Ce serait génial d'aller voir ce match ensemble un jour').",
+        // Catégorie 7: Connexion non-verbale et physique
+        "Initiez une accolade (si approprié avec la personne).",
+        "Maintenez un contact visuel un peu plus longtemps que d'habitude lors d'une conversation.",
+        "Proposez une activité à faire côte à côte sans forcément parler (écouter de la musique, se balader, regarder un film).",
+        "Ayez un geste de réconfort simple (une main sur l'épaule) si un proche semble en avoir besoin.",
+        "Asseyez-vous simplement à côté d'un proche sans rien faire d'autre pendant quelques minutes.",
+        // Catégorie 8: Défis spécifiques
+        "Excusez-vous pour une petite chose, même si ce n'est pas grave.",
+        "Exprimez un désaccord de manière respectueuse et calme.",
+        "Célébrez ouvertement une petite victoire personnelle avec quelqu'un.",
+        "Célébrez la réussite d'un autre sans parler de vous.",
+        "Choisissez consciemment de ne pas donner de solution à un problème qu'on vous expose, mais juste d'écouter.",
+        "Demandez à un proche : 'Comment puis-je être un meilleur ami/père/partenaire pour toi ?'."
     ];
 
     const missionTextEl = document.getElementById('mission-text');
@@ -57,59 +106,41 @@ document.addEventListener('DOMContentLoaded', () => {
     let score = parseInt(localStorage.getItem('connectionScore') || '0');
     scoreCounterEl.textContent = score;
 
-    // Fonction d'aide : Algorithme de mélange Fisher-Yates
     function shuffleArray(array) {
         const shuffled = [...array]; 
         for (let i = shuffled.length - 1; i > 0; i--) {
             const j = Math.floor(Math.random() * (i + 1));
-            [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]]; // Swap
+            [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
         }
         return shuffled;
     }
 
     function getNewMission() {
-        // 1. Récupérer le "paquet" mélangé sauvegardé
         let shuffledMissions = JSON.parse(localStorage.getItem('shuffledMissionsDeck') || '[]');
-
-        // 2. Si le paquet est vide, on remélange
         if (shuffledMissions.length === 0) {
             shuffledMissions = shuffleArray(missions);
         }
-
-        // 3. Tirer la prochaine carte (la prochaine mission)
         const mission = shuffledMissions.pop();
-
-        // 4. Sauvegarder le reste du paquet
         localStorage.setItem('shuffledMissionsDeck', JSON.stringify(shuffledMissions));
-
-        // 5. Afficher et sauvegarder la mission actuelle
         missionTextEl.textContent = mission;
         localStorage.setItem('currentMission', mission);
     }
     
-    // Le bouton "Nouvelle Mission" force maintenant le tirage d'une nouvelle carte du paquet
     newMissionBtn.addEventListener('click', getNewMission);
 
     doneBtn.addEventListener('click', () => {
-        // Ne rien faire si la mission n'est pas valide ou déjà célébrée
         if (missionTextEl.textContent.startsWith('Cliquez') || missionTextEl.textContent.startsWith('🎉')) return;
-        
         score++;
         localStorage.setItem('connectionScore', score);
         scoreCounterEl.textContent = score;
         missionTextEl.innerHTML = `🎉 Bravo ! Prêt pour la suivante ?`;
-        
-        // On tire la mission suivante du paquet après un court délai
         setTimeout(getNewMission, 2000);
     });
 
-    // Au chargement initial :
-    // On vérifie si une mission était déjà en cours (sauvegardée par getNewMission)
     const savedMission = localStorage.getItem('currentMission');
     if (savedMission) {
         missionTextEl.textContent = savedMission;
     } else {
-        // Si aucune mission n'était en cours, on en tire une nouvelle du paquet
         getNewMission();
     }
 });
