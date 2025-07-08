@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="fr" data-bs-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Boussole d'Héritage</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<div class="container my-5">
+    <a href="index.html" class="btn btn-outline-secondary btn-sm mb-4">← Retour au portail</a>
+    <div class="text-center">
+        <h1>La Boussole d'Héritage</h1>
+        <p class="lead text-white-50">Un espace d'exploration lente pour construire votre "Pourquoi".</p>
+    </div>
+
+    <div class="row g-4 mt-4">
+        <!-- Module 1: Contributions -->
+        <div class="col-lg-6">
+            <div class="card h-100">
+                <div class="card-body">
+                    <h5 class="card-title">Journal des Contributions</h5>
+                    <p class="small text-muted">Notez les moments où vous avez créé de la valeur pour autrui.</p>
+                    <div class="input-group mb-3">
+                        <input type="text" id="contribution-input" class="form-control" placeholder="Ex: Aidé Hélène sur son site...">
+                        <button class="btn btn-outline-secondary" id="add-contribution-btn">Ajouter</button>
+                    </div>
+                    <ul id="contributions-list" class="list-group"></ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Module 2: Explorateur -->
+        <div class="col-lg-6">
+            <div class="card h-100">
+                <div class="card-body">
+                    <h5 class="card-title">L'Explorateur de "Pourquoi"</h5>
+                    <p class="small text-muted" id="question-text">Quelle injustice dans le monde vous met en colère ?</p>
+                    <textarea id="answer-textarea" class="form-control mb-2" rows="4"></textarea>
+                    <button class="btn btn-primary" id="save-answer-btn">Sauvegarder & Prochaine Question</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Module 3: Mission -->
+        <div class="col-12">
+             <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Le Synthétiseur de Mission</h5>
+                    <p class="small text-muted">Au fil de vos découvertes, raffinez votre mission de vie. C'est une ébauche, elle peut changer.</p>
+                    <textarea id="mission-textarea" class="form-control" rows="3"></textarea>
+                    <button class="btn btn-success mt-2" id="save-mission-btn">Sauvegarder ma Mission</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    const questions = [
+        "Quelle injustice dans le monde vous met en colère ?", "Si vous ne pouviez pas échouer, que tenteriez-vous ?", 
+        "De quoi vos proches disent-ils que vous parlez avec le plus de passion ?", "Qui sont vos héros et pourquoi ?",
+        "Quelle est la chose la plus importante que vous ayez apprise et que vous voudriez transmettre ?",
+        "Si vous aviez 10 millions d'euros à donner, à quelle cause les donneriez-vous ?",
+        "Quelle activité vous fait perdre la notion du temps ?", "Quel problème aimeriez-vous résoudre pour les autres ?"
+    ];
+
+    // DOM Elements
+    const contributionInput = document.getElementById('contribution-input');
+    const addContributionBtn = document.getElementById('add-contribution-btn');
+    const contributionsList = document.getElementById('contributions-list');
+    const questionText = document.getElementById('question-text');
+    const answerTextarea = document.getElementById('answer-textarea');
+    const saveAnswerBtn = document.getElementById('save-answer-btn');
+    const missionTextarea = document.getElementById('mission-textarea');
+    const saveMissionBtn = document.getElementById('save-mission-btn');
+
+    // Data Management
+    const getHeritageData = () => JSON.parse(localStorage.getItem('heritageData') || '{"contributions":[], "answers":{}, "mission":""}');
+    const saveHeritageData = data => localStorage.setItem('heritageData', JSON.stringify(data));
+    
+    // Logic for Contributions
+    const renderContributions = () => {
+        const { contributions } = getHeritageData();
+        contributionsList.innerHTML = contributions.map(c => `<li class="list-group-item">${c}</li>`).join('');
+    };
+    addContributionBtn.addEventListener('click', () => {
+        const text = contributionInput.value.trim();
+        if (text) {
+            const data = getHeritageData();
+            data.contributions.push(text);
+            saveHeritageData(data);
+            contributionInput.value = '';
+            renderContributions();
+        }
+    });
+
+    // Logic for Questions
+    function shuffleArray(array) {
+        const shuffled = [...array]; 
+        for (let i = shuffled.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+        }
+        return shuffled;
+    }
+    const displayNewQuestion = () => {
+        let shuffledQuestions = JSON.parse(localStorage.getItem('shuffledHeritageQuestions') || '[]');
+        if (shuffledQuestions.length === 0) {
+            shuffledQuestions = shuffleArray(questions);
+        }
+        const currentQuestion = shuffledQuestions.pop();
+        localStorage.setItem('shuffledHeritageQuestions', JSON.stringify(shuffledQuestions));
+        questionText.textContent = currentQuestion;
+        answerTextarea.value = getHeritageData().answers[currentQuestion] || ''; // Show previous answer if exists
+    };
+    saveAnswerBtn.addEventListener('click', () => {
+        const question = questionText.textContent;
+        const answer = answerTextarea.value.trim();
+        if (question && answer) {
+            const data = getHeritageData();
+            data.answers[question] = answer;
+            saveHeritageData(data);
+        }
+        displayNewQuestion();
+    });
+
+    // Logic for Mission
+    const renderMission = () => {
+        missionTextarea.value = getHeritageData().mission;
+    };
+    saveMissionBtn.addEventListener('click', () => {
+        const data = getHeritageData();
+        data.mission = missionTextarea.value.trim();
+        saveHeritageData(data);
+        alert('Mission sauvegardée !');
+    });
+
+    // Initial Load
+    renderContributions();
+    displayNewQuestion();
+    renderMission();
+});
+</script>
+</body>
+</html>
