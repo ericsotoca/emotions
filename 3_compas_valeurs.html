@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="fr" data-bs-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Compas des Valeurs</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container my-5">
+        <a href="index.html" class="btn btn-outline-secondary btn-sm mb-4">← Retour au portail</a>
+        <div class="text-center">
+            <h1>Le Compas des Valeurs</h1>
+            <p class="lead text-white-50">Prenez des décisions alignées avec ce qui compte le plus.</p>
+        </div>
+
+        <!-- Section 1: Définition des valeurs -->
+        <div class="card my-4">
+            <div class="card-body">
+                <h5 class="card-title">1. Mes Valeurs Fondamentales</h5>
+                <div id="values-container"></div>
+                <div class="input-group mt-3">
+                    <input type="text" id="new-value-input" class="form-control" placeholder="Ajouter une nouvelle valeur (ex: Créativité)">
+                    <button class="btn btn-outline-secondary" id="add-value-btn">Ajouter</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 2: Outil de décision -->
+        <div class="card my-4">
+            <div class="card-body">
+                <h5 class="card-title">2. Évaluer une Décision</h5>
+                <div class="mb-3">
+                    <label for="decision-name" class="form-label">Quelle décision souhaitez-vous évaluer ?</label>
+                    <input type="text" id="decision-name" class="form-control" placeholder="Ex: Changer de projet professionnel">
+                </div>
+                <div id="options-container">
+                    <!-- Les options de décision seront ajoutées ici -->
+                </div>
+                <button class="btn btn-secondary mt-2" id="add-option-btn">Ajouter une option</button>
+                <hr>
+                <button class="btn btn-primary w-100" id="calculate-btn">Calculer l'Alignement</button>
+            </div>
+        </div>
+        
+        <!-- Section 3: Résultats -->
+        <div id="results-container"></div>
+
+    </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    const valuesContainer = document.getElementById('values-container');
+    const newValueInput = document.getElementById('new-value-input');
+    const addValueBtn = document.getElementById('add-value-btn');
+    const optionsContainer = document.getElementById('options-container');
+    const addOptionBtn = document.getElementById('add-option-btn');
+    const calculateBtn = document.getElementById('calculate-btn');
+    const resultsContainer = document.getElementById('results-container');
+
+    let values = JSON.parse(localStorage.getItem('userValues')) || ['Sécurité', 'Liberté', 'Connaissance', 'Créativité', 'Relations'];
+    let optionCount = 0;
+
+    const renderValues = () => {
+        valuesContainer.innerHTML = values.map(value => `
+            <span class="badge bg-primary fs-6 me-2 mb-2">${value} 
+                <button class="btn-close btn-close-white ms-1" data-value="${value}"></button>
+            </span>
+        `).join('');
+    };
+
+    addValueBtn.addEventListener('click', () => {
+        const newValue = newValueInput.value.trim();
+        if (newValue && !values.includes(newValue)) {
+            values.push(newValue);
+            localStorage.setItem('userValues', JSON.stringify(values));
+            newValueInput.value = '';
+            renderValues();
+        }
+    });
+    
+    valuesContainer.addEventListener('click', (e) => {
+        if (e.target.matches('.btn-close')) {
+            const valueToRemove = e.target.dataset.value;
+            values = values.filter(v => v !== valueToRemove);
+            localStorage.setItem('userValues', JSON.stringify(values));
+            renderValues();
+        }
+    });
+
+    addOptionBtn.addEventListener('click', () => {
+        optionCount++;
+        const optionDiv = document.createElement('div');
+        optionDiv.className = 'card bg-dark my-3 p-3 option-card';
+        optionDiv.id = `option-${optionCount}`;
+        optionDiv.innerHTML = `
+            <h6>Option ${optionCount}</h6>
+            <input type="text" class="form-control form-control-sm mb-3" placeholder="Description de l'option (ex: Accepter la nouvelle offre)">
+            ${values.map(value => `
+                <div class="mb-2">
+                    <label for="option-${optionCount}-${value}" class="form-label small">${value}</label>
+                    <input type="range" class="form-range" min="0" max="10" step="1" id="option-${optionCount}-${value}" data-value="${value}">
+                </div>
+            `).join('')}
+        `;
+        optionsContainer.appendChild(optionDiv);
+    });
+    
+    calculateBtn.addEventListener('click', () => {
+        const options = document.querySelectorAll('.option-card');
+        if (options.length === 0) return;
+        
+        let results = [];
+        options.forEach(option => {
+            const name = option.querySelector('input[type="text"]').value || `Option ${option.id.split('-')[1]}`;
+            let score = 0;
+            option.querySelectorAll('input[type="range"]').forEach(slider => {
+                score += parseInt(slider.value, 10);
+            });
+            results.push({ name, score });
+        });
+        
+        results.sort((a, b) => b.score - a.score);
+        
+        resultsContainer.innerHTML = `
+            <div class="card mt-4">
+                <div class="card-body">
+                    <h5 class="card-title">Résultats pour "${document.getElementById('decision-name').value || 'votre décision'}"</h5>
+                    <ul class="list-group list-group-flush">
+                        ${results.map(r => `
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                ${r.name}
+                                <span class="badge bg-success rounded-pill fs-6">${r.score} pts</span>
+                            </li>
+                        `).join('')}
+                    </ul>
+                </div>
+            </div>
+        `;
+    });
+    
+    renderValues();
+});
+</script>
+</body>
+</html>
