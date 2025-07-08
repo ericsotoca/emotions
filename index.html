@@ -1,1 +1,296 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mon Journal d'Émotions</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <style>
+        body { 
+            padding: 20px; 
+            background-color: #f8f9fa; 
+        }
+        .card { 
+            margin-bottom: 20px; 
+            border: none; 
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1); 
+        }
+        .journal-entry {
+            border-left: 5px solid #0d6efd;
+            transition: all 0.3s ease-in-out;
+        }
+        .journal-entry:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+        }
+        
+        /* --- Style pour transformer les inputs en boutons --- */
+        .choice-selector .form-check-input {
+            display: none; /* Cache la case à cocher/le bouton radio */
+        }
+        .choice-selector .form-check-label {
+            cursor: pointer;
+            margin-right: 5px; 
+            margin-bottom: 5px;
+            /* Utilise le style de bouton Bootstrap */
+            padding: .375rem .75rem;
+            border: 1px solid #0d6efd;
+            color: #0d6efd;
+            border-radius: .25rem;
+            user-select: none;
+            transition: all 0.2s ease-in-out;
+        }
+        /* Style quand l'input est coché */
+        .choice-selector .form-check-input:checked + .form-check-label {
+            background-color: #0d6efd;
+            color: white;
+            border-color: #0d6efd;
+        }
+        .form-check {
+            padding-left: 0; /* Annule le padding par défaut de Bootstrap */
+        }
+        .badge {
+            font-size: 0.9em;
+        }
+    </style>
+</head>
+<body>
+    <div class="container mt-4">
+        <header class="text-center mb-5">
+            <h1>Mon Journal d'Émotions</h1>
+            <p class="lead text-muted">Suivez et comprenez vos émotions au quotidien. Vos données sont sauvegardées uniquement sur votre appareil.</p>
+        </header>
 
+        <!-- Formulaire de saisie -->
+        <div class="card p-4">
+            <h3 class="text-center mb-4">Nouvelle Entrée</h3>
+            <form id="emotionForm">
+
+                <!-- Émotion (sélection unique) -->
+                <div class="mb-4 choice-selector">
+                    <h5>Émotion <span class="text-danger">*</span></h5>
+                    <div class="d-flex flex-wrap">
+                        <!-- Les inputs sont des radios pour n'en choisir qu'un -->
+                        <div class="form-check d-inline-block"><input type="radio" class="form-check-input" name="emotion" id="emo-joie" value="😊 Joie" required><label class="form-check-label" for="emo-joie">😊 Joie</label></div>
+                        <div class="form-check d-inline-block"><input type="radio" class="form-check-input" name="emotion" id="emo-tristesse" value="😢 Tristesse"><label class="form-check-label" for="emo-tristesse">😢 Tristesse</label></div>
+                        <div class="form-check d-inline-block"><input type="radio" class="form-check-input" name="emotion" id="emo-colere" value="😠 Colère"><label class="form-check-label" for="emo-colere">😠 Colère</label></div>
+                        <div class="form-check d-inline-block"><input type="radio" class="form-check-input" name="emotion" id="emo-peur" value="😨 Peur"><label class="form-check-label" for="emo-peur">😨 Peur</label></div>
+                        <div class="form-check d-inline-block"><input type="radio" class="form-check-input" name="emotion" id="emo-surprise" value="😮 Surprise"><label class="form-check-label" for="emo-surprise">😮 Surprise</label></div>
+                        <div class="form-check d-inline-block"><input type="radio" class="form-check-input" name="emotion" id="emo-degout" value="🤢 Dégoût"><label class="form-check-label" for="emo-degout">🤢 Dégoût</label></div>
+                        <div class="form-check d-inline-block"><input type="radio" class="form-check-input" name="emotion" id="emo-confiance" value="🤗 Confiance"><label class="form-check-label" for="emo-confiance">🤗 Confiance</label></div>
+                        <div class="form-check d-inline-block"><input type="radio" class="form-check-input" name="emotion" id="emo-anticipation" value="🤔 Anticipation"><label class="form-check-label" for="emo-anticipation">🤔 Anticipation</label></div>
+                        <div class="form-check d-inline-block"><input type="radio" class="form-check-input" name="emotion" id="emo-amour" value="❤️ Amour"><label class="form-check-label" for="emo-amour">❤️ Amour</label></div>
+                        <div class="form-check d-inline-block"><input type="radio" class="form-check-input" name="emotion" id="emo-culpabilite" value="😔 Culpabilité"><label class="form-check-label" for="emo-culpabilite">😔 Culpabilité</label></div>
+                        <div class="form-check d-inline-block"><input type="radio" class="form-check-input" name="emotion" id="emo-honte" value="😳 Honte"><label class="form-check-label" for="emo-honte">😳 Honte</label></div>
+                        <div class="form-check d-inline-block"><input type="radio" class="form-check-input" name="emotion" id="emo-fierte" value="😎 Fierté"><label class="form-check-label" for="emo-fierte">😎 Fierté</label></div>
+                        <div class="form-check d-inline-block"><input type="radio" class="form-check-input" name="emotion" id="emo-calme" value="😌 Calme"><label class="form-check-label" for="emo-calme">😌 Calme</label></div>
+                        <div class="form-check d-inline-block"><input type="radio" class="form-check-input" name="emotion" id="emo-anxiete" value="😟 Anxiété"><label class="form-check-label" for="emo-anxiete">😟 Anxiété</label></div>
+                        <div class="form-check d-inline-block"><input type="radio" class="form-check-input" name="emotion" id="emo-espoir" value="🙏 Espoir"><label class="form-check-label" for="emo-espoir">🙏 Espoir</label></div>
+                        <div class="form-check d-inline-block"><input type="radio" class="form-check-input" name="emotion" id="emo-gratitude" value="🙌 Gratitude"><label class="form-check-label" for="emo-gratitude">🙌 Gratitude</label></div>
+                        <div class="form-check d-inline-block"><input type="radio" class="form-check-input" name="emotion" id="emo-jalousie" value="😒 Jalousie"><label class="form-check-label" for="emo-jalousie">😒 Jalousie</label></div>
+                        <div class="form-check d-inline-block"><input type="radio" class="form-check-input" name="emotion" id="emo-ennui" value="😑 Ennui"><label class="form-check-label" for="emo-ennui">😑 Ennui</label></div>
+                    </div>
+                </div>
+
+                <!-- Intensité (sélection unique) -->
+                <div class="mb-4 choice-selector">
+                    <h5>Intensité <span class="text-danger">*</span></h5>
+                    <div class="d-flex flex-wrap">
+                        <div class="form-check d-inline-block"><input type="radio" class="form-check-input" name="intensity" id="int-1" value="Très faible (1)" required><label class="form-check-label" for="int-1">Très faible (1)</label></div>
+                        <div class="form-check d-inline-block"><input type="radio" class="form-check-input" name="intensity" id="int-2" value="Faible (2)"><label class="form-check-label" for="int-2">Faible (2)</label></div>
+                        <div class="form-check d-inline-block"><input type="radio" class="form-check-input" name="intensity" id="int-3" value="Moyenne (3)"><label class="form-check-label" for="int-3">Moyenne (3)</label></div>
+                        <div class="form-check d-inline-block"><input type="radio" class="form-check-input" name="intensity" id="int-4" value="Forte (4)"><label class="form-check-label" for="int-4">Forte (4)</label></div>
+                        <div class="form-check d-inline-block"><input type="radio" class="form-check-input" name="intensity" id="int-5" value="Très forte (5)"><label class="form-check-label" for="int-5">Très forte (5)</label></div>
+                    </div>
+                </div>
+
+                <!-- Déclencheur (sélection multiple) -->
+                <div class="mb-4 choice-selector">
+                    <h5>Déclencheur(s)</h5>
+                    <div class="d-flex flex-wrap">
+                        <!-- Les inputs sont des checkbox pour en choisir plusieurs -->
+                        <div class="form-check d-inline-block"><input type="checkbox" class="form-check-input" name="trigger" id="trig-interaction" value="Interaction avec quelqu'un"><label class="form-check-label" for="trig-interaction">Interaction avec quelqu'un</label></div>
+                        <div class="form-check d-inline-block"><input type="checkbox" class="form-check-input" name="trigger" id="trig-social" value="Événement social"><label class="form-check-label" for="trig-social">Événement social</label></div>
+                        <div class="form-check d-inline-block"><input type="checkbox" class="form-check-input" name="trigger" id="trig-work" value="Travail ou études"><label class="form-check-label" for="trig-work">Travail ou études</label></div>
+                        <div class="form-check d-inline-block"><input type="checkbox" class="form-check-input" name="trigger" id="trig-chores" value="Tâches ménagères"><label class="form-check-label" for="trig-chores">Tâches ménagères</label></div>
+                        <div class="form-check d-inline-block"><input type="checkbox" class="form-check-input" name="trigger" id="trig-thoughts" value="Pensées ou souvenirs"><label class="form-check-label" for="trig-thoughts">Pensées ou souvenirs</label></div>
+                        <div class="form-check d-inline-block"><input type="checkbox" class="form-check-input" name="trigger" id="trig-health" value="Santé ou corps"><label class="form-check-label" for="trig-health">Santé ou corps</label></div>
+                        <div class="form-check d-inline-block"><input type="checkbox" class="form-check-input" name="trigger" id="trig-other" value="Autre"><label class="form-check-label" for="trig-other">Autre</label></div>
+                    </div>
+                </div>
+
+                <!-- Réaction (sélection multiple) -->
+                <div class="mb-4 choice-selector">
+                    <h5>Réaction(s)</h5>
+                    <div class="d-flex flex-wrap">
+                        <div class="form-check d-inline-block"><input type="checkbox" class="form-check-input" name="reaction" id="react-cried" value="J'ai pleuré"><label class="form-check-label" for="react-cried">J'ai pleuré</label></div>
+                        <div class="form-check d-inline-block"><input type="checkbox" class="form-check-input" name="reaction" id="react-laughed" value="J'ai souri ou ri"><label class="form-check-label" for="react-laughed">J'ai souri ou ri</label></div>
+                        <div class="form-check d-inline-block"><input type="checkbox" class="form-check-input" name="reaction" id="react-isolated" value="Je me suis isolé(e)"><label class="form-check-label" for="react-isolated">Je me suis isolé(e)</label></div>
+                        <div class="form-check d-inline-block"><input type="checkbox" class="form-check-input" name="reaction" id="react-talked" value="J'ai parlé à quelqu'un"><label class="form-check-label" for="react-talked">J'ai parlé à quelqu'un</label></div>
+                        <div class="form-check d-inline-block"><input type="checkbox" class="form-check-input" name="reaction" id="react-music" value="J'ai écouté de la musique"><label class="form-check-label" for="react-music">J'ai écouté de la musique</label></div>
+                        <div class="form-check d-inline-block"><input type="checkbox" class="form-check-input" name="reaction" id="react-solution" value="J'ai cherché une solution"><label class="form-check-label" for="react-solution">J'ai cherché une solution</label></div>
+                        <div class="form-check d-inline-block"><input type="checkbox" class="form-check-input" name="reaction" id="react-nothing" value="Je n'ai rien fait de spécial"><label class="form-check-label" for="react-nothing">Je n'ai rien fait de spécial</label></div>
+                        <div class="form-check d-inline-block"><input type="checkbox" class="form-check-input" name="reaction" id="react-other" value="Autre"><label class="form-check-label" for="react-other">Autre</label></div>
+                    </div>
+                </div>
+                
+                <!-- Contexte (sélection multiple) -->
+                <div class="mb-4 choice-selector">
+                    <h5>Contexte(s)</h5>
+                    <div class="d-flex flex-wrap">
+                        <div class="form-check d-inline-block"><input type="checkbox" class="form-check-input" name="context" id="ctx-home" value="À la maison"><label class="form-check-label" for="ctx-home">À la maison</label></div>
+                        <div class="form-check d-inline-block"><input type="checkbox" class="form-check-input" name="context" id="ctx-work" value="Au travail"><label class="form-check-label" for="ctx-work">Au travail</label></div>
+                        <div class="form-check d-inline-block"><input type="checkbox" class="form-check-input" name="context" id="ctx-transport" value="Dans les transports"><label class="form-check-label" for="ctx-transport">Dans les transports</label></div>
+                        <div class="form-check d-inline-block"><input type="checkbox" class="form-check-input" name="context" id="ctx-public" value="Lieu public"><label class="form-check-label" for="ctx-public">Lieu public</label></div>
+                        <div class="form-check d-inline-block"><input type="checkbox" class="form-check-input" name="context" id="ctx-alone" value="Seul(e)"><label class="form-check-label" for="ctx-alone">Seul(e)</label></div>
+                        <div class="form-check d-inline-block"><input type="checkbox" class="form-check-input" name="context" id="ctx-family" value="Avec la famille"><label class="form-check-label" for="ctx-family">Avec la famille</label></div>
+                        <div class="form-check d-inline-block"><input type="checkbox" class="form-check-input" name="context" id="ctx-friends" value="Avec des amis"><label class="form-check-label" for="ctx-friends">Avec des amis</label></div>
+                        <div class="form-check d-inline-block"><input type="checkbox" class="form-check-input" name="context" id="ctx-morning" value="Matin"><label class="form-check-label" for="ctx-morning">Matin</label></div>
+                        <div class="form-check d-inline-block"><input type="checkbox" class="form-check-input" name="context" id="ctx-afternoon" value="Après-midi"><label class="form-check-label" for="ctx-afternoon">Après-midi</label></div>
+                        <div class="form-check d-inline-block"><input type="checkbox" class="form-check-input" name="context" id="ctx-evening" value="Soir"><label class="form-check-label" for="ctx-evening">Soir</label></div>
+                        <div class="form-check d-inline-block"><input type="checkbox" class="form-check-input" name="context" id="ctx-other" value="Autre"><label class="form-check-label" for="ctx-other">Autre</label></div>
+                    </div>
+                </div>
+
+                <!-- Description -->
+                <div class="mb-3">
+                    <label for="description" class="form-label">Description (optionnel)</label>
+                    <textarea class="form-control" id="description" rows="3" placeholder="Décrivez plus en détail ce qui s'est passé..."></textarea>
+                </div>
+                
+                <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-3">
+                    <button type="button" class="btn btn-secondary me-md-2" id="cancelButton">Annuler</button>
+                    <button type="submit" class="btn btn-success">Sauvegarder</button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Section pour afficher les entrées du journal -->
+        <div class="mt-5">
+            <h2 class="text-center mb-4">Mon Journal</h2>
+            <div id="journalEntries" class="list-group">
+                <!-- Les entrées seront injectées ici par JavaScript -->
+            </div>
+        </div>
+    </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    const emotionForm = document.getElementById('emotionForm');
+    const journalEntriesContainer = document.getElementById('journalEntries');
+    const cancelButton = document.getElementById('cancelButton');
+    const STORAGE_KEY = 'emotionJournalEntries';
+
+    /**
+     * Récupère les entrées depuis le localStorage.
+     * @returns {Array} Un tableau d'objets d'entrée.
+     */
+    const getEntries = () => {
+        const entries = localStorage.getItem(STORAGE_KEY);
+        return entries ? JSON.parse(entries) : [];
+    };
+
+    /**
+     * Sauvegarde les entrées dans le localStorage.
+     * @param {Array} entries - Le tableau d'entrées à sauvegarder.
+     */
+    const saveEntries = (entries) => {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(entries));
+    };
+
+    /**
+     * Affiche toutes les entrées du journal dans le DOM.
+     */
+    const renderJournal = () => {
+        journalEntriesContainer.innerHTML = '';
+        const entries = getEntries();
+
+        if (entries.length === 0) {
+            journalEntriesContainer.innerHTML = '<p class="text-center text-muted">Aucune entrée pour le moment. Ajoutez-en une !</p>';
+            return;
+        }
+
+        // Affiche les entrées de la plus récente à la plus ancienne
+        entries.slice().reverse().forEach(entry => {
+            const entryElement = document.createElement('div');
+            entryElement.className = 'list-group-item list-group-item-action flex-column align-items-start mb-3 p-3 journal-entry';
+            
+            // Fonction pour créer des badges pour les sélections multiples
+            const createBadges = (items) => {
+                if (!items || items.length === 0) return '<span class="badge bg-light text-dark">Non spécifié</span>';
+                return items.map(item => `<span class="badge bg-secondary me-1 mb-1">${item}</span>`).join('');
+            };
+
+            entryElement.innerHTML = `
+                <div class="d-flex w-100 justify-content-between">
+                    <h5 class="mb-1">Émotion : ${entry.emotion}</h5>
+                    <small class="text-muted">${new Date(entry.id).toLocaleString('fr-FR')}</small>
+                </div>
+                <p class="mb-1"><strong>Intensité :</strong> <span class="badge bg-primary">${entry.intensity}</span></p>
+                <div class="mb-1"><strong>Déclencheur(s) :</strong> ${createBadges(entry.triggers)}</div>
+                <div class="mb-1"><strong>Réaction(s) :</strong> ${createBadges(entry.reactions)}</div>
+                <div class="mb-2"><strong>Contexte(s) :</strong> ${createBadges(entry.contexts)}</div>
+                ${entry.description ? `<p class="mb-1 fst-italic text-muted">"${entry.description}"</p>` : ''}
+                <button class="btn btn-sm btn-outline-danger mt-2 delete-btn" data-id="${entry.id}">Supprimer</button>
+            `;
+            journalEntriesContainer.appendChild(entryElement);
+        });
+    };
+
+    /**
+     * Gère la soumission du formulaire.
+     */
+    emotionForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+
+        // Récupérer les valeurs des champs de type "checkbox"
+        const getCheckedValues = (name) => {
+            return Array.from(document.querySelectorAll(`input[name="${name}"]:checked`)).map(cb => cb.value);
+        };
+        
+        const newEntry = {
+            id: Date.now(), // Utilise le timestamp comme ID unique
+            emotion: emotionForm.elements['emotion'].value,
+            intensity: emotionForm.elements['intensity'].value,
+            triggers: getCheckedValues('trigger'),
+            reactions: getCheckedValues('reaction'),
+            contexts: getCheckedValues('context'),
+            description: emotionForm.elements['description'].value.trim()
+        };
+
+        const entries = getEntries();
+        entries.push(newEntry);
+        saveEntries(entries);
+
+        renderJournal();
+        emotionForm.reset(); // Réinitialise le formulaire
+    });
+
+    /**
+     * Gère la suppression d'une entrée.
+     */
+    journalEntriesContainer.addEventListener('click', (e) => {
+        if (e.target.classList.contains('delete-btn')) {
+            const entryId = e.target.getAttribute('data-id');
+            if (confirm("Êtes-vous sûr de vouloir supprimer cette entrée ?")) {
+                let entries = getEntries();
+                entries = entries.filter(entry => entry.id.toString() !== entryId);
+                saveEntries(entries);
+                renderJournal();
+            }
+        }
+    });
+    
+    /**
+     * Gère le bouton Annuler.
+     */
+    cancelButton.addEventListener('click', () => {
+        emotionForm.reset();
+    });
+
+    // Affichage initial du journal au chargement de la page
+    renderJournal();
+});
+</script>
+</body>
+</html>
