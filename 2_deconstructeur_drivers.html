@@ -1,3 +1,42 @@
+<!DOCTYPE html>
+<html lang="fr" data-bs-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Déconstructeur de Drivers</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container my-5">
+        <a href="index.html" class="btn btn-outline-secondary btn-sm mb-4">← Retour au portail</a>
+        <div class="text-center">
+            <h1>Le Déconstructeur de Drivers</h1>
+            <p class="lead text-white-50">Identifiez vos pilotes automatiques et choisissez une nouvelle réponse.</p>
+        </div>
+
+        <div class="card my-4">
+            <div class="card-body">
+                <h5 class="card-title" id="driver-question-title">Mission du jour</h5>
+                <p id="driver-question-text">Chargement de la mission...</p>
+                
+                <div class="mb-3">
+                    <label for="reflection" class="form-label">Ma réflexion : Dans quelle situation ce pilote s'est-il activé ?</label>
+                    <textarea class="form-control" id="reflection" rows="3"></textarea>
+                </div>
+                <div class="mb-3">
+                    <label for="alternative" class="form-label" id="driver-alternative-text">L'alternative : Quelle aurait été une approche plus douce / patiente / authentique ?</label>
+                    <textarea class="form-control" id="alternative" rows="3"></textarea>
+                </div>
+                <button class="btn btn-primary" id="saveButton">Sauvegarder et Prochaine Mission</button>
+            </div>
+        </div>
+
+        <h3 class="mt-5">Mes Réflexions Passées</h3>
+        <div id="past-reflections" class="list-group">
+             <p class="text-muted">Aucune réflexion sauvegardée pour le moment.</p>
+        </div>
+    </div>
+
 <script>
 document.addEventListener('DOMContentLoaded', () => {
     const drivers = [
@@ -97,3 +136,5 @@ document.addEventListener('DOMContentLoaded', () => {
     renderReflections();
 });
 </script>
+</body>
+</html>
