@@ -1,319 +1,110 @@
 <!DOCTYPE html>
-<html lang="fr" data-bs-theme="light">
+<html lang="fr" data-bs-theme="dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Journal d'Émotions</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <title>Boîte à Outils de Croissance - Eric</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
-        :root { scroll-behavior: smooth; }
-        body { padding: 20px; transition: background-color 0.3s, color 0.3s; }
-        .card, .modal-content { transition: background-color 0.3s, border-color 0.3s; }
-        .journal-entry { border-left-width: 5px; border-left-style: solid; transition: all 0.3s ease-in-out; }
-        .journal-entry.editing { border-left-color: #ffc107 !important; background-color: rgba(255, 193, 7, 0.1); }
-        .journal-entry:hover { transform: translateY(-2px); box-shadow: 0 6px 12px rgba(0,0,0,0.15); }
-        .choice-selector .form-check-input { display: none; }
-        .choice-selector .form-check-label { cursor: pointer; margin-right: 5px; margin-bottom: 5px; padding: .375rem .75rem; border-radius: .25rem; user-select: none; transition: all 0.2s ease-in-out; }
-        h5 { border-bottom: 2px solid #dee2e6; padding-bottom: 8px; margin-bottom: 15px !important; }
-        [data-bs-theme="dark"] h5 { border-bottom-color: #495057; }
-        .form-check { padding-left: 0; display: inline-block; }
-        .theme-toggle { cursor: pointer; font-size: 1.5rem; position: fixed; top: 15px; right: 20px; z-index: 1056; }
-        [data-bs-theme="dark"] .journal-entry.editing { background-color: rgba(255, 193, 7, 0.2); }
-        .btn-check:checked+.btn-outline-primary { color: #fff; background-color: #0d6efd; border-color: #0d6efd;}
+        body { background-color: #212529; }
+        .hero {
+            padding: 4rem 2rem;
+            margin-bottom: 2rem;
+            background-color: #343a40;
+            border-radius: .3rem;
+        }
+        .card {
+            transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+            height: 100%;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+        }
+        .card-body {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
     </style>
 </head>
-<body id="top">
-    <div class="container mt-4">
-        <div class="theme-toggle" id="themeToggle" title="Changer le thème">🌙</div>
+<body>
 
-        <header class="text-center mb-5">
-            <h1>Journal d'Émotions</h1>
-            
-        </header>
-
-        <!-- Formulaire de saisie -->
-        <div class="card p-4" id="formCard">
-            <h3 class="text-center mb-4" id="formTitle">Nouvelle Entrée</h3>
-            <form id="emotionForm">
-                <input type="hidden" id="editEntryId">
-                
-                <!-- Émotion (sélection unique) - LISTE ÉTENDUE ET TRIÉE -->
-                <div class="mb-4 choice-selector">
-                    <h5>Émotion <span class="text-danger">*</span></h5>
-                    <div class="d-flex flex-wrap" id="emotion-options">
-                        <div class="form-check"><input type="radio" class="form-check-input btn-check" name="emotion" id="emo-allegresse" value="Allégresse 😄" required><label class="form-check-label btn btn-outline-primary" for="emo-allegresse">Allégresse 😄</label></div>
-                        <div class="form-check"><input type="radio" class="form-check-input btn-check" name="emotion" id="emo-amour" value="Amour ❤️"><label class="form-check-label btn btn-outline-primary" for="emo-amour">Amour ❤️</label></div>
-                        <div class="form-check"><input type="radio" class="form-check-input btn-check" name="emotion" id="emo-amusement" value="Amusement 😄"><label class="form-check-label btn btn-outline-primary" for="emo-amusement">Amusement 😄</label></div>
-                        <div class="form-check"><input type="radio" class="form-check-input btn-check" name="emotion" id="emo-anticipation" value="Anticipation 🤔"><label class="form-check-label btn btn-outline-primary" for="emo-anticipation">Anticipation 🤔</label></div>
-                        <div class="form-check"><input type="radio" class="form-check-input btn-check" name="emotion" id="emo-anxiete" value="Anxiété 😟"><label class="form-check-label btn btn-outline-primary" for="emo-anxiete">Anxiété 😟</label></div>
-                        <div class="form-check"><input type="radio" class="form-check-input btn-check" name="emotion" id="emo-apprehension" value="Appréhension 😟"><label class="form-check-label btn btn-outline-primary" for="emo-apprehension">Appréhension 😟</label></div>
-                        <div class="form-check"><input type="radio" class="form-check-input btn-check" name="emotion" id="emo-calme" value="Calme 😌"><label class="form-check-label btn btn-outline-primary" for="emo-calme">Calme 😌</label></div>
-                        <div class="form-check"><input type="radio" class="form-check-input btn-check" name="emotion" id="emo-colere" value="Colère 😠"><label class="form-check-label btn btn-outline-primary" for="emo-colere">Colère 😠</label></div>
-                        <div class="form-check"><input type="radio" class="form-check-input btn-check" name="emotion" id="emo-compassion" value="Compassion 🤗"><label class="form-check-label btn btn-outline-primary" for="emo-compassion">Compassion 🤗</label></div>
-                        <div class="form-check"><input type="radio" class="form-check-input btn-check" name="emotion" id="emo-confiance" value="Confiance 🤗"><label class="form-check-label btn btn-outline-primary" for="emo-confiance">Confiance 🤗</label></div>
-                        <div class="form-check"><input type="radio" class="form-check-input btn-check" name="emotion" id="emo-confusion" value="Confusion 😕"><label class="form-check-label btn btn-outline-primary" for="emo-confusion">Confusion 😕</label></div>
-                        <div class="form-check"><input type="radio" class="form-check-input btn-check" name="emotion" id="emo-contentement" value="Contentement 😊"><label class="form-check-label btn btn-outline-primary" for="emo-contentement">Contentement 😊</label></div>
-                        <div class="form-check"><input type="radio" class="form-check-input btn-check" name="emotion" id="emo-courage" value="Courage 💪"><label class="form-check-label btn btn-outline-primary" for="emo-courage">Courage 💪</label></div>
-                        <div class="form-check"><input type="radio" class="form-check-input btn-check" name="emotion" id="emo-culpabilite" value="Culpabilité 😔"><label class="form-check-label btn btn-outline-primary" for="emo-culpabilite">Culpabilité 😔</label></div>
-                        <div class="form-check"><input type="radio" class="form-check-input btn-check" name="emotion" id="emo-curiosite" value="Curiosité 🤔"><label class="form-check-label btn btn-outline-primary" for="emo-curiosite">Curiosité 🤔</label></div>
-                        <div class="form-check"><input type="radio" class="form-check-input btn-check" name="emotion" id="emo-deception" value="Déception 😞"><label class="form-check-label btn btn-outline-primary" for="emo-deception">Déception 😞</label></div>
-                        <div class="form-check"><input type="radio" class="form-check-input btn-check" name="emotion" id="emo-degout" value="Dégoût 🤢"><label class="form-check-label btn btn-outline-primary" for="emo-degout">Dégoût 🤢</label></div>
-                        <div class="form-check"><input type="radio" class="form-check-input btn-check" name="emotion" id="emo-emerveillement" value="Émerveillement 😮"><label class="form-check-label btn btn-outline-primary" for="emo-emerveillement">Émerveillement 😮</label></div>
-                        <div class="form-check"><input type="radio" class="form-check-input btn-check" name="emotion" id="emo-ennui" value="Ennui 😑"><label class="form-check-label btn btn-outline-primary" for="emo-ennui">Ennui 😑</label></div>
-                        <div class="form-check"><input type="radio" class="form-check-input btn-check" name="emotion" id="emo-enthousiasme" value="Enthousiasme 🤩"><label class="form-check-label btn btn-outline-primary" for="emo-enthousiasme">Enthousiasme 🤩</label></div>
-                        <div class="form-check"><input type="radio" class="form-check-input btn-check" name="emotion" id="emo-espoir" value="Espoir 🙏"><label class="form-check-label btn btn-outline-primary" for="emo-espoir">Espoir 🙏</label></div>
-                        <div class="form-check"><input type="radio" class="form-check-input btn-check" name="emotion" id="emo-extase" value="Extase 🤩"><label class="form-check-label btn btn-outline-primary" for="emo-extase">Extase 🤩</label></div>
-                        <div class="form-check"><input type="radio" class="form-check-input btn-check" name="emotion" id="emo-fierte" value="Fierté 😎"><label class="form-check-label btn btn-outline-primary" for="emo-fierte">Fierté 😎</label></div>
-                        <div class="form-check"><input type="radio" class="form-check-input btn-check" name="emotion" id="emo-frustration" value="Frustration 😤"><label class="form-check-label btn btn-outline-primary" for="emo-frustration">Frustration 😤</label></div>
-                        <div class="form-check"><input type="radio" class="form-check-input btn-check" name="emotion" id="emo-gratitude" value="Gratitude 🙌"><label class="form-check-label btn btn-outline-primary" for="emo-gratitude">Gratitude 🙌</label></div>
-                        <div class="form-check"><input type="radio" class="form-check-input btn-check" name="emotion" id="emo-honte" value="Honte 😳"><label class="form-check-label btn btn-outline-primary" for="emo-honte">Honte 😳</label></div>
-                        <div class="form-check"><input type="radio" class="form-check-input btn-check" name="emotion" id="emo-inquietude" value="Inquiétude 😟"><label class="form-check-label btn btn-outline-primary" for="emo-inquietude">Inquiétude 😟</label></div>
-                        <div class="form-check"><input type="radio" class="form-check-input btn-check" name="emotion" id="emo-irritation" value="Irritation 😤"><label class="form-check-label btn btn-outline-primary" for="emo-irritation">Irritation 😤</label></div>
-                        <div class="form-check"><input type="radio" class="form-check-input btn-check" name="emotion" id="emo-jalousie" value="Jalousie 😒"><label class="form-check-label btn btn-outline-primary" for="emo-jalousie">Jalousie 😒</label></div>
-                        <div class="form-check"><input type="radio" class="form-check-input btn-check" name="emotion" id="emo-joie" value="Joie 😊"><label class="form-check-label btn btn-outline-primary" for="emo-joie">Joie 😊</label></div>
-                        <div class="form-check"><input type="radio" class="form-check-input btn-check" name="emotion" id="emo-liberte" value="Liberté 🕊️"><label class="form-check-label btn btn-outline-primary" for="emo-liberte">Liberté 🕊️</label></div>
-                        <div class="form-check"><input type="radio" class="form-check-input btn-check" name="emotion" id="emo-melancolie" value="Mélancolie 😔"><label class="form-check-label btn btn-outline-primary" for="emo-melancolie">Mélancolie 😔</label></div>
-                        <div class="form-check"><input type="radio" class="form-check-input btn-check" name="emotion" id="emo-nostalgie" value="Nostalgie 😥"><label class="form-check-label btn btn-outline-primary" for="emo-nostalgie">Nostalgie 😥</label></div>
-                        <div class="form-check"><input type="radio" class="form-check-input btn-check" name="emotion" id="emo-peur" value="Peur 😨"><label class="form-check-label btn btn-outline-primary" for="emo-peur">Peur 😨</label></div>
-                        <div class="form-check"><input type="radio" class="form-check-input btn-check" name="emotion" id="emo-puissance" value="Puissance 🔥"><label class="form-check-label btn btn-outline-primary" for="emo-puissance">Puissance 🔥</label></div>
-                        <div class="form-check"><input type="radio" class="form-check-input btn-check" name="emotion" id="emo-rage" value="Rage 😡"><label class="form-check-label btn btn-outline-primary" for="emo-rage">Rage 😡</label></div>
-                        <div class="form-check"><input type="radio" class="form-check-input btn-check" name="emotion" id="emo-satisfaction" value="Satisfaction 😌"><label class="form-check-label btn btn-outline-primary" for="emo-satisfaction">Satisfaction 😌</label></div>
-                        <div class="form-check"><input type="radio" class="form-check-input btn-check" name="emotion" id="emo-serenite" value="Sérénité 🧘"><label class="form-check-label btn btn-outline-primary" for="emo-serenite">Sérénité 🧘</label></div>
-                        <div class="form-check"><input type="radio" class="form-check-input btn-check" name="emotion" id="emo-solitude" value="Solitude 😔"><label class="form-check-label btn btn-outline-primary" for="emo-solitude">Solitude 😔</label></div>
-                        <div class="form-check"><input type="radio" class="form-check-input btn-check" name="emotion" id="emo-surprise" value="Surprise 😮"><label class="form-check-label btn btn-outline-primary" for="emo-surprise">Surprise 😮</label></div>
-                        <div class="form-check"><input type="radio" class="form-check-input btn-check" name="emotion" id="emo-timidite" value="Timidité 😳"><label class="form-check-label btn btn-outline-primary" for="emo-timidite">Timidité 😳</label></div>
-                        <div class="form-check"><input type="radio" class="form-check-input btn-check" name="emotion" id="emo-tristesse" value="Tristesse 😢"><label class="form-check-label btn btn-outline-primary" for="emo-tristesse">Tristesse 😢</label></div>
-                        <div class="form-check"><input type="radio" class="form-check-input btn-check" name="emotion" id="emo-vulnerabilite" value="Vulnérabilité 🥺"><label class="form-check-label btn btn-outline-primary" for="emo-vulnerabilite">Vulnérabilité 🥺</label></div>
-                    </div>
-                </div>
-                
-                <!-- Intensité (sélection unique) -->
-                <div class="mb-4 choice-selector">
-                    <h5>Intensité <span class="text-danger">*</span></h5>
-                    <div class="d-flex flex-wrap" id="intensity-options">
-                        <div class="form-check"><input type="radio" class="form-check-input btn-check" name="intensity" id="int-1" value="Très faible (1)" required><label class="form-check-label btn btn-outline-primary" for="int-1">Très faible (1)</label></div>
-                        <div class="form-check"><input type="radio" class="form-check-input btn-check" name="intensity" id="int-2" value="Faible (2)"><label class="form-check-label btn btn-outline-primary" for="int-2">Faible (2)</label></div>
-                        <div class="form-check"><input type="radio" class="form-check-input btn-check" name="intensity" id="int-3" value="Moyenne (3)"><label class="form-check-label btn btn-outline-primary" for="int-3">Moyenne (3)</label></div>
-                        <div class="form-check"><input type="radio" class="form-check-input btn-check" name="intensity" id="int-4" value="Forte (4)"><label class="form-check-label btn btn-outline-primary" for="int-4">Forte (4)</label></div>
-                        <div class="form-check"><input type="radio" class="form-check-input btn-check" name="intensity" id="int-5" value="Très forte (5)"><label class="form-check-label btn btn-outline-primary" for="int-5">Très forte (5)</label></div>
-                    </div>
-                </div>
-
-                <!-- Section de tags personnalisables -->
-                <div id="tagSections">
-                    <div class="mb-4 choice-selector">
-                        <h5>Déclencheur(s)</h5>
-                        <div class="d-flex flex-wrap" id="trigger-options">
-                            <div class="form-check"><input type="checkbox" class="form-check-input btn-check" name="trigger" id="trig-interaction" value="Interaction sociale"><label class="form-check-label btn btn-outline-primary" for="trig-interaction">Interaction sociale</label></div>
-                            <div class="form-check"><input type="checkbox" class="form-check-input btn-check" name="trigger" id="trig-travail" value="Travail ou études"><label class="form-check-label btn btn-outline-primary" for="trig-travail">Travail ou études</label></div>
-                            <div class="form-check"><input type="checkbox" class="form-check-input btn-check" name="trigger" id="trig-pensees" value="Pensées ou souvenirs"><label class="form-check-label btn btn-outline-primary" for="trig-pensees">Pensées ou souvenirs</label></div>
-                        </div>
-                        <div class="input-group input-group-sm mt-2"><input type="text" class="form-control" placeholder="Ajouter un nouveau déclencheur..." id="new-trigger-tag"><button class="btn btn-outline-secondary" type="button" data-category="trigger">Ajouter</button></div>
-                    </div>
-                    <div class="mb-4 choice-selector">
-                        <h5>Réaction(s)</h5>
-                        <div class="d-flex flex-wrap" id="reaction-options">
-                            <div class="form-check"><input type="checkbox" class="form-check-input btn-check" name="reaction" id="react-parler" value="J'ai parlé à quelqu'un"><label class="form-check-label btn btn-outline-primary" for="react-parler">J'ai parlé à quelqu'un</label></div>
-                            <div class="form-check"><input type="checkbox" class="form-check-input btn-check" name="reaction" id="react-isoler" value="Je me suis isolé(e)"><label class="form-check-label btn btn-outline-primary" for="react-isoler">Je me suis isolé(e)</label></div>
-                            <div class="form-check"><input type="checkbox" class="form-check-input btn-check" name="reaction" id="react-solution" value="J'ai cherché une solution"><label class="form-check-label btn btn-outline-primary" for="react-solution">J'ai cherché une solution</label></div>
-                        </div>
-                        <div class="input-group input-group-sm mt-2"><input type="text" class="form-control" placeholder="Ajouter une nouvelle réaction..." id="new-reaction-tag"><button class="btn btn-outline-secondary" type="button" data-category="reaction">Ajouter</button></div>
-                    </div>
-                    <div class="mb-4 choice-selector">
-                        <h5>Contexte(s)</h5>
-                        <div class="d-flex flex-wrap" id="context-options">
-                             <div class="form-check"><input type="checkbox" class="form-check-input btn-check" name="context" id="ctx-maison" value="À la maison"><label class="form-check-label btn btn-outline-primary" for="ctx-maison">À la maison</label></div>
-                             <div class="form-check"><input type="checkbox" class="form-check-input btn-check" name="context" id="ctx-travail" value="Au travail"><label class="form-check-label btn btn-outline-primary" for="ctx-travail">Au travail</label></div>
-                             <div class="form-check"><input type="checkbox" class="form-check-input btn-check" name="context" id="ctx-seul" value="Seul(e)"><label class="form-check-label btn btn-outline-primary" for="ctx-seul">Seul(e)</label></div>
-                        </div>
-                        <div class="input-group input-group-sm mt-2"><input type="text" class="form-control" placeholder="Ajouter un nouveau contexte..." id="new-context-tag"><button class="btn btn-outline-secondary" type="button" data-category="context">Ajouter</button></div>
-                    </div>
-                </div>
-
-                <!-- Description -->
-                <div class="mb-3">
-                    <label for="description" class="form-label">Description (optionnel)</label>
-                    <textarea class="form-control" id="description" rows="3" placeholder="Décrivez plus en détail ce qui s'est passé..."></textarea>
-                </div>
-                
-                <!-- Boutons -->
-                <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-3">
-                    <button type="button" class="btn btn-secondary me-md-2" id="cancelButton">Annuler</button>
-                    <button type="submit" class="btn btn-primary">Sauvegarder</button>
-                </div>
-            </form>
+    <div class="container py-5">
+        <div class="hero text-center text-white">
+            <h1 class="display-5">Votre Boîte à Outils de Croissance Personnelle</h1>
+            <p class="lead">Des outils conçus pour vous, Eric, afin de naviguer les schémas identifiés et de construire une vie encore plus alignée et connectée.</p>
         </div>
 
-        <!-- Le reste de la page (Journal, Modales, etc.) -->
-        <div class="mt-5">
-            <div class="d-flex flex-wrap justify-content-center align-items-center mb-4 gap-2">
-                <h2 class="text-center mb-0">Mon Journal</h2>
-                <button class="btn btn-sm btn-info" id="statsButton" style="display: none;">Statistiques</button>
-                <button class="btn btn-sm btn-light border" id="exportButton" style="display: none;">Exporter pour IA</button>
-            </div>
-            
-            <div class="mb-3">
-                <input type="search" id="searchInput" class="form-control" placeholder="Rechercher dans les entrées...">
+        <div class="row g-4">
+
+            <!-- Outil 1: Sismographe Intérieur -->
+            <div class="col-lg-4 col-md-6 d-flex align-items-stretch">
+                <div class="card bg-dark text-white">
+                    <div class="card-body">
+                        <div>
+                            <h5 class="card-title">1. Le Sismographe Intérieur</h5>
+                            <p class="card-text small text-white-50"><strong>Cible :</strong> L'injonction "Ne ressens pas".<br>Cet outil vous aide à nommer et à prendre conscience de vos émotions pour en faire des alliées.</p>
+                        </div>
+                        <a href="1_sismographe_interieur.html" class="btn btn-primary mt-3">Ouvrir le Journal</a>
+                    </div>
+                </div>
             </div>
 
-            <div id="journalEntries" class="list-group"></div>
+            <!-- Outil 2: Déconstructeur de Drivers -->
+            <div class="col-lg-4 col-md-6 d-flex align-items-stretch">
+                <div class="card bg-dark text-white">
+                    <div class="card-body">
+                        <div>
+                            <h5 class="card-title">2. Le Déconstructeur de Drivers</h5>
+                            <p class="card-text small text-white-50"><strong>Cibles :</strong> Les drivers "Sois Fort" & "Dépêche-toi".<br>Prenez conscience de vos pilotes automatiques et explorez des réponses alternatives plus douces.</p>
+                        </div>
+                        <a href="2_deconstructeur_drivers.html" class="btn btn-info mt-3">Défier mes Drivers</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Outil 3: Compas des Valeurs -->
+            <div class="col-lg-4 col-md-6 d-flex align-items-stretch">
+                <div class="card bg-dark text-white">
+                    <div class="card-body">
+                        <div>
+                            <h5 class="card-title">3. Le Compas des Valeurs</h5>
+                            <p class="card-text small text-white-50"><strong>Cible :</strong> L'alignement avec la Mission.<br>Prenez des décisions plus éclairées en les passant au filtre de ce qui compte vraiment pour vous.</p>
+                        </div>
+                        <a href="3_compas_valeurs.html" class="btn btn-warning mt-3">Trouver mon Nord</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Outil 4: Générateur de Connexion -->
+            <div class="col-lg-4 col-md-6 d-flex align-items-stretch">
+                <div class="card bg-dark text-white">
+                    <div class="card-body">
+                        <div>
+                           <h5 class="card-title">4. Le Générateur de Connexion</h5>
+                           <p class="card-text small text-white-50"><strong>Cibles :</strong> L'injonction "Ne sois pas proche" & l'attachement Évitant.<br>Relevez des micro-défis quotidiens pour abaisser le pont-levis en toute sécurité.</p>
+                        </div>
+                       <a href="4_generateur_connexion.html" class="btn btn-success mt-3">Lancer un Défi</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Outil 5: Traducteur de Décision -->
+            <div class="col-lg-4 col-md-6 d-flex align-items-stretch">
+                <div class="card bg-dark text-white">
+                    <div class="card-body">
+                        <div>
+                           <h5 class="card-title">5. Le Traducteur de Décision T/F</h5>
+                           <p class="card-text small text-white-50"><strong>Cible :</strong> L'équilibre Pensée (T) / Sentiment (F).<br>Structurez vos décisions en honorant à la fois votre analyse logique et votre boussole émotionnelle.</p>
+                        </div>
+                       <a href="5_traducteur_decision.html" class="btn btn-danger mt-3">Prendre une Décision</a>
+                    </div>
+                </div>
+            </div>
+
         </div>
     </div>
-    
-    <!-- Modales (Statistiques et Réglages) -->
-    <div class="modal fade" id="statsModal" tabindex="-1" aria-hidden="true"><div class="modal-dialog modal-xl"><div class="modal-content"><div class="modal-header"><h5 class="modal-title">Statistiques</h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><div class="row"><div class="col-lg-6 mb-4"><h6>Fréquence des Émotions</h6><canvas id="emotionChart"></canvas></div><div class="col-lg-6 mb-4"><h6>Déclencheurs Courants</h6><canvas id="triggerChart"></canvas></div></div></div></div></div></div>
-    <div class="modal fade" id="settingsModal" tabindex="-1" aria-hidden="true"><div class="modal-dialog"><div class="modal-content"><div class="modal-header"><h5 class="modal-title">Réglages</h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><h6>Rappels Quotidiens</h6><p class="text-muted small">Requiert l'autorisation d'envoyer des notifications.</p><div class="d-flex align-items-center gap-2"><input type="time" class="form-control" id="reminderTime" value="20:00"><button class="btn btn-success" id="enableReminderBtn">Activer</button><button class="btn btn-danger" id="disableReminderBtn">Arrêter</button></div><div id="reminderStatus" class="mt-2 small"></div></div></div></div></div>
-    <button class="btn btn-secondary position-fixed bottom-0 end-0 m-3" data-bs-toggle="modal" data-bs-target="#settingsModal" title="Réglages">⚙️</button>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-<script>
-// LE CODE JAVASCRIPT RESTE EXACTEMENT LE MÊME
-(() => {
-    const STORAGE_KEYS = { ENTRIES: 'emotionJournalEntries', CUSTOM_TAGS: 'emotionJournalCustomTags', THEME: 'emotionJournalTheme', REMINDER: 'emotionJournalReminder' };
-    const emotionForm = document.getElementById('emotionForm');
-    const journalEntriesContainer = document.getElementById('journalEntries');
-    const formTitle = document.getElementById('formTitle');
-    const editEntryIdInput = document.getElementById('editEntryId');
-    const searchInput = document.getElementById('searchInput');
-    const getFromStorage = (key, defaultValue = []) => { const item = localStorage.getItem(key); return item ? JSON.parse(item) : defaultValue; };
-    const saveToStorage = (key, value) => localStorage.setItem(key, JSON.stringify(value));
-    const themeToggle = document.getElementById('themeToggle');
-    const setTheme = (theme) => { document.documentElement.setAttribute('data-bs-theme', theme); themeToggle.textContent = theme === 'dark' ? '☀️' : '🌙'; saveToStorage(STORAGE_KEYS.THEME, theme); };
-    themeToggle.addEventListener('click', () => setTheme(document.documentElement.getAttribute('data-bs-theme') === 'dark' ? 'light' : 'dark'));
-    setTheme(getFromStorage(STORAGE_KEYS.THEME, window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'));
-    const createTagOption = (category, value) => {
-        const id = `${category}-${value.replace(/\s+/g, '-').replace(/[^\w-]/g, '')}`;
-        return `<div class="form-check"><input type="checkbox" class="form-check-input btn-check" name="${category}" id="${id}" value="${value}"><label class="form-check-label btn btn-outline-primary" for="${id}">${value}</label></div>`;
-    };
-    const loadCustomTags = () => {
-        const customTags = getFromStorage(STORAGE_KEYS.CUSTOM_TAGS, {});
-        for (const category in customTags) {
-            const container = document.getElementById(`${category}-options`);
-            if (container) {
-                customTags[category].forEach(tag => {
-                    if (!document.getElementById(`${category}-${tag.replace(/\s+/g, '-').replace(/[^\w-]/g, '')}`)) {
-                       container.insertAdjacentHTML('beforeend', createTagOption(category, tag));
-                    }
-                });
-            }
-        }
-    };
-    document.getElementById('tagSections').addEventListener('click', e => {
-        if (e.target.tagName === 'BUTTON' && e.target.dataset.category) {
-            const category = e.target.dataset.category;
-            const input = document.getElementById(`new-${category}-tag`);
-            const value = input.value.trim();
-            if (value) {
-                const customTags = getFromStorage(STORAGE_KEYS.CUSTOM_TAGS, {});
-                if (!customTags[category]) customTags[category] = [];
-                if (!customTags[category].includes(value)) {
-                    customTags[category].push(value);
-                    saveToStorage(STORAGE_KEYS.CUSTOM_TAGS, customTags);
-                    document.getElementById(`${category}-options`).insertAdjacentHTML('beforeend', createTagOption(category, value));
-                }
-                input.value = '';
-            }
-        }
-    });
-    const resetForm = () => {
-        emotionForm.reset();
-        editEntryIdInput.value = '';
-        formTitle.textContent = "Nouvelle Entrée";
-        const submitBtn = emotionForm.querySelector('button[type="submit"]');
-        submitBtn.textContent = 'Sauvegarder';
-        submitBtn.classList.remove('btn-warning');
-        submitBtn.classList.add('btn-primary');
-        document.querySelectorAll('.journal-entry.editing').forEach(el => el.classList.remove('editing'));
-    };
-    const startEdit = (entryId) => {
-        const entry = getFromStorage(STORAGE_KEYS.ENTRIES).find(e => e.id.toString() === entryId);
-        if (!entry) return;
-        resetForm();
-        editEntryIdInput.value = entry.id;
-        Object.entries(entry).forEach(([key, value]) => {
-            if (Array.isArray(value)) {
-                 value.forEach(v => {
-                    const cb = document.querySelector(`input[name="${key}"][value="${v}"]`);
-                    if (cb) cb.checked = true;
-                });
-            } else {
-                const el = document.querySelector(`[name="${key}"][value="${value}"]`) || document.getElementById(key);
-                if (el) {
-                    if (el.type === 'radio') el.checked = true;
-                    else el.value = value;
-                }
-            }
-        });
-        formTitle.textContent = "Modifier l'Entrée";
-        const submitBtn = emotionForm.querySelector('button[type="submit"]');
-        submitBtn.textContent = 'Sauvegarder les modifications';
-        submitBtn.classList.add('btn-warning');
-        document.querySelector(`[data-id="${entryId}"]`).closest('.journal-entry').classList.add('editing');
-        document.getElementById('formCard').scrollIntoView();
-    };
-    const renderJournal = (filterText = '') => {
-        const entries = getFromStorage(STORAGE_KEYS.ENTRIES);
-        const filteredEntries = filterText ? entries.filter(e => JSON.stringify(e).toLowerCase().includes(filterText.toLowerCase())) : entries;
-        const uiControls = [document.getElementById('statsButton'), document.getElementById('exportButton')];
-        uiControls.forEach(btn => btn.style.display = entries.length > 0 ? 'inline-block' : 'none');
-        if (entries.length === 0) { journalEntriesContainer.innerHTML = '<p class="text-center text-muted">Aucune entrée pour le moment.</p>'; return; }
-        journalEntriesContainer.innerHTML = filteredEntries.length > 0
-            ? filteredEntries.slice().reverse().map(entry => {
-                const createBadges = (items) => items && items.length > 0 ? items.map(item => `<span class="badge text-bg-secondary me-1 mb-1">${item}</span>`).join(' ') : '';
-                return `
-                    <div class="list-group-item list-group-item-action flex-column align-items-start mb-3 p-3 rounded-3 shadow-sm journal-entry">
-                        <div class="d-flex w-100 justify-content-between">
-                            <h6 class="mb-1 fw-bold">${entry.emotion}</h6>
-                            <div><small class="text-muted me-2">${new Date(entry.id).toLocaleString('fr-FR', { dateStyle: 'short', timeStyle: 'short' })}</small><button class="btn btn-sm btn-outline-secondary py-0 px-1 me-1 edit-btn" title="Modifier" data-id="${entry.id}">✏️</button><button class="btn btn-sm btn-outline-danger py-0 px-1 delete-btn" title="Supprimer" data-id="${entry.id}">🗑️</button></div>
-                        </div>
-                        <p class="mb-2"><strong>Intensité:</strong> <span class="badge text-bg-primary">${entry.intensity}</span></p>
-                        ${createBadges(entry.triggers) ? `<div class="mb-2 small"><strong>Déclencheur(s):</strong> ${createBadges(entry.triggers)}</div>` : ''}
-                        ${createBadges(entry.reactions) ? `<div class="mb-2 small"><strong>Réaction(s):</strong> ${createBadges(entry.reactions)}</div>` : ''}
-                        ${createBadges(entry.contexts) ? `<div class="mb-2 small"><strong>Contexte(s):</strong> ${createBadges(entry.contexts)}</div>` : ''}
-                        ${entry.description ? `<p class="mb-0 mt-2 fst-italic text-muted small">"${entry.description}"</p>` : ''}
-                    </div>`;
-            }).join('')
-            : '<p class="text-center text-muted">Aucun résultat pour votre recherche.</p>';
-    };
-    emotionForm.addEventListener('submit', e => {
-        e.preventDefault();
-        const getCheckedValues = (name) => Array.from(document.querySelectorAll(`input[name="${name}"]:checked`)).map(cb => cb.value);
-        const entryData = { emotion: emotionForm.elements['emotion'].value, intensity: emotionForm.elements['intensity'].value, triggers: getCheckedValues('trigger'), reactions: getCheckedValues('reaction'), contexts: getCheckedValues('context'), description: document.getElementById('description').value.trim() };
-        if (!entryData.emotion || !entryData.intensity) return alert("Veuillez sélectionner une émotion et une intensité.");
-        let entries = getFromStorage(STORAGE_KEYS.ENTRIES);
-        const idToEdit = editEntryIdInput.value;
-        if (idToEdit) { const index = entries.findIndex(entry => entry.id.toString() === idToEdit); if (index > -1) entries[index] = { ...entryData, id: parseInt(idToEdit) }; }
-        else { entries.push({ ...entryData, id: Date.now() }); }
-        saveToStorage(STORAGE_KEYS.ENTRIES, entries);
-        resetForm();
-        renderJournal();
-    });
-    journalEntriesContainer.addEventListener('click', e => {
-        const btn = e.target.closest('button');
-        if (!btn || !btn.dataset.id) return;
-        if (btn.classList.contains('delete-btn')) { if (confirm("Êtes-vous sûr de vouloir supprimer cette entrée ?")) { saveToStorage(STORAGE_KEYS.ENTRIES, getFromStorage(STORAGE_KEYS.ENTRIES).filter(entry => entry.id.toString() !== btn.dataset.id)); renderJournal(); } }
-        else if (btn.classList.contains('edit-btn')) { startEdit(btn.dataset.id); }
-    });
-    document.getElementById('cancelButton').addEventListener('click', resetForm);
-    searchInput.addEventListener('input', () => renderJournal(searchInput.value));
-    let charts = {};
-    document.getElementById('statsButton').addEventListener('click', () => {
-        const entries = getFromStorage(STORAGE_KEYS.ENTRIES);
-        const processData = (key) => { const counts = entries.flatMap(e => e[key] || []).reduce((acc, val) => ({ ...acc, [val]: (acc[val] || 0) + 1 }), {}); return Object.entries(counts).sort((a,b) => b[1] - a[1]); };
-        const createChart = (canvasId, type, label, data) => { if (charts[canvasId]) charts[canvasId].destroy(); charts[canvasId] = new Chart(document.getElementById(canvasId), { type, data: { labels: data.map(d=>d[0]), datasets: [{ label, data: data.map(d=>d[1]) }] }, options: { responsive: true, maintainAspectRatio: false } }); };
-        createChart('emotionChart', 'pie', 'Émotions', processData('emotion'));
-        createChart('triggerChart', 'bar', 'Déclencheurs', processData('triggers'));
-        new bootstrap.Modal(document.getElementById('statsModal')).show();
-    });
-    const reminderStatus = document.getElementById('reminderStatus');
-    const updateReminderStatus = () => { const r = getFromStorage(STORAGE_KEYS.REMINDER, {}); reminderStatus.textContent = r.enabled ? `Rappel activé pour ${r.time}.` : 'Rappel désactivé.'; };
-    document.getElementById('enableReminderBtn').addEventListener('click', async () => { /* Logic for notifications */ });
-    updateReminderStatus();
-    document.getElementById('exportButton').addEventListener('click', () => { /* Logic for export */ });
-    loadCustomTags();
-    renderJournal();
-})();
-</script>
 </body>
 </html>
