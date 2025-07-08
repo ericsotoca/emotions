@@ -70,54 +70,54 @@
             <h3 class="text-center mb-4">Nouvelle Entrée</h3>
             <form id="emotionForm">
 
-                <!-- Émotion (sélection unique) -->
+                <!-- Émotion (sélection unique, triée par ordre alphabétique) -->
                 <div class="mb-4 choice-selector">
                     <h5>Émotion <span class="text-danger">*</span></h5>
                     <div class="d-flex flex-wrap">
-                        <div class="form-check"><input type="radio" class="form-check-input" name="emotion" id="emo-joie" value="😊 Joie" required><label class="form-check-label" for="emo-joie">😊 Joie</label></div>
-                        <div class="form-check"><input type="radio" class="form-check-input" name="emotion" id="emo-tristesse" value="😢 Tristesse"><label class="form-check-label" for="emo-tristesse">😢 Tristesse</label></div>
-                        <div class="form-check"><input type="radio" class="form-check-input" name="emotion" id="emo-colere" value="😠 Colère"><label class="form-check-label" for="emo-colere">😠 Colère</label></div>
-                        <div class="form-check"><input type="radio" class="form-check-input" name="emotion" id="emo-peur" value="😨 Peur"><label class="form-check-label" for="emo-peur">😨 Peur</label></div>
-                        <div class="form-check"><input type="radio" class="form-check-input" name="emotion" id="emo-surprise" value="😮 Surprise"><label class="form-check-label" for="emo-surprise">😮 Surprise</label></div>
-                        <div class="form-check"><input type="radio" class="form-check-input" name="emotion" id="emo-degout" value="🤢 Dégoût"><label class="form-check-label" for="emo-degout">🤢 Dégoût</label></div>
-                        <div class="form-check"><input type="radio" class="form-check-input" name="emotion" id="emo-confiance" value="🤗 Confiance"><label class="form-check-label" for="emo-confiance">🤗 Confiance</label></div>
+                        <div class="form-check"><input type="radio" class="form-check-input" name="emotion" id="emo-amour" value="❤️ Amour" required><label class="form-check-label" for="emo-amour">❤️ Amour</label></div>
+                        <div class="form-check"><input type="radio" class="form-check-input" name="emotion" id="emo-amusement" value="😄 Amusement"><label class="form-check-label" for="emo-amusement">😄 Amusement</label></div>
                         <div class="form-check"><input type="radio" class="form-check-input" name="emotion" id="emo-anticipation" value="🤔 Anticipation"><label class="form-check-label" for="emo-anticipation">🤔 Anticipation</label></div>
-                        <div class="form-check"><input type="radio" class="form-check-input" name="emotion" id="emo-amour" value="❤️ Amour"><label class="form-check-label" for="emo-amour">❤️ Amour</label></div>
-                        <div class="form-check"><input type="radio" class="form-check-input" name="emotion" id="emo-culpabilite" value="😔 Culpabilité"><label class="form-check-label" for="emo-culpabilite">😔 Culpabilité</label></div>
-                        <div class="form-check"><input type="radio" class="form-check-input" name="emotion" id="emo-honte" value="😳 Honte"><label class="form-check-label" for="emo-honte">😳 Honte</label></div>
-                        <div class="form-check"><input type="radio" class="form-check-input" name="emotion" id="emo-fierte" value="😎 Fierté"><label class="form-check-label" for="emo-fierte">😎 Fierté</label></div>
-                        <div class="form-check"><input type="radio" class="form-check-input" name="emotion" id="emo-calme" value="😌 Calme"><label class="form-check-label" for="emo-calme">😌 Calme</label></div>
                         <div class="form-check"><input type="radio" class="form-check-input" name="emotion" id="emo-anxiete" value="😟 Anxiété"><label class="form-check-label" for="emo-anxiete">😟 Anxiété</label></div>
-                        <div class="form-check"><input type="radio" class="form-check-input" name="emotion" id="emo-espoir" value="🙏 Espoir"><label class="form-check-label" for="emo-espoir">🙏 Espoir</label></div>
-                        <div class="form-check"><input type="radio" class="form-check-input" name="emotion" id="emo-gratitude" value="🙌 Gratitude"><label class="form-check-label" for="emo-gratitude">🙌 Gratitude</label></div>
-                        <div class="form-check"><input type="radio" class="form-check-input" name="emotion" id="emo-jalousie" value="😒 Jalousie"><label class="form-check-label" for="emo-jalousie">😒 Jalousie</label></div>
+                        <div class="form-check"><input type="radio" class="form-check-input" name="emotion" id="emo-calme" value="😌 Calme"><label class="form-check-label" for="emo-calme">😌 Calme</label></div>
+                        <div class="form-check"><input type="radio" class="form-check-input" name="emotion" id="emo-colere" value="😠 Colère"><label class="form-check-label" for="emo-colere">😠 Colère</label></div>
+                        <div class="form-check"><input type="radio" class="form-check-input" name="emotion" id="emo-compassion" value="🤗 Compassion"><label class="form-check-label" for="emo-compassion">🤗 Compassion</label></div>
+                        <div class="form-check"><input type="radio" class="form-check-input" name="emotion" id="emo-confiance" value="🤗 Confiance"><label class="form-check-label" for="emo-confiance">🤗 Confiance</label></div>
+                        <div class="form-check"><input type="radio" class="form-check-input" name="emotion" id="emo-confusion" value="😕 Confusion"><label class="form-check-label" for="emo-confusion">😕 Confusion</label></div>
+                        <div class="form-check"><input type="radio" class="form-check-input" name="emotion" id="emo-contentement" value="😊 Contentement"><label class="form-check-label" for="emo-contentement">😊 Contentement</label></div>
+                        <div class="form-check"><input type="radio" class="form-check-input" name="emotion" id="emo-courage" value="💪 Courage"><label class="form-check-label" for="emo-courage">💪 Courage</label></div>
+                        <div class="form-check"><input type="radio" class="form-check-input" name="emotion" id="emo-culpabilite" value="😔 Culpabilité"><label class="form-check-label" for="emo-culpabilite">😔 Culpabilité</label></div>
+                        <div class="form-check"><input type="radio" class="form-check-input" name="emotion" id="emo-curiosite" value="🤔 Curiosité"><label class="form-check-label" for="emo-curiosite">🤔 Curiosité</label></div>
+                        <div class="form-check"><input type="radio" class="form-check-input" name="emotion" id="emo-deception" value="😞 Déception"><label class="form-check-label" for="emo-deception">😞 Déception</label></div>
+                        <div class="form-check"><input type="radio" class="form-check-input" name="emotion" id="emo-degout" value="🤢 Dégoût"><label class="form-check-label" for="emo-degout">🤢 Dégoût</label></div>
+                        <div class="form-check"><input type="radio" class="form-check-input" name="emotion" id="emo-emerveillement" value="😮 Émerveillement"><label class="form-check-label" for="emo-emerveillement">😮 Émerveillement</label></div>
                         <div class="form-check"><input type="radio" class="form-check-input" name="emotion" id="emo-ennui" value="😑 Ennui"><label class="form-check-label" for="emo-ennui">😑 Ennui</label></div>
                         <div class="form-check"><input type="radio" class="form-check-input" name="emotion" id="emo-enthousiasme" value="🤩 Enthousiasme"><label class="form-check-label" for="emo-enthousiasme">🤩 Enthousiasme</label></div>
-                        <div class="form-check"><input type="radio" class="form-check-input" name="emotion" id="emo-frustration" value="😤 Frustration"><label class="form-check-label" for="emo-frustration">😤 Frustration</label></div>
-                        <div class="form-check"><input type="radio" class="form-check-input" name="emotion" id="emo-curiosite" value="🤔 Curiosité"><label class="form-check-label" for="emo-curiosite">🤔 Curiosité</label></div>
-                        <div class="form-check"><input type="radio" class="form-check-input" name="emotion" id="emo-contentement" value="😊 Contentement"><label class="form-check-label" for="emo-contentement">😊 Contentement</label></div>
-                        <div class="form-check"><input type="radio" class="form-check-input" name="emotion" id="emo-nostalgie" value="😥 Nostalgie"><label class="form-check-label" for="emo-nostalgie">😥 Nostalgie</label></div>
-                        <div class="form-check"><input type="radio" class="form-check-input" name="emotion" id="emo-emerveillement" value="😮 Émerveillement"><label class="form-check-label" for="emo-emerveillement">😮 Émerveillement</label></div>
-                        <div class="form-check"><input type="radio" class="form-check-input" name="emotion" id="emo-amusement" value="😄 Amusement"><label class="form-check-label" for="emo-amusement">😄 Amusement</label></div>
-                        <div class="form-check"><input type="radio" class="form-check-input" name="emotion" id="emo-satisfaction" value="😌 Satisfaction"><label class="form-check-label" for="emo-satisfaction">😌 Satisfaction</label></div>
-                        <div class="form-check"><input type="radio" class="form-check-input" name="emotion" id="emo-compassion" value="🤗 Compassion"><label class="form-check-label" for="emo-compassion">🤗 Compassion</label></div>
-                        <div class="form-check"><input type="radio" class="form-check-input" name="emotion" id="emo-solitude" value="😔 Solitude"><label class="form-check-label" for="emo-solitude">😔 Solitude</label></div>
-                        <div class="form-check"><input type="radio" class="form-check-input" name="emotion" id="emo-courage" value="💪 Courage"><label class="form-check-label" for="emo-courage">💪 Courage</label></div>
-                        <div class="form-check"><input type="radio" class="form-check-input" name="emotion" id="emo-serenite" value="🧘 Sérénité"><label class="form-check-label" for="emo-serenite">🧘 Sérénité</label></div>
-                        <div class="form-check"><input type="radio" class="form-check-input" name="emotion" id="emo-timidite" value="😳 Timidité"><label class="form-check-label" for="emo-timidite">😳 Timidité</label></div>
-                        <div class="form-check"><input type="radio" class="form-check-input" name="emotion" id="emo-inquietude" value="😟 Inquiétude"><label class="form-check-label" for="emo-inquietude">😟 Inquiétude</label></div>
-                        <div class="form-check"><input type="radio" class="form-check-input" name="emotion" id="emo-deception" value="😞 Déception"><label class="form-check-label" for="emo-deception">😞 Déception</label></div>
-                        <div class="form-check"><input type="radio" class="form-check-input" name="emotion" id="emo-liberte" value="🕊️ Liberté"><label class="form-check-label" for="emo-liberte">🕊️ Liberté</label></div>
-                        <div class="form-check"><input type="radio" class="form-check-input" name="emotion" id="emo-puissance" value="🔥 Puissance"><label class="form-check-label" for="emo-puissance">🔥 Puissance</label></div>
-                        <div class="form-check"><input type="radio" class="form-check-input" name="emotion" id="emo-vulnerabilite" value="🥺 Vulnérabilité"><label class="form-check-label" for="emo-vulnerabilite">🥺 Vulnérabilité</label></div>
-                        <div class="form-check"><input type="radio" class="form-check-input" name="emotion" id="emo-confusion" value="😕 Confusion"><label class="form-check-label" for="emo-confusion">😕 Confusion</label></div>
-                        <div class="form-check"><input type="radio" class="form-check-input" name="emotion" id="emo-melancolie" value="😔 Mélancolie"><label class="form-check-label" for="emo-melancolie">😔 Mélancolie</label></div>
-                        <div class="form-check"><input type="radio" class="form-check-input" name="emotion" id="emo-rage" value="😡 Rage"><label class="form-check-label" for="emo-rage">😡 Rage</label></div>
+                        <div class="form-check"><input type="radio" class="form-check-input" name="emotion" id="emo-espoir" value="🙏 Espoir"><label class="form-check-label" for="emo-espoir">🙏 Espoir</label></div>
                         <div class="form-check"><input type="radio" class="form-check-input" name="emotion" id="emo-extase" value="🤩 Extase"><label class="form-check-label" for="emo-extase">🤩 Extase</label></div>
+                        <div class="form-check"><input type="radio" class="form-check-input" name="emotion" id="emo-fierte" value="😎 Fierté"><label class="form-check-label" for="emo-fierte">😎 Fierté</label></div>
+                        <div class="form-check"><input type="radio" class="form-check-input" name="emotion" id="emo-frustration" value="😤 Frustration"><label class="form-check-label" for="emo-frustration">😤 Frustration</label></div>
+                        <div class="form-check"><input type="radio" class="form-check-input" name="emotion" id="emo-gratitude" value="🙌 Gratitude"><label class="form-check-label" for="emo-gratitude">🙌 Gratitude</label></div>
+                        <div class="form-check"><input type="radio" class="form-check-input" name="emotion" id="emo-honte" value="😳 Honte"><label class="form-check-label" for="emo-honte">😳 Honte</label></div>
+                        <div class="form-check"><input type="radio" class="form-check-input" name="emotion" id="emo-inquietude" value="😟 Inquiétude"><label class="form-check-label" for="emo-inquietude">😟 Inquiétude</label></div>
+                        <div class="form-check"><input type="radio" class="form-check-input" name="emotion" id="emo-jalousie" value="😒 Jalousie"><label class="form-check-label" for="emo-jalousie">😒 Jalousie</label></div>
+                        <div class="form-check"><input type="radio" class="form-check-input" name="emotion" id="emo-joie" value="😊 Joie"><label class="form-check-label" for="emo-joie">😊 Joie</label></div>
+                        <div class="form-check"><input type="radio" class="form-check-input" name="emotion" id="emo-liberte" value="🕊️ Liberté"><label class="form-check-label" for="emo-liberte">🕊️ Liberté</label></div>
+                        <div class="form-check"><input type="radio" class="form-check-input" name="emotion" id="emo-melancolie" value="😔 Mélancolie"><label class="form-check-label" for="emo-melancolie">😔 Mélancolie</label></div>
+                        <div class="form-check"><input type="radio" class="form-check-input" name="emotion" id="emo-nostalgie" value="😥 Nostalgie"><label class="form-check-label" for="emo-nostalgie">😥 Nostalgie</label></div>
+                        <div class="form-check"><input type="radio" class="form-check-input" name="emotion" id="emo-peur" value="😨 Peur"><label class="form-check-label" for="emo-peur">😨 Peur</label></div>
+                        <div class="form-check"><input type="radio" class="form-check-input" name="emotion" id="emo-puissance" value="🔥 Puissance"><label class="form-check-label" for="emo-puissance">🔥 Puissance</label></div>
+                        <div class="form-check"><input type="radio" class="form-check-input" name="emotion" id="emo-rage" value="😡 Rage"><label class="form-check-label" for="emo-rage">😡 Rage</label></div>
+                        <div class="form-check"><input type="radio" class="form-check-input" name="emotion" id="emo-satisfaction" value="😌 Satisfaction"><label class="form-check-label" for="emo-satisfaction">😌 Satisfaction</label></div>
+                        <div class="form-check"><input type="radio" class="form-check-input" name="emotion" id="emo-serenite" value="🧘 Sérénité"><label class="form-check-label" for="emo-serenite">🧘 Sérénité</label></div>
+                        <div class="form-check"><input type="radio" class="form-check-input" name="emotion" id="emo-solitude" value="😔 Solitude"><label class="form-check-label" for="emo-solitude">😔 Solitude</label></div>
+                        <div class="form-check"><input type="radio" class="form-check-input" name="emotion" id="emo-surprise" value="😮 Surprise"><label class="form-check-label" for="emo-surprise">😮 Surprise</label></div>
+                        <div class="form-check"><input type="radio" class="form-check-input" name="emotion" id="emo-timidite" value="😳 Timidité"><label class="form-check-label" for="emo-timidite">😳 Timidité</label></div>
+                        <div class="form-check"><input type="radio" class="form-check-input" name="emotion" id="emo-tristesse" value="😢 Tristesse"><label class="form-check-label" for="emo-tristesse">😢 Tristesse</label></div>
+                        <div class="form-check"><input type="radio" class="form-check-input" name="emotion" id="emo-vulnerabilite" value="🥺 Vulnérabilité"><label class="form-check-label" for="emo-vulnerabilite">🥺 Vulnérabilité</label></div>
                     </div>
                 </div>
 
-                <!-- Intensité (sélection unique) -->
+                <!-- Intensité (sélection unique, non triée) -->
                 <div class="mb-4 choice-selector">
                     <h5>Intensité <span class="text-danger">*</span></h5>
                     <div class="d-flex flex-wrap">
@@ -129,96 +129,96 @@
                     </div>
                 </div>
 
-                <!-- Déclencheur (sélection multiple) -->
+                <!-- Déclencheur (sélection multiple, triée par ordre alphabétique) -->
                 <div class="mb-4 choice-selector">
                     <h5>Déclencheur(s)</h5>
                     <div class="d-flex flex-wrap">
-                        <div class="form-check"><input type="checkbox" class="form-check-input" name="trigger" id="trig-interaction" value="Interaction sociale"><label class="form-check-label" for="trig-interaction">Interaction sociale</label></div>
-                        <div class="form-check"><input type="checkbox" class="form-check-input" name="trigger" id="trig-evenement" value="Événement social"><label class="form-check-label" for="trig-evenement">Événement social</label></div>
-                        <div class="form-check"><input type="checkbox" class="form-check-input" name="trigger" id="trig-travail" value="Travail ou études"><label class="form-check-label" for="trig-travail">Travail ou études</label></div>
-                        <div class="form-check"><input type="checkbox" class="form-check-input" name="trigger" id="trig-taches" value="Tâches ménagères"><label class="form-check-label" for="trig-taches">Tâches ménagères</label></div>
-                        <div class="form-check"><input type="checkbox" class="form-check-input" name="trigger" id="trig-physique" value="Activité physique"><label class="form-check-label" for="trig-physique">Activité physique</label></div>
-                        <div class="form-check"><input type="checkbox" class="form-check-input" name="trigger" id="trig-meteo" value="Météo"><label class="form-check-label" for="trig-meteo">Météo</label></div>
-                        <div class="form-check"><input type="checkbox" class="form-check-input" name="trigger" id="trig-medias" value="Actualités ou médias"><label class="form-check-label" for="trig-medias">Actualités ou médias</label></div>
-                        <div class="form-check"><input type="checkbox" class="form-check-input" name="trigger" id="trig-sante" value="Santé ou corps"><label class="form-check-label" for="trig-sante">Santé ou corps</label></div>
-                        <div class="form-check"><input type="checkbox" class="form-check-input" name="trigger" id="trig-pensees" value="Pensées ou souvenirs"><label class="form-check-label" for="trig-pensees">Pensées ou souvenirs</label></div>
-                        <div class="form-check"><input type="checkbox" class="form-check-input" name="trigger" id="trig-lieu" value="Lieu ou environnement"><label class="form-check-label" for="trig-lieu">Lieu ou environnement</label></div>
-                        <div class="form-check"><input type="checkbox" class="form-check-input" name="trigger" id="trig-nourriture" value="Nourriture ou boisson"><label class="form-check-label" for="trig-nourriture">Nourriture ou boisson</label></div>
-                        <div class="form-check"><input type="checkbox" class="form-check-input" name="trigger" id="trig-art" value="Musique ou art"><label class="form-check-label" for="trig-art">Musique ou art</label></div>
-                        <div class="form-check"><input type="checkbox" class="form-check-input" name="trigger" id="trig-finance" value="Problème financier"><label class="form-check-label" for="trig-finance">Problème financier</label></div>
-                        <div class="form-check"><input type="checkbox" class="form-check-input" name="trigger" id="trig-reussite" value="Réussite personnelle"><label class="form-check-label" for="trig-reussite">Réussite personnelle</label></div>
-                        <div class="form-check"><input type="checkbox" class="form-check-input" name="trigger" id="trig-echec" value="Échec ou erreur"><label class="form-check-label" for="trig-echec">Échec ou erreur</label></div>
-                        <div class="form-check"><input type="checkbox" class="form-check-input" name="trigger" id="trig-conflit" value="Conflit"><label class="form-check-label" for="trig-conflit">Conflit</label></div>
-                        <div class="form-check"><input type="checkbox" class="form-check-input" name="trigger" id="trig-solitude" value="Solitude"><label class="form-check-label" for="trig-solitude">Solitude</label></div>
-                        <div class="form-check"><input type="checkbox" class="form-check-input" name="trigger" id="trig-fatigue" value="Fatigue ou repos"><label class="form-check-label" for="trig-fatigue">Fatigue ou repos</label></div>
-                        <div class="form-check"><input type="checkbox" class="form-check-input" name="trigger" id="trig-voyage" value="Transport ou voyage"><label class="form-check-label" for="trig-voyage">Transport ou voyage</label></div>
-                        <div class="form-check"><input type="checkbox" class="form-check-input" name="trigger" id="trig-reve" value="Rêve ou cauchemar"><label class="form-check-label" for="trig-reve">Rêve ou cauchemar</label></div>
-                        <div class="form-check"><input type="checkbox" class="form-check-input" name="trigger" id="trig-critique" value="Critique reçue"><label class="form-check-label" for="trig-critique">Critique reçue</label></div>
                         <div class="form-check"><input type="checkbox" class="form-check-input" name="trigger" id="trig-gentillesse" value="Acte de gentillesse"><label class="form-check-label" for="trig-gentillesse">Acte de gentillesse</label></div>
-                        <div class="form-check"><input type="checkbox" class="form-check-input" name="trigger" id="trig-injustice" value="Injustice (vue/subie)"><label class="form-check-label" for="trig-injustice">Injustice (vue/subie)</label></div>
+                        <div class="form-check"><input type="checkbox" class="form-check-input" name="trigger" id="trig-medias" value="Actualités ou médias"><label class="form-check-label" for="trig-medias">Actualités ou médias</label></div>
+                        <div class="form-check"><input type="checkbox" class="form-check-input" name="trigger" id="trig-physique" value="Activité physique"><label class="form-check-label" for="trig-physique">Activité physique</label></div>
                         <div class="form-check"><input type="checkbox" class="form-check-input" name="trigger" id="trig-attente" value="Attente ou retard"><label class="form-check-label" for="trig-attente">Attente ou retard</label></div>
                         <div class="form-check"><input type="checkbox" class="form-check-input" name="trigger" id="trig-autre" value="Autre"><label class="form-check-label" for="trig-autre">Autre</label></div>
+                        <div class="form-check"><input type="checkbox" class="form-check-input" name="trigger" id="trig-conflit" value="Conflit"><label class="form-check-label" for="trig-conflit">Conflit</label></div>
+                        <div class="form-check"><input type="checkbox" class="form-check-input" name="trigger" id="trig-critique" value="Critique reçue"><label class="form-check-label" for="trig-critique">Critique reçue</label></div>
+                        <div class="form-check"><input type="checkbox" class="form-check-input" name="trigger" id="trig-echec" value="Échec ou erreur"><label class="form-check-label" for="trig-echec">Échec ou erreur</label></div>
+                        <div class="form-check"><input type="checkbox" class="form-check-input" name="trigger" id="trig-evenement" value="Événement social"><label class="form-check-label" for="trig-evenement">Événement social</label></div>
+                        <div class="form-check"><input type="checkbox" class="form-check-input" name="trigger" id="trig-fatigue" value="Fatigue ou repos"><label class="form-check-label" for="trig-fatigue">Fatigue ou repos</label></div>
+                        <div class="form-check"><input type="checkbox" class="form-check-input" name="trigger" id="trig-injustice" value="Injustice (vue/subie)"><label class="form-check-label" for="trig-injustice">Injustice (vue/subie)</label></div>
+                        <div class="form-check"><input type="checkbox" class="form-check-input" name="trigger" id="trig-interaction" value="Interaction sociale"><label class="form-check-label" for="trig-interaction">Interaction sociale</label></div>
+                        <div class="form-check"><input type="checkbox" class="form-check-input" name="trigger" id="trig-lieu" value="Lieu ou environnement"><label class="form-check-label" for="trig-lieu">Lieu ou environnement</label></div>
+                        <div class="form-check"><input type="checkbox" class="form-check-input" name="trigger" id="trig-meteo" value="Météo"><label class="form-check-label" for="trig-meteo">Météo</label></div>
+                        <div class="form-check"><input type="checkbox" class="form-check-input" name="trigger" id="trig-art" value="Musique ou art"><label class="form-check-label" for="trig-art">Musique ou art</label></div>
+                        <div class="form-check"><input type="checkbox" class="form-check-input" name="trigger" id="trig-nourriture" value="Nourriture ou boisson"><label class="form-check-label" for="trig-nourriture">Nourriture ou boisson</label></div>
+                        <div class="form-check"><input type="checkbox" class="form-check-input" name="trigger" id="trig-pensees" value="Pensées ou souvenirs"><label class="form-check-label" for="trig-pensees">Pensées ou souvenirs</label></div>
+                        <div class="form-check"><input type="checkbox" class="form-check-input" name="trigger" id="trig-finance" value="Problème financier"><label class="form-check-label" for="trig-finance">Problème financier</label></div>
+                        <div class="form-check"><input type="checkbox" class="form-check-input" name="trigger" id="trig-reussite" value="Réussite personnelle"><label class="form-check-label" for="trig-reussite">Réussite personnelle</label></div>
+                        <div class="form-check"><input type="checkbox" class="form-check-input" name="trigger" id="trig-reve" value="Rêve ou cauchemar"><label class="form-check-label" for="trig-reve">Rêve ou cauchemar</label></div>
+                        <div class="form-check"><input type="checkbox" class="form-check-input" name="trigger" id="trig-sante" value="Santé ou corps"><label class="form-check-label" for="trig-sante">Santé ou corps</label></div>
+                        <div class="form-check"><input type="checkbox" class="form-check-input" name="trigger" id="trig-solitude" value="Solitude"><label class="form-check-label" for="trig-solitude">Solitude</label></div>
+                        <div class="form-check"><input type="checkbox" class="form-check-input" name="trigger" id="trig-taches" value="Tâches ménagères"><label class="form-check-label" for="trig-taches">Tâches ménagères</label></div>
+                        <div class="form-check"><input type="checkbox" class="form-check-input" name="trigger" id="trig-voyage" value="Transport ou voyage"><label class="form-check-label" for="trig-voyage">Transport ou voyage</label></div>
+                        <div class="form-check"><input type="checkbox" class="form-check-input" name="trigger" id="trig-travail" value="Travail ou études"><label class="form-check-label" for="trig-travail">Travail ou études</label></div>
                     </div>
                 </div>
                 
-                <!-- Réaction (sélection multiple) -->
+                <!-- Réaction (sélection multiple, triée par ordre alphabétique) -->
                 <div class="mb-4 choice-selector">
                     <h5>Réaction(s)</h5>
                     <div class="d-flex flex-wrap">
-                        <div class="form-check"><input type="checkbox" class="form-check-input" name="reaction" id="react-pleurer" value="J'ai pleuré"><label class="form-check-label" for="react-pleurer">J'ai pleuré</label></div>
-                        <div class="form-check"><input type="checkbox" class="form-check-input" name="reaction" id="react-rire" value="J'ai souri ou ri"><label class="form-check-label" for="react-rire">J'ai souri ou ri</label></div>
-                        <div class="form-check"><input type="checkbox" class="form-check-input" name="reaction" id="react-crier" value="J'ai crié / élevé la voix"><label class="form-check-label" for="react-crier">J'ai crié / élevé la voix</label></div>
-                        <div class="form-check"><input type="checkbox" class="form-check-input" name="reaction" id="react-isoler" value="Je me suis isolé(e)"><label class="form-check-label" for="react-isoler">Je me suis isolé(e)</label></div>
+                        <div class="form-check"><input type="checkbox" class="form-check-input" name="reaction" id="react-autre" value="Autre"><label class="form-check-label" for="react-autre">Autre</label></div>
+                        <div class="form-check"><input type="checkbox" class="form-check-input" name="reaction" id="react-blamer" value="J'ai blâmé qqn/qqch"><label class="form-check-label" for="react-blamer">J'ai blâmé qqn/qqch</label></div>
+                        <div class="form-check"><input type="checkbox" class="form-check-input" name="reaction" id="react-celebrer" value="J'ai célébré"><label class="form-check-label" for="react-celebrer">J'ai célébré</label></div>
                         <div class="form-check"><input type="checkbox" class="form-check-input" name="reaction" id="react-reconfort" value="J'ai cherché du réconfort"><label class="form-check-label" for="react-reconfort">J'ai cherché du réconfort</label></div>
-                        <div class="form-check"><input type="checkbox" class="form-check-input" name="reaction" id="react-parler" value="J'ai parlé à quelqu'un"><label class="form-check-label" for="react-parler">J'ai parlé à quelqu'un</label></div>
-                        <div class="form-check"><input type="checkbox" class="form-check-input" name="reaction" id="react-sport" value="J'ai fait de l'exercice"><label class="form-check-label" for="react-sport">J'ai fait de l'exercice</label></div>
-                        <div class="form-check"><input type="checkbox" class="form-check-input" name="reaction" id="react-manger" value="J'ai mangé ou bu"><label class="form-check-label" for="react-manger">J'ai mangé ou bu</label></div>
+                        <div class="form-check"><input type="checkbox" class="form-check-input" name="reaction" id="react-solution" value="J'ai cherché une solution"><label class="form-check-label" for="react-solution">J'ai cherché une solution</label></div>
+                        <div class="form-check"><input type="checkbox" class="form-check-input" name="reaction" id="react-crier" value="J'ai crié / élevé la voix"><label class="form-check-label" for="react-crier">J'ai crié / élevé la voix</label></div>
+                        <div class="form-check"><input type="checkbox" class="form-check-input" name="reaction" id="react-dormir" value="J'ai dormi ou me suis reposé(e)"><label class="form-check-label" for="react-dormir">J'ai dormi ou me suis reposé(e)</label></div>
                         <div class="form-check"><input type="checkbox" class="form-check-input" name="reaction" id="react-musique" value="J'ai écouté de la musique"><label class="form-check-label" for="react-musique">J'ai écouté de la musique</label></div>
                         <div class="form-check"><input type="checkbox" class="form-check-input" name="reaction" id="react-ecrire" value="J'ai écrit ou dessiné"><label class="form-check-label" for="react-ecrire">J'ai écrit ou dessiné</label></div>
-                        <div class="form-check"><input type="checkbox" class="form-check-input" name="reaction" id="react-ignorer" value="J'ai ignoré la situation"><label class="form-check-label" for="react-ignorer">J'ai ignoré la situation</label></div>
-                        <div class="form-check"><input type="checkbox" class="form-check-input" name="reaction" id="react-solution" value="J'ai cherché une solution"><label class="form-check-label" for="react-solution">J'ai cherché une solution</label></div>
-                        <div class="form-check"><input type="checkbox" class="form-check-input" name="reaction" id="react-mediter" value="J'ai médité / respiré"><label class="form-check-label" for="react-mediter">J'ai médité / respiré</label></div>
-                        <div class="form-check"><input type="checkbox" class="form-check-input" name="reaction" id="react-film" value="J'ai regardé un film/série"><label class="form-check-label" for="react-film">J'ai regardé un film/série</label></div>
-                        <div class="form-check"><input type="checkbox" class="form-check-input" name="reaction" id="react-rien" value="Rien de spécial"><label class="form-check-label" for="react-rien">Rien de spécial</label></div>
-                        <div class="form-check"><input type="checkbox" class="form-check-input" name="reaction" id="react-tension" value="J'ai ressenti une tension physique"><label class="form-check-label" for="react-tension">J'ai ressenti une tension physique</label></div>
-                        <div class="form-check"><input type="checkbox" class="form-check-input" name="reaction" id="react-planifier" value="J'ai planifié une action"><label class="form-check-label" for="react-planifier">J'ai planifié une action</label></div>
                         <div class="form-check"><input type="checkbox" class="form-check-input" name="reaction" id="react-gratitude" value="J'ai exprimé ma gratitude"><label class="form-check-label" for="react-gratitude">J'ai exprimé ma gratitude</label></div>
-                        <div class="form-check"><input type="checkbox" class="form-check-input" name="reaction" id="react-blamer" value="J'ai blâmé qqn/qqch"><label class="form-check-label" for="react-blamer">J'ai blâmé qqn/qqch</label></div>
-                        <div class="form-check"><input type="checkbox" class="form-check-input" name="reaction" id="react-ruminer" value="J'ai ruminé les pensées"><label class="form-check-label" for="react-ruminer">J'ai ruminé les pensées</label></div>
-                        <div class="form-check"><input type="checkbox" class="form-check-input" name="reaction" id="react-celebrer" value="J'ai célébré"><label class="form-check-label" for="react-celebrer">J'ai célébré</label></div>
+                        <div class="form-check"><input type="checkbox" class="form-check-input" name="reaction" id="react-sport" value="J'ai fait de l'exercice"><label class="form-check-label" for="react-sport">J'ai fait de l'exercice</label></div>
+                        <div class="form-check"><input type="checkbox" class="form-check-input" name="reaction" id="react-ignorer" value="J'ai ignoré la situation"><label class="form-check-label" for="react-ignorer">J'ai ignoré la situation</label></div>
+                        <div class="form-check"><input type="checkbox" class="form-check-input" name="reaction" id="react-manger" value="J'ai mangé ou bu"><label class="form-check-label" for="react-manger">J'ai mangé ou bu</label></div>
+                        <div class="form-check"><input type="checkbox" class="form-check-input" name="reaction" id="react-mediter" value="J'ai médité / respiré"><label class="form-check-label" for="react-mediter">J'ai médité / respiré</label></div>
                         <div class="form-check"><input type="checkbox" class="form-check-input" name="reaction" id="react-ranger" value="J'ai nettoyé ou rangé"><label class="form-check-label" for="react-ranger">J'ai nettoyé ou rangé</label></div>
-                        <div class="form-check"><input type="checkbox" class="form-check-input" name="reaction" id="react-dormir" value="J'ai dormi ou me suis reposé(e)"><label class="form-check-label" for="react-dormir">J'ai dormi ou me suis reposé(e)</label></div>
-                        <div class="form-check"><input type="checkbox" class="form-check-input" name="reaction" id="react-autre" value="Autre"><label class="form-check-label" for="react-autre">Autre</label></div>
+                        <div class="form-check"><input type="checkbox" class="form-check-input" name="reaction" id="react-parler" value="J'ai parlé à quelqu'un"><label class="form-check-label" for="react-parler">J'ai parlé à quelqu'un</label></div>
+                        <div class="form-check"><input type="checkbox" class="form-check-input" name="reaction" id="react-planifier" value="J'ai planifié une action"><label class="form-check-label" for="react-planifier">J'ai planifié une action</label></div>
+                        <div class="form-check"><input type="checkbox" class="form-check-input" name="reaction" id="react-pleurer" value="J'ai pleuré"><label class="form-check-label" for="react-pleurer">J'ai pleuré</label></div>
+                        <div class="form-check"><input type="checkbox" class="form-check-input" name="reaction" id="react-film" value="J'ai regardé un film/série"><label class="form-check-label" for="react-film">J'ai regardé un film/série</label></div>
+                        <div class="form-check"><input type="checkbox" class="form-check-input" name="reaction" id="react-tension" value="J'ai ressenti une tension physique"><label class="form-check-label" for="react-tension">J'ai ressenti une tension physique</label></div>
+                        <div class="form-check"><input type="checkbox" class="form-check-input" name="reaction" id="react-ruminer" value="J'ai ruminé les pensées"><label class="form-check-label" for="react-ruminer">J'ai ruminé les pensées</label></div>
+                        <div class="form-check"><input type="checkbox" class="form-check-input" name="reaction" id="react-rire" value="J'ai souri ou ri"><label class="form-check-label" for="react-rire">J'ai souri ou ri</label></div>
+                        <div class="form-check"><input type="checkbox" class="form-check-input" name="reaction" id="react-isoler" value="Je me suis isolé(e)"><label class="form-check-label" for="react-isoler">Je me suis isolé(e)</label></div>
+                        <div class="form-check"><input type="checkbox" class="form-check-input" name="reaction" id="react-rien" value="Rien de spécial"><label class="form-check-label" for="react-rien">Rien de spécial</label></div>
                     </div>
                 </div>
 
-                <!-- Contexte (sélection multiple) -->
+                <!-- Contexte (sélection multiple, triée par ordre alphabétique) -->
                 <div class="mb-4 choice-selector">
                     <h5>Contexte(s)</h5>
                     <div class="d-flex flex-wrap">
-                        <div class="form-check"><input type="checkbox" class="form-check-input" name="context" id="ctx-maison" value="À la maison"><label class="form-check-label" for="ctx-maison">À la maison</label></div>
-                        <div class="form-check"><input type="checkbox" class="form-check-input" name="context" id="ctx-travail" value="Au travail"><label class="form-check-label" for="ctx-travail">Au travail</label></div>
                         <div class="form-check"><input type="checkbox" class="form-check-input" name="context" id="ctx-ecole" value="À l'école/formation"><label class="form-check-label" for="ctx-ecole">À l'école/formation</label></div>
-                        <div class="form-check"><input type="checkbox" class="form-check-input" name="context" id="ctx-transport" value="Dans les transports"><label class="form-check-label" for="ctx-transport">Dans les transports</label></div>
-                        <div class="form-check"><input type="checkbox" class="form-check-input" name="context" id="ctx-public" value="Lieu public"><label class="form-check-label" for="ctx-public">Lieu public</label></div>
-                        <div class="form-check"><input type="checkbox" class="form-check-input" name="context" id="ctx-nature" value="Dehors/nature"><label class="form-check-label" for="ctx-nature">Dehors/nature</label></div>
-                        <div class="form-check"><input type="checkbox" class="form-check-input" name="context" id="ctx-proches" value="Chez des proches"><label class="form-check-label" for="ctx-proches">Chez des proches</label></div>
-                        <div class="form-check"><input type="checkbox" class="form-check-input" name="context" id="ctx-loisir" value="Pendant un loisir"><label class="form-check-label" for="ctx-loisir">Pendant un loisir</label></div>
-                        <div class="form-check"><input type="checkbox" class="form-check-input" name="context" id="ctx-seul" value="Seul(e)"><label class="form-check-label" for="ctx-seul">Seul(e)</label></div>
-                        <div class="form-check"><input type="checkbox" class="form-check-input" name="context" id="ctx-partenaire" value="Avec partenaire"><label class="form-check-label" for="ctx-partenaire">Avec partenaire</label></div>
-                        <div class="form-check"><input type="checkbox" class="form-check-input" name="context" id="ctx-famille" value="Avec famille"><label class="form-check-label" for="ctx-famille">Avec famille</label></div>
+                        <div class="form-check"><input type="checkbox" class="form-check-input" name="context" id="ctx-maison" value="À la maison"><label class="form-check-label" for="ctx-maison">À la maison</label></div>
+                        <div class="form-check"><input type="checkbox" class="form-check-input" name="context" id="ctx-reveil" value="Au réveil"><label class="form-check-label" for="ctx-reveil">Au réveil</label></div>
+                        <div class="form-check"><input type="checkbox" class="form-check-input" name="context" id="ctx-travail" value="Au travail"><label class="form-check-label" for="ctx-travail">Au travail</label></div>
+                        <div class="form-check"><input type="checkbox" class="form-check-input" name="context" id="ctx-autre" value="Autre"><label class="form-check-label" for="ctx-autre">Autre</label></div>
+                        <div class="form-check"><input type="checkbox" class="form-check-input" name="context" id="ctx-coucher" value="Avant de dormir"><label class="form-check-label" for="ctx-coucher">Avant de dormir</label></div>
                         <div class="form-check"><input type="checkbox" class="form-check-input" name="context" id="ctx-amis" value="Avec amis"><label class="form-check-label" for="ctx-amis">Avec amis</label></div>
                         <div class="form-check"><input type="checkbox" class="form-check-input" name="context" id="ctx-collegues" value="Avec collègues"><label class="form-check-label" for="ctx-collegues">Avec collègues</label></div>
+                        <div class="form-check"><input type="checkbox" class="form-check-input" name="context" id="ctx-famille" value="Avec famille"><label class="form-check-label" for="ctx-famille">Avec famille</label></div>
                         <div class="form-check"><input type="checkbox" class="form-check-input" name="context" id="ctx-inconnus" value="Avec inconnus"><label class="form-check-label" for="ctx-inconnus">Avec inconnus</label></div>
-                        <div class="form-check"><input type="checkbox" class="form-check-input" name="context" id="ctx-matin" value="Matin"><label class="form-check-label" for="ctx-matin">Matin</label></div>
-                        <div class="form-check"><input type="checkbox" class="form-check-input" name="context" id="ctx-aprem" value="Après-midi"><label class="form-check-label" for="ctx-aprem">Après-midi</label></div>
-                        <div class="form-check"><input type="checkbox" class="form-check-input" name="context" id="ctx-soir" value="Soir"><label class="form-check-label" for="ctx-soir">Soir</label></div>
-                        <div class="form-check"><input type="checkbox" class="form-check-input" name="context" id="ctx-nuit" value="Nuit"><label class="form-check-label" for="ctx-nuit">Nuit</label></div>
+                        <div class="form-check"><input type="checkbox" class="form-check-input" name="context" id="ctx-partenaire" value="Avec partenaire"><label class="form-check-label" for="ctx-partenaire">Avec partenaire</label></div>
+                        <div class="form-check"><input type="checkbox" class="form-check-input" name="context" id="ctx-proches" value="Chez des proches"><label class="form-check-label" for="ctx-proches">Chez des proches</label></div>
+                        <div class="form-check"><input type="checkbox" class="form-check-input" name="context" id="ctx-transport" value="Dans les transports"><label class="form-check-label" for="ctx-transport">Dans les transports</label></div>
+                        <div class="form-check"><input type="checkbox" class="form-check-input" name="context" id="ctx-nature" value="Dehors/nature"><label class="form-check-label" for="ctx-nature">Dehors/nature</label></div>
                         <div class="form-check"><input type="checkbox" class="form-check-input" name="context" id="ctx-online" value="En ligne/réseaux"><label class="form-check-label" for="ctx-online">En ligne/réseaux</label></div>
+                        <div class="form-check"><input type="checkbox" class="form-check-input" name="context" id="ctx-aprem" value="L'après-midi"><label class="form-check-label" for="ctx-aprem">L'après-midi</label></div>
+                        <div class="form-check"><input type="checkbox" class="form-check-input" name="context" id="ctx-nuit" value="La nuit"><label class="form-check-label" for="ctx-nuit">La nuit</label></div>
+                        <div class="form-check"><input type="checkbox" class="form-check-input" name="context" id="ctx-matin" value="Le matin"><label class="form-check-label" for="ctx-matin">Le matin</label></div>
+                        <div class="form-check"><input type="checkbox" class="form-check-input" name="context" id="ctx-soir" value="Le soir"><label class="form-check-label" for="ctx-soir">Le soir</label></div>
+                        <div class="form-check"><input type="checkbox" class="form-check-input" name="context" id="ctx-public" value="Lieu public"><label class="form-check-label" for="ctx-public">Lieu public</label></div>
+                        <div class="form-check"><input type="checkbox" class="form-check-input" name="context" id="ctx-loisir" value="Pendant un loisir"><label class="form-check-label" for="ctx-loisir">Pendant un loisir</label></div>
                         <div class="form-check"><input type="checkbox" class="form-check-input" name="context" id="ctx-repas" value="Pendant un repas"><label class="form-check-label" for="ctx-repas">Pendant un repas</label></div>
-                        <div class="form-check"><input type="checkbox" class="form-check-input" name="context" id="ctx-reveil" value="Au réveil"><label class="form-check-label" for="ctx-reveil">Au réveil</label></div>
-                        <div class="form-check"><input type="checkbox" class="form-check-input" name="context" id="ctx-coucher" value="Avant de dormir"><label class="form-check-label" for="ctx-coucher">Avant de dormir</label></div>
-                        <div class="form-check"><input type="checkbox" class="form-check-input" name="context" id="ctx-autre" value="Autre"><label class="form-check-label" for="ctx-autre">Autre</label></div>
+                        <div class="form-check"><input type="checkbox" class="form-check-input" name="context" id="ctx-seul" value="Seul(e)"><label class="form-check-label" for="ctx-seul">Seul(e)</label></div>
                     </div>
                 </div>
 
@@ -245,6 +245,7 @@
     </div>
 
 <script>
+// Le code JavaScript reste exactement le même, il est indépendant de l'ordre d'affichage des boutons.
 document.addEventListener('DOMContentLoaded', () => {
     const emotionForm = document.getElementById('emotionForm');
     const journalEntriesContainer = document.getElementById('journalEntries');
@@ -273,7 +274,6 @@ document.addEventListener('DOMContentLoaded', () => {
             const entryElement = document.createElement('div');
             entryElement.className = 'list-group-item list-group-item-action flex-column align-items-start mb-3 p-3 journal-entry';
             
-            // Fonction pour créer des badges. Ne retourne rien si la liste est vide.
             const createBadges = (items) => {
                 if (!items || items.length === 0) return '';
                 return items.map(item => `<span class="badge bg-secondary me-1 mb-1">${item}</span>`).join(' ');
@@ -318,8 +318,8 @@ document.addEventListener('DOMContentLoaded', () => {
             emotion: emotionValue,
             intensity: intensityValue,
             triggers: getCheckedValues('trigger'),
-            reactions: getCheckedValues('reaction'), // Ajouté
-            contexts: getCheckedValues('context'),   // Ajouté
+            reactions: getCheckedValues('reaction'),
+            contexts: getCheckedValues('context'),
             description: emotionForm.elements['description'].value.trim()
         };
 
