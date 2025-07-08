@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="fr" data-bs-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Réfracteur de Relations</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<div class="container my-5">
+    <a href="index.html" class="btn btn-outline-secondary btn-sm mb-4">← Retour au portail</a>
+    <div class="text-center">
+        <h1>Le Réfracteur de Relations</h1>
+        <p class="lead text-white-50">Déconstruisez une interaction pour y voir plus clair.</p>
+    </div>
+
+    <div class="card my-4">
+        <div class="card-body">
+            <input type="hidden" id="edit-id">
+            <div class="mb-3">
+                <label for="subject" class="form-label">1. Sujet de l'interaction</label>
+                <input type="text" class="form-control" id="subject" placeholder="Ex: Discussion avec Hélène sur les vacances">
+            </div>
+            <div class="mb-3">
+                <label for="fact" class="form-label">2. Les Faits Bruts (ce qu'une caméra aurait enregistré)</label>
+                <textarea class="form-control" id="fact" rows="2"></textarea>
+            </div>
+            <div class="mb-3">
+                <label for="auto-interpretation" class="form-label">3. Mon Interprétation Automatique (ma première pensée)</label>
+                <textarea class="form-control" id="auto-interpretation" rows="2"></textarea>
+            </div>
+            <div class="mb-3">
+                <label for="feeling" class="form-label">4. Mon Ressenti</label>
+                <textarea class="form-control" id="feeling" rows="1" placeholder="Ex: Irritation, anxiété, confusion..."></textarea>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">5. Le Réfracteur (3 autres interprétations possibles et plus généreuses)</label>
+                <input type="text" class="form-control mb-2" id="refraction1" placeholder="Alternative 1...">
+                <input type="text" class="form-control mb-2" id="refraction2" placeholder="Alternative 2...">
+                <input type="text" class="form-control" id="refraction3" placeholder="Alternative 3...">
+            </div>
+            <div class="mb-3">
+                <label for="next-step" class="form-label">6. Le Prochain Petit Pas (action ou non-action)</label>
+                <textarea class="form-control" id="next-step" rows="2"></textarea>
+            </div>
+            <div class="d-flex justify-content-end gap-2">
+                <button class="btn btn-secondary" id="cancel-btn" style="display: none;">Annuler</button>
+                <button class="btn btn-primary" id="save-btn">Sauvegarder l'Analyse</button>
+            </div>
+        </div>
+    </div>
+    
+    <h3 class="mt-5">Archives des Réfractions</h3>
+    <div id="past-analyses" class="accordion"></div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    // DOM Elements
+    const saveBtn = document.getElementById('save-btn');
+    const cancelBtn = document.getElementById('cancel-btn');
+    const pastAnalysesContainer = document.getElementById('past-analyses');
+    const form = document.querySelector('.card-body');
+
+    const getField = id => document.getElementById(id);
+
+    // Logic
+    const resetForm = () => {
+        form.querySelectorAll('input, textarea').forEach(el => el.value = '');
+        getField('edit-id').value = '';
+        saveBtn.textContent = "Sauvegarder l'Analyse";
+        cancelBtn.style.display = 'none';
+    };
+    
+    const renderAnalyses = () => {
+        const analyses = JSON.parse(localStorage.getItem('relationRefractions') || '[]');
+        if (analyses.length === 0) {
+            pastAnalysesContainer.innerHTML = '<p class="text-muted">Aucune analyse sauvegardée.</p>';
+            return;
+        }
+        pastAnalysesContainer.innerHTML = analyses.slice().reverse().map(a => `
+            <div class="accordion-item">
+                <h2 class="accordion-header"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-${a.id}">${a.subject} <small class="text-muted ms-2">- ${new Date(a.id).toLocaleDateString()}</small></button></h2>
+                <div id="collapse-${a.id}" class="accordion-collapse collapse" data-bs-parent="#past-analyses">
+                    <div class="accordion-body">
+                        <p><strong>Faits :</strong> ${a.fact}</p>
+                        <p><strong>Interprétation auto :</strong> ${a.autoInterpretation}</p>
+                        <p><strong>Ressenti :</strong> ${a.feeling}</p>
+                        <strong>Autres interprétations :</strong>
+                        <ul>
+                            ${a.refractions.map(r => `<li>${r}</li>`).join('')}
+                        </ul>
+                        <p><strong>Prochain pas :</strong> ${a.nextStep}</p>
+                        <div class="text-end mt-2">
+                            <button class="btn btn-sm btn-outline-warning edit-btn" data-id="${a.id}">Modifier</button>
+                            <button class="btn btn-sm btn-outline-danger delete-btn" data-id="${a.id}">Supprimer</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `).join('');
+    };
+
+    saveBtn.addEventListener('click', () => {
+        const id = getField('edit-id').value;
+        const analysis = {
+            id: id ? parseInt(id) : Date.now(),
+            subject: getField('subject').value,
+            fact: getField('fact').value,
+            autoInterpretation: getField('auto-interpretation').value,
+            feeling: getField('feeling').value,
+            refractions: [getField('refraction1').value, getField('refraction2').value, getField('refraction3').value],
+            nextStep: getField('next-step').value
+        };
+
+        if (!analysis.subject || !analysis.fact) {
+            alert('Le sujet et les faits sont requis.');
+            return;
+        }
+
+        let analyses = JSON.parse(localStorage.getItem('relationRefractions') || '[]');
+        if (id) {
+            const index = analyses.findIndex(a => a.id.toString() === id);
+            if (index > -1) analyses[index] = analysis;
+        } else {
+            analyses.push(analysis);
+        }
+        localStorage.setItem('relationRefractions', JSON.stringify(analyses));
+        resetForm();
+        renderAnalyses();
+    });
+
+    pastAnalysesContainer.addEventListener('click', e => {
+        const id = e.target.dataset.id;
+        if (e.target.classList.contains('delete-btn')) {
+            if (confirm('Supprimer cette analyse ?')) {
+                let analyses = JSON.parse(localStorage.getItem('relationRefractions') || '[]');
+                analyses = analyses.filter(a => a.id.toString() !== id);
+                localStorage.setItem('relationRefractions', JSON.stringify(analyses));
+                renderAnalyses();
+            }
+        } else if (e.target.classList.contains('edit-btn')) {
+            const analyses = JSON.parse(localStorage.getItem('relationRefractions') || '[]');
+            const toEdit = analyses.find(a => a.id.toString() === id);
+            if (toEdit) {
+                getField('edit-id').value = toEdit.id;
+                getField('subject').value = toEdit.subject;
+                getField('fact').value = toEdit.fact;
+                getField('auto-interpretation').value = toEdit.autoInterpretation;
+                getField('feeling').value = toEdit.feeling;
+                getField('refraction1').value = toEdit.refractions[0] || '';
+                getField('refraction2').value = toEdit.refractions[1] || '';
+                getField('refraction3').value = toEdit.refractions[2] || '';
+                getField('next-step').value = toEdit.nextStep;
+                saveBtn.textContent = 'Sauvegarder les Modifications';
+                cancelBtn.style.display = 'inline-block';
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+        }
+    });
+
+    cancelBtn.addEventListener('click', resetForm);
+    renderAnalyses();
+});
+</script>
+</body>
+</html>
