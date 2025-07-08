@@ -26,7 +26,7 @@
             </div>
             <div class="card-footer d-flex justify-content-between align-items-center">
                 <button class="btn btn-success" id="done-btn">Mission Accomplie !</button>
-                <button class="btn btn-secondary" id="new-mission-btn">Nouvelle Mission</button>
+                <button class="btn btn-secondary" id="new-mission-btn">Autre Mission</button>
             </div>
         </div>
         
@@ -57,28 +57,59 @@ document.addEventListener('DOMContentLoaded', () => {
     let score = parseInt(localStorage.getItem('connectionScore') || '0');
     scoreCounterEl.textContent = score;
 
+    // Fonction d'aide : Algorithme de mélange Fisher-Yates
+    function shuffleArray(array) {
+        const shuffled = [...array]; 
+        for (let i = shuffled.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]]; // Swap
+        }
+        return shuffled;
+    }
+
     function getNewMission() {
-        const mission = missions[Math.floor(Math.random() * missions.length)];
+        // 1. Récupérer le "paquet" mélangé sauvegardé
+        let shuffledMissions = JSON.parse(localStorage.getItem('shuffledMissionsDeck') || '[]');
+
+        // 2. Si le paquet est vide, on remélange
+        if (shuffledMissions.length === 0) {
+            shuffledMissions = shuffleArray(missions);
+        }
+
+        // 3. Tirer la prochaine carte (la prochaine mission)
+        const mission = shuffledMissions.pop();
+
+        // 4. Sauvegarder le reste du paquet
+        localStorage.setItem('shuffledMissionsDeck', JSON.stringify(shuffledMissions));
+
+        // 5. Afficher et sauvegarder la mission actuelle
         missionTextEl.textContent = mission;
         localStorage.setItem('currentMission', mission);
     }
     
+    // Le bouton "Nouvelle Mission" force maintenant le tirage d'une nouvelle carte du paquet
     newMissionBtn.addEventListener('click', getNewMission);
 
     doneBtn.addEventListener('click', () => {
-        if (missionTextEl.textContent.startsWith('Cliquez')) return;
+        // Ne rien faire si la mission n'est pas valide ou déjà célébrée
+        if (missionTextEl.textContent.startsWith('Cliquez') || missionTextEl.textContent.startsWith('🎉')) return;
+        
         score++;
         localStorage.setItem('connectionScore', score);
         scoreCounterEl.textContent = score;
         missionTextEl.innerHTML = `🎉 Bravo ! Prêt pour la suivante ?`;
+        
+        // On tire la mission suivante du paquet après un court délai
         setTimeout(getNewMission, 2000);
     });
 
-    // Charger la mission en cours ou en afficher une nouvelle
+    // Au chargement initial :
+    // On vérifie si une mission était déjà en cours (sauvegardée par getNewMission)
     const savedMission = localStorage.getItem('currentMission');
     if (savedMission) {
         missionTextEl.textContent = savedMission;
     } else {
+        // Si aucune mission n'était en cours, on en tire une nouvelle du paquet
         getNewMission();
     }
 });
