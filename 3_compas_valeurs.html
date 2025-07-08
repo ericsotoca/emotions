@@ -12,6 +12,11 @@
             display: inline-block;
             text-align: center;
         }
+        #cancel-edit-btn { display: none; }
+        .editing-mode-highlight {
+             border: 2px solid var(--bs-warning);
+             box-shadow: 0 0 10px var(--bs-warning);
+        }
     </style>
 </head>
 <body>
@@ -22,154 +27,133 @@
             <p class="lead text-white-50">Prenez des décisions alignées avec ce qui compte le plus pour vous.</p>
         </div>
 
-        <!-- Section 1: Définition des valeurs -->
-        <div class="card my-4">
+        <!-- Section de l'outil principal -->
+        <div id="decision-tool-card" class="card my-4">
             <div class="card-body">
-                <h5 class="card-title">Étape 1 : Mes Valeurs Fondamentales</h5>
-                <p class="card-text text-white-50 small">Ce sont les piliers de votre boussole intérieure. Ajoutez ou supprimez des valeurs pour qu'elles vous correspondent parfaitement.</p>
-                <div id="values-container"></div>
-                <div class="input-group mt-3">
-                    <input type="text" id="new-value-input" class="form-control" placeholder="Ajouter une nouvelle valeur (ex: Créativité)">
-                    <button class="btn btn-outline-secondary" id="add-value-btn">Ajouter</button>
+                <!-- Étape 1: Valeurs -->
+                <div class="mb-4">
+                    <h5 class="card-title">Étape 1 : Mes Valeurs Fondamentales</h5>
+                    <p class="card-text text-white-50 small">Ce sont les piliers de votre boussole intérieure. Ils seront sauvegardés avec chaque décision.</p>
+                    <div id="values-container"></div>
+                    <div class="input-group mt-3">
+                        <input type="text" id="new-value-input" class="form-control" placeholder="Ajouter une nouvelle valeur...">
+                        <button class="btn btn-outline-secondary" id="add-value-btn">Ajouter</button>
+                    </div>
                 </div>
-            </div>
-        </div>
 
-        <!-- Section 2: Outil de décision -->
-        <div class="card my-4">
-            <div class="card-body">
-                <h5 class="card-title">Étape 2 : Évaluer une Décision</h5>
-                
-                <div class="alert alert-info small">
-                    <strong>Comment ça marche ?</strong><br>
-                    Pour chaque option que vous envisagez, évaluez sur une échelle de 0 à 10 à quel point elle nourrit chacune de vos valeurs.
-                    (0 = Pas du tout aligné, 10 = Parfaitement aligné).
-                </div>
-                
-                <div class="mb-3">
-                    <label for="decision-name" class="form-label">Quelle décision souhaitez-vous évaluer ?</label>
-                    <input type="text" id="decision-name" class="form-control" placeholder="Ex: Changer de projet professionnel">
-                </div>
-                <div id="options-container">
-                    <!-- Les options de décision seront ajoutées ici -->
-                </div>
-                <button class="btn btn-secondary mt-2" id="add-option-btn">+ Ajouter une option</button>
                 <hr>
-                <button class="btn btn-primary w-100" id="calculate-btn">Calculer l'Alignement</button>
+
+                <!-- Étape 2: Décision -->
+                <div>
+                     <h5 class="card-title">Étape 2 : Évaluer une Décision</h5>
+                    <div class="alert alert-info small">
+                        <strong>Comment ça marche ?</strong><br>
+                        Pour chaque option, évaluez de 0 à 10 à quel point elle nourrit chacune de vos valeurs. (0 = Pas du tout, 10 = Parfaitement).
+                    </div>
+                    <input type="hidden" id="edit-decision-id">
+                    <div class="mb-3">
+                        <label for="decision-name" class="form-label">Quelle décision souhaitez-vous évaluer ?</label>
+                        <input type="text" id="decision-name" class="form-control" placeholder="Ex: Changer de projet professionnel">
+                    </div>
+                    <div id="options-container"></div>
+                    <button class="btn btn-secondary mt-2" id="add-option-btn">+ Ajouter une option</button>
+                    <hr>
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                        <button class="btn btn-secondary" id="cancel-edit-btn">Annuler la modification</button>
+                        <button class="btn btn-primary" id="calculate-btn">Calculer et Sauvegarder</button>
+                    </div>
+                </div>
             </div>
         </div>
         
-        <!-- Section 3: Résultats -->
-        <div id="results-container" class="mt-5"></div>
+        <!-- Section des Résultats -->
+        <div id="results-container" class="mt-4"></div>
+
+        <!-- Section des archives -->
+        <div class="mt-5">
+            <h3>Mes Décisions Archivées</h3>
+            <div id="past-decisions-container" class="accordion">
+                <p class="text-muted">Aucune décision sauvegardée pour le moment.</p>
+            </div>
+        </div>
 
     </div>
 
 <script>
 document.addEventListener('DOMContentLoaded', () => {
+    // ---- ELEMENTS DU DOM ----
     const valuesContainer = document.getElementById('values-container');
     const newValueInput = document.getElementById('new-value-input');
     const addValueBtn = document.getElementById('add-value-btn');
+    const decisionNameInput = document.getElementById('decision-name');
     const optionsContainer = document.getElementById('options-container');
     const addOptionBtn = document.getElementById('add-option-btn');
     const calculateBtn = document.getElementById('calculate-btn');
     const resultsContainer = document.getElementById('results-container');
+    const pastDecisionsContainer = document.getElementById('past-decisions-container');
+    const editDecisionIdInput = document.getElementById('edit-decision-id');
+    const cancelEditBtn = document.getElementById('cancel-edit-btn');
+    const decisionToolCard = document.getElementById('decision-tool-card');
 
-    let values = JSON.parse(localStorage.getItem('userValues')) || ['Sécurité & Stabilité', 'Aventure & Liberté', 'Connaissance & Croissance', 'Créativité & Expression', 'Relations & Connexion'];
+    // ---- ETAT DE L'APPLICATION ----
+    let globalValues = JSON.parse(localStorage.getItem('userValues')) || ['Sécurité & Stabilité', 'Aventure & Liberté', 'Connaissance & Croissance', 'Créativité & Expression', 'Relations & Connexion'];
     let optionCount = 0;
-
-    const renderValues = () => {
-        valuesContainer.innerHTML = values.map(value => `
+    
+    // ---- FONCTIONS DE RENDU ----
+    const renderValues = (valuesToRender = globalValues) => {
+        valuesContainer.innerHTML = valuesToRender.map(value => `
             <span class="badge bg-primary fs-6 me-2 mb-2 p-2">${value} 
                 <button class="btn-close btn-close-white ms-1" style="font-size: 0.7em;" data-value="${value}"></button>
             </span>
         `).join('');
     };
 
-    addValueBtn.addEventListener('click', () => {
-        const newValue = newValueInput.value.trim();
-        if (newValue && !values.includes(newValue)) {
-            values.push(newValue);
-            localStorage.setItem('userValues', JSON.stringify(values));
-            newValueInput.value = '';
-            renderValues();
+    const renderPastDecisions = () => {
+        const decisions = JSON.parse(localStorage.getItem('compasDecisions') || '[]');
+        if (decisions.length === 0) {
+            pastDecisionsContainer.innerHTML = '<p class="text-muted">Aucune décision sauvegardée.</p>';
+            return;
         }
-    });
-    
-    valuesContainer.addEventListener('click', (e) => {
-        if (e.target.matches('.btn-close')) {
-            const valueToRemove = e.target.dataset.value;
-            values = values.filter(v => v !== valueToRemove);
-            localStorage.setItem('userValues', JSON.stringify(values));
-            renderValues();
-        }
-    });
-    
-    // Écouteur pour mettre à jour la valeur du curseur en temps réel
-    optionsContainer.addEventListener('input', (e) => {
-        if (e.target.type === 'range') {
-            const display = e.target.nextElementSibling;
-            if (display && display.classList.contains('range-value')) {
-                display.textContent = e.target.value;
-            }
-        }
-    });
-
-    addOptionBtn.addEventListener('click', () => {
-        optionCount++;
-        const optionDiv = document.createElement('div');
-        optionDiv.className = 'card bg-dark my-3 p-3 option-card';
-        optionDiv.id = `option-${optionCount}`;
-        optionDiv.innerHTML = `
-            <h6>Option ${optionCount}</h6>
-            <input type="text" class="form-control form-control-sm mb-3" placeholder="Description de l'option (ex: Accepter la nouvelle offre)">
-            ${values.map(value => `
-                <div class="mb-2">
-                    <label for="option-${optionCount}-${value}" class="form-label small">${value}</label>
-                    <div class="d-flex align-items-center">
-                        <input type="range" class="form-range" min="0" max="10" step="1" value="5" id="option-${optionCount}-${value}" data-value="${value}">
-                        <span class="range-value ms-2 badge bg-secondary">5</span>
+        pastDecisionsContainer.innerHTML = decisions.slice().reverse().map((decision, i) => {
+            const maxScore = decision.values.length * 10;
+            return `
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-${decision.id}">
+                        ${decision.subject} <small class="text-muted ms-2">- ${new Date(decision.createdAt).toLocaleDateString()}</small>
+                    </button>
+                </h2>
+                <div id="collapse-${decision.id}" class="accordion-collapse collapse" data-bs-parent="#past-decisions-container">
+                    <div class="accordion-body">
+                        ${renderResultsHTML(decision.options, maxScore, false)}
+                        <div class="mt-3 text-end">
+                            <button class="btn btn-sm btn-outline-warning edit-btn" data-id="${decision.id}">Modifier</button>
+                            <button class="btn btn-sm btn-outline-danger delete-btn" data-id="${decision.id}">Supprimer</button>
+                        </div>
                     </div>
                 </div>
-            `).join('')}
-        `;
-        optionsContainer.appendChild(optionDiv);
-    });
-    
-    calculateBtn.addEventListener('click', () => {
-        const options = document.querySelectorAll('.option-card');
-        if (options.length === 0) return;
-        
-        let results = [];
-        const maxScore = values.length * 10;
+            </div>`;
+        }).join('');
+    };
 
-        options.forEach(option => {
-            const name = option.querySelector('input[type="text"]').value || `Option ${option.id.split('-')[1]}`;
-            let score = 0;
-            let breakdown = {};
-            option.querySelectorAll('input[type="range"]').forEach(slider => {
-                const valueName = slider.dataset.value;
-                const valueScore = parseInt(slider.value, 10);
-                score += valueScore;
-                breakdown[valueName] = valueScore;
-            });
-            results.push({ name, score, breakdown });
-        });
-        
-        results.sort((a, b) => b.score - a.score);
-        
-        resultsContainer.innerHTML = `
+    const renderResultsHTML = (options, maxScore, showTitle = true) => {
+        const results = options.map(opt => ({
+            name: opt.name,
+            score: Object.values(opt.scores).reduce((a, b) => a + b, 0),
+            breakdown: opt.scores
+        })).sort((a, b) => b.score - a.score);
+
+        return `
             <div class="card">
-                <div class="card-header">
-                    <h5 class="mb-0">Résultats pour : "${document.getElementById('decision-name').value || 'votre décision'}"</h5>
-                </div>
+                ${showTitle ? `<div class="card-header"><h5 class="mb-0">Résultats</h5></div>` : ''}
                 <ul class="list-group list-group-flush">
                     ${results.map((r, index) => {
                         const alignmentPercent = maxScore > 0 ? (r.score / maxScore * 100).toFixed(0) : 0;
                         return `
-                        <li class="list-group-item ${index === 0 ? 'list-group-item-success' : ''}">
+                        <li class="list-group-item ${index === 0 && results.length > 1 ? 'list-group-item-success' : ''}">
                             <div class="d-flex w-100 justify-content-between">
                                 <h6 class="mb-1">${r.name}</h6>
-                                ${index === 0 ? '<span class="badge bg-success">Meilleur alignement</span>' : ''}
+                                ${index === 0 && results.length > 1 ? '<span class="badge bg-success">Meilleur alignement</span>' : ''}
                             </div>
                             <div class="d-flex align-items-center mb-2">
                                 <strong class="me-2">Alignement: ${alignmentPercent}%</strong>
@@ -178,26 +162,176 @@ document.addEventListener('DOMContentLoaded', () => {
                                 </div>
                             </div>
                             <p class="mb-1 small">
-                                <a data-bs-toggle="collapse" href="#details-${index}" role="button">
+                                <a data-bs-toggle="collapse" href="#details-${r.name.replace(/\s/g, '')}-${Math.random()}" role="button">
                                     Voir le détail des points ▼
                                 </a>
                             </p>
-                            <div class="collapse" id="details-${index}">
+                            <div class="collapse" id="details-${r.name.replace(/\s/g, '')}-${Math.random()}">
                                 <ul class="list-unstyled small mt-2">
-                                    ${Object.entries(r.breakdown).sort((a,b) => b[1] - a[1]).map(([key, val]) => `
-                                        <li><strong>${key}:</strong> ${val} / 10</li>
-                                    `).join('')}
+                                    ${Object.entries(r.breakdown).sort((a,b) => b[1] - a[1]).map(([key, val]) => `<li><strong>${key}:</strong> ${val} / 10</li>`).join('')}
                                 </ul>
                             </div>
-                        </li>
-                        `;
+                        </li>`;
                     }).join('')}
                 </ul>
-            </div>
+            </div>`;
+    };
+
+    // ---- FONCTIONS DE GESTION ----
+    const resetForm = () => {
+        decisionNameInput.value = '';
+        optionsContainer.innerHTML = '';
+        resultsContainer.innerHTML = '';
+        editDecisionIdInput.value = '';
+        optionCount = 0;
+        calculateBtn.textContent = 'Calculer et Sauvegarder';
+        cancelEditBtn.style.display = 'none';
+        decisionToolCard.classList.remove('editing-mode-highlight');
+        renderValues(globalValues); // Revenir aux valeurs globales
+    };
+
+    const addOptionCard = (name = '', scores = {}) => {
+        optionCount++;
+        const currentValues = Array.from(valuesContainer.querySelectorAll('.badge')).map(b => b.textContent.trim());
+        const optionDiv = document.createElement('div');
+        optionDiv.className = 'card bg-dark my-3 p-3 option-card';
+        optionDiv.innerHTML = `
+            <h6>Option ${optionCount}</h6>
+            <input type="text" class="form-control form-control-sm mb-3" placeholder="Description de l'option..." value="${name}">
+            ${currentValues.map(value => {
+                const score = scores[value] !== undefined ? scores[value] : 5;
+                return `
+                <div class="mb-2">
+                    <label class="form-label small">${value}</label>
+                    <div class="d-flex align-items-center">
+                        <input type="range" class="form-range" min="0" max="10" step="1" value="${score}" data-value="${value}">
+                        <span class="range-value ms-2 badge bg-secondary">${score}</span>
+                    </div>
+                </div>`
+            }).join('')}
         `;
+        optionsContainer.appendChild(optionDiv);
+    };
+    
+    const startEditMode = (decisionId) => {
+        const decisions = JSON.parse(localStorage.getItem('compasDecisions') || '[]');
+        const decisionToEdit = decisions.find(d => d.id.toString() === decisionId);
+        if (!decisionToEdit) return;
+
+        resetForm();
+        editDecisionIdInput.value = decisionId;
+        decisionNameInput.value = decisionToEdit.subject;
+        
+        // Utiliser les valeurs de la décision sauvegardée pour l'édition
+        renderValues(decisionToEdit.values); 
+        
+        decisionToEdit.options.forEach(opt => addOptionCard(opt.name, opt.scores));
+        
+        calculateBtn.textContent = 'Sauvegarder les Modifications';
+        cancelEditBtn.style.display = 'block';
+        decisionToolCard.classList.add('editing-mode-highlight');
+        decisionToolCard.scrollIntoView({ behavior: 'smooth' });
+    };
+
+    // ---- EVENEMENTS ----
+    addValueBtn.addEventListener('click', () => {
+        const newValue = newValueInput.value.trim();
+        if (newValue && !globalValues.includes(newValue)) {
+            globalValues.push(newValue);
+            localStorage.setItem('userValues', JSON.stringify(globalValues));
+            newValueInput.value = '';
+            renderValues();
+        }
+    });
+
+    valuesContainer.addEventListener('click', (e) => {
+        if (e.target.matches('.btn-close')) {
+            const valueToRemove = e.target.dataset.value;
+            globalValues = globalValues.filter(v => v !== valueToRemove);
+            localStorage.setItem('userValues', JSON.stringify(globalValues));
+            renderValues();
+        }
+    });
+
+    optionsContainer.addEventListener('input', (e) => {
+        if (e.target.type === 'range') {
+            e.target.nextElementSibling.textContent = e.target.value;
+        }
+    });
+
+    addOptionBtn.addEventListener('click', () => {
+        resultsContainer.innerHTML = ''; // Nettoyer les anciens résultats
+        addOptionCard();
+    });
+
+    calculateBtn.addEventListener('click', () => {
+        const subject = decisionNameInput.value.trim();
+        if (!subject) { alert('Veuillez donner un nom à votre décision.'); return; }
+
+        const optionCards = optionsContainer.querySelectorAll('.option-card');
+        if (optionCards.length === 0) { alert('Veuillez ajouter au moins une option.'); return; }
+
+        const currentValues = Array.from(valuesContainer.querySelectorAll('.badge')).map(b => b.textContent.trim());
+        const optionsData = Array.from(optionCards).map(card => {
+            const scores = {};
+            card.querySelectorAll('input[type="range"]').forEach(slider => {
+                scores[slider.dataset.value] = parseInt(slider.value, 10);
+            });
+            return {
+                name: card.querySelector('input[type="text"]').value.trim() || `Option ${[...optionCards].indexOf(card) + 1}`,
+                scores
+            };
+        });
+
+        const decisionData = {
+            id: editDecisionIdInput.value ? parseInt(editDecisionIdInput.value) : Date.now(),
+            createdAt: editDecisionIdInput.value ? undefined : new Date(), // Keep original date on edit
+            subject,
+            values: currentValues,
+            options: optionsData
+        };
+
+        let allDecisions = JSON.parse(localStorage.getItem('compasDecisions') || '[]');
+        if (editDecisionIdInput.value) { // Mode Mise à jour
+            const index = allDecisions.findIndex(d => d.id.toString() === editDecisionIdInput.value);
+            if (index > -1) {
+                decisionData.createdAt = allDecisions[index].createdAt; // Conserver la date de création originale
+                allDecisions[index] = decisionData;
+            }
+        } else { // Mode Création
+            allDecisions.push(decisionData);
+        }
+        
+        localStorage.setItem('compasDecisions', JSON.stringify(allDecisions));
+        resultsContainer.innerHTML = renderResultsHTML(optionsData, currentValues.length * 10);
+        renderPastDecisions();
+        
+        if (editDecisionIdInput.value) { // Si on était en mode édition, on quitte ce mode
+            resetForm();
+        }
     });
     
+    cancelEditBtn.addEventListener('click', resetForm);
+    
+    pastDecisionsContainer.addEventListener('click', (e) => {
+        const target = e.target;
+        if (target.matches('.delete-btn')) {
+            if (confirm('Êtes-vous sûr de vouloir supprimer cette décision archivée ?')) {
+                const idToDelete = target.dataset.id;
+                let allDecisions = JSON.parse(localStorage.getItem('compasDecisions') || '[]');
+                allDecisions = allDecisions.filter(d => d.id.toString() !== idToDelete);
+                localStorage.setItem('compasDecisions', JSON.stringify(allDecisions));
+                renderPastDecisions();
+            }
+        }
+        if (target.matches('.edit-btn')) {
+            startEditMode(target.dataset.id);
+        }
+    });
+
+    // ---- INITIALISATION ----
     renderValues();
+    renderPastDecisions();
 });
 </script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
