@@ -1,321 +1,542 @@
-<a href="index.html" class="btn btn-outline-secondary btn-sm position-absolute top-0 start-0 m-3">← Retour au portail</a>
-
 <!DOCTYPE html>
-<html lang="fr" data-bs-theme="light">
+<html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Journal d'Émotions</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <title>Sismographe Intérieur - Reconnexion Corporelle</title>
+    
     <style>
-        :root { scroll-behavior: smooth; }
-        body { padding: 20px; transition: background-color 0.3s, color 0.3s; }
-        .card, .modal-content { transition: background-color 0.3s, border-color 0.3s; }
-        .journal-entry { border-left-width: 5px; border-left-style: solid; transition: all 0.3s ease-in-out; }
-        .journal-entry.editing { border-left-color: #ffc107 !important; background-color: rgba(255, 193, 7, 0.1); }
-        .journal-entry:hover { transform: translateY(-2px); box-shadow: 0 6px 12px rgba(0,0,0,0.15); }
-        .choice-selector .form-check-input { display: none; }
-        .choice-selector .form-check-label { cursor: pointer; margin-right: 5px; margin-bottom: 5px; padding: .375rem .75rem; border-radius: .25rem; user-select: none; transition: all 0.2s ease-in-out; }
-        h5 { border-bottom: 2px solid #dee2e6; padding-bottom: 8px; margin-bottom: 15px !important; }
-        [data-bs-theme="dark"] h5 { border-bottom-color: #495057; }
-        .form-check { padding-left: 0; display: inline-block; }
-        .theme-toggle { cursor: pointer; font-size: 1.5rem; position: fixed; top: 15px; right: 20px; z-index: 1056; }
-        [data-bs-theme="dark"] .journal-entry.editing { background-color: rgba(255, 193, 7, 0.2); }
-        .btn-check:checked+.btn-outline-primary { color: #fff; background-color: #0d6efd; border-color: #0d6efd;}
+        :root {
+            --bg-color: #1a1a2e;
+            --card-color: #16213e;
+            --primary-color: #0f3460;
+            --accent-color: #e94560;
+            --text-color: #e0e0e0;
+            --text-muted-color: #a0a0c0;
+            --border-color: #2c3e50;
+            --success-color: #50e3c2;
+        }
+
+        /* --- Style Général --- */
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            padding: 20px;
+        }
+        .container {
+            max-width: 900px; margin: 0 auto; background-color: var(--card-color);
+            padding: 30px; border-radius: 12px; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        /* --- En-tête --- */
+        header {
+            text-align: center; border-bottom: 2px solid var(--primary-color);
+            padding-bottom: 15px; margin-bottom: 30px;
+        }
+        header h1 { color: var(--text-color); font-size: 2.2em; }
+        header p { color: var(--text-muted-color); margin-top: 5px; }
+        
+        /* --- Sections du formulaire --- */
+        .form-section { margin-bottom: 35px; }
+        .form-section h2 {
+            font-size: 1.2em; color: var(--success-color); margin-bottom: 15px;
+            border-bottom: 1px solid var(--border-color); padding-bottom: 8px;
+        }
+        .form-section h2 .required { color: var(--accent-color); }
+        .sensation-category h3, .detail-section h4 {
+            color: var(--text-muted-color);
+            font-size: 1em;
+            margin-top: 20px;
+            margin-bottom: 10px;
+        }
+
+        /* --- Système de Tags --- */
+        .tag-container { display: flex; flex-wrap: wrap; gap: 10px; }
+        .tag {
+            background-color: var(--primary-color); color: var(--text-color); border: 2px solid transparent;
+            padding: 8px 15px; border-radius: 20px; cursor: pointer; font-size: 0.9em;
+            transition: all 0.2s ease;
+        }
+        .tag:hover { background-color: #1e4f8a; }
+        .tag.active {
+            background-color: var(--accent-color); border-color: var(--accent-color);
+            color: white; font-weight: bold;
+        }
+        .tag.disabled {
+            opacity: 0.4; pointer-events: none; background-color: #2c3e50;
+        }
+        
+        /* --- Champs et Boutons --- */
+        .add-tag-form { display: flex; gap: 10px; margin-top: 15px; }
+        .add-tag-form input {
+            flex-grow: 1; width: 100%; padding: 10px; background-color: var(--primary-color);
+            border: 1px solid var(--border-color); border-radius: 8px; font-size: 0.9em; color: var(--text-color);
+        }
+        .add-tag-form button {
+            white-space: nowrap; padding: 10px 15px; flex-shrink: 0; font-size: 0.9em;
+            background-color: var(--success-color); color: var(--bg-color); font-weight: bold; border: none; border-radius: 8px; cursor: pointer;
+        }
+        .add-tag-form button:hover { background-color: #48c9b0; }
+        
+        textarea {
+            width: 100%; padding: 12px; background-color: var(--primary-color);
+            border: 1px solid var(--border-color); border-radius: 8px; font-size: 1em; color: var(--text-color);
+        }
+        textarea:focus, .add-tag-form input:focus { outline: none; border-color: var(--accent-color); }
+        
+        button[type="submit"] {
+            width: 100%; background-color: var(--accent-color); color: white; border: none; border-radius: 8px;
+            font-size: 1.1em; font-weight: bold; cursor: pointer; padding: 15px;
+            transition: background-color 0.3s, transform 0.1s;
+        }
+        button[type="submit"]:hover { background-color: #d13c53; }
+        button[type="submit"]:active { transform: scale(0.98); }
+
+        /* --- Section Journal --- */
+        .journal-section { margin-top: 50px; }
+        .journal-section h2 { color: var(--text-color); border-bottom: 1px solid var(--border-color); padding-bottom: 10px; }
+        #journal-entries { margin-top: 20px; display: grid; grid-template-columns: 1fr; gap: 20px; }
+        #no-entries { color: var(--text-muted-color); text-align: center; padding: 40px; border: 2px dashed var(--border-color); border-radius: 8px; }
+
+        .entry {
+            background-color: var(--primary-color); border-left: 5px solid var(--accent-color); padding: 20px;
+            border-radius: 8px; position: relative;
+        }
+        .entry-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
+        .entry-header h3 { font-size: 1.5em; color: var(--success-color); }
+        .entry-header .timestamp { font-size: 0.85em; color: var(--text-muted-color); }
+        .entry-content .entry-field { margin-bottom: 12px; }
+        .entry-content strong { color: var(--text-muted-color); }
+        .entry-content p { margin-left: 10px; white-space: pre-wrap; }
+
+        .delete-btn {
+            position: absolute; top: 10px; right: 10px; background: none; border: none; cursor: pointer;
+            font-size: 1.5em; color: var(--text-muted-color); padding: 5px;
+        }
+        .delete-btn:hover { color: var(--accent-color); }
+        
+        .journal-actions {
+            margin-top: 20px;
+            display: flex;
+            gap: 15px;
+        }
+        .journal-actions button {
+            flex-grow: 1; padding: 15px; font-size: 1em; font-weight: bold; border: none;
+            border-radius: 8px; color: white; cursor: pointer;
+        }
+        #clear-journal { background-color: #6c757d; }
+        #clear-journal:hover { background-color: #5a6268; }
+        #export-journal { background-color: var(--success-color); color: var(--bg-color); }
+        #export-journal:hover { background-color: #48c9b0; }
     </style>
 </head>
-<body id="top">
-    <div class="container mt-4">
-        <div class="theme-toggle" id="themeToggle" title="Changer le thème">🌙</div>
+<body>
 
-        <header class="text-center mb-5">
-            <h1>Journal d'Émotions</h1>
-            
+    <div class="container">
+        <header>
+            <h1>Sismographe Intérieur</h1>
+            <p>"Ressentir dans mon corps avant de pouvoir exprimer."</p>
         </header>
 
-        <!-- Formulaire de saisie -->
-        <div class="card p-4" id="formCard">
-            <h3 class="text-center mb-4" id="formTitle">Nouvelle Entrée</h3>
-            <form id="emotionForm">
-                <input type="hidden" id="editEntryId">
+        <main>
+            <form id="emotion-form">
                 
-                <!-- Émotion (sélection unique) - LISTE ÉTENDUE ET TRIÉE -->
-                <div class="mb-4 choice-selector">
-                    <h5>Émotion <span class="text-danger">*</span></h5>
-                    <div class="d-flex flex-wrap" id="emotion-options">
-                        <div class="form-check"><input type="radio" class="form-check-input btn-check" name="emotion" id="emo-allegresse" value="Allégresse 😄" required><label class="form-check-label btn btn-outline-primary" for="emo-allegresse">Allégresse 😄</label></div>
-                        <div class="form-check"><input type="radio" class="form-check-input btn-check" name="emotion" id="emo-amour" value="Amour ❤️"><label class="form-check-label btn btn-outline-primary" for="emo-amour">Amour ❤️</label></div>
-                        <div class="form-check"><input type="radio" class="form-check-input btn-check" name="emotion" id="emo-amusement" value="Amusement 😄"><label class="form-check-label btn btn-outline-primary" for="emo-amusement">Amusement 😄</label></div>
-                        <div class="form-check"><input type="radio" class="form-check-input btn-check" name="emotion" id="emo-anticipation" value="Anticipation 🤔"><label class="form-check-label btn btn-outline-primary" for="emo-anticipation">Anticipation 🤔</label></div>
-                        <div class="form-check"><input type="radio" class="form-check-input btn-check" name="emotion" id="emo-anxiete" value="Anxiété 😟"><label class="form-check-label btn btn-outline-primary" for="emo-anxiete">Anxiété 😟</label></div>
-                        <div class="form-check"><input type="radio" class="form-check-input btn-check" name="emotion" id="emo-apprehension" value="Appréhension 😟"><label class="form-check-label btn btn-outline-primary" for="emo-apprehension">Appréhension 😟</label></div>
-                        <div class="form-check"><input type="radio" class="form-check-input btn-check" name="emotion" id="emo-calme" value="Calme 😌"><label class="form-check-label btn btn-outline-primary" for="emo-calme">Calme 😌</label></div>
-                        <div class="form-check"><input type="radio" class="form-check-input btn-check" name="emotion" id="emo-colere" value="Colère 😠"><label class="form-check-label btn btn-outline-primary" for="emo-colere">Colère 😠</label></div>
-                        <div class="form-check"><input type="radio" class="form-check-input btn-check" name="emotion" id="emo-compassion" value="Compassion 🤗"><label class="form-check-label btn btn-outline-primary" for="emo-compassion">Compassion 🤗</label></div>
-                        <div class="form-check"><input type="radio" class="form-check-input btn-check" name="emotion" id="emo-confiance" value="Confiance 🤗"><label class="form-check-label btn btn-outline-primary" for="emo-confiance">Confiance 🤗</label></div>
-                        <div class="form-check"><input type="radio" class="form-check-input btn-check" name="emotion" id="emo-confusion" value="Confusion 😕"><label class="form-check-label btn btn-outline-primary" for="emo-confusion">Confusion 😕</label></div>
-                        <div class="form-check"><input type="radio" class="form-check-input btn-check" name="emotion" id="emo-contentement" value="Contentement 😊"><label class="form-check-label btn btn-outline-primary" for="emo-contentement">Contentement 😊</label></div>
-                        <div class="form-check"><input type="radio" class="form-check-input btn-check" name="emotion" id="emo-courage" value="Courage 💪"><label class="form-check-label btn btn-outline-primary" for="emo-courage">Courage 💪</label></div>
-                        <div class="form-check"><input type="radio" class="form-check-input btn-check" name="emotion" id="emo-culpabilite" value="Culpabilité 😔"><label class="form-check-label btn btn-outline-primary" for="emo-culpabilite">Culpabilité 😔</label></div>
-                        <div class="form-check"><input type="radio" class="form-check-input btn-check" name="emotion" id="emo-curiosite" value="Curiosité 🤔"><label class="form-check-label btn btn-outline-primary" for="emo-curiosite">Curiosité 🤔</label></div>
-                        <div class="form-check"><input type="radio" class="form-check-input btn-check" name="emotion" id="emo-deception" value="Déception 😞"><label class="form-check-label btn btn-outline-primary" for="emo-deception">Déception 😞</label></div>
-                        <div class="form-check"><input type="radio" class="form-check-input btn-check" name="emotion" id="emo-degout" value="Dégoût 🤢"><label class="form-check-label btn btn-outline-primary" for="emo-degout">Dégoût 🤢</label></div>
-                        <div class="form-check"><input type="radio" class="form-check-input btn-check" name="emotion" id="emo-emerveillement" value="Émerveillement 😮"><label class="form-check-label btn btn-outline-primary" for="emo-emerveillement">Émerveillement 😮</label></div>
-                        <div class="form-check"><input type="radio" class="form-check-input btn-check" name="emotion" id="emo-ennui" value="Ennui 😑"><label class="form-check-label btn btn-outline-primary" for="emo-ennui">Ennui 😑</label></div>
-                        <div class="form-check"><input type="radio" class="form-check-input btn-check" name="emotion" id="emo-enthousiasme" value="Enthousiasme 🤩"><label class="form-check-label btn btn-outline-primary" for="emo-enthousiasme">Enthousiasme 🤩</label></div>
-                        <div class="form-check"><input type="radio" class="form-check-input btn-check" name="emotion" id="emo-espoir" value="Espoir 🙏"><label class="form-check-label btn btn-outline-primary" for="emo-espoir">Espoir 🙏</label></div>
-                        <div class="form-check"><input type="radio" class="form-check-input btn-check" name="emotion" id="emo-extase" value="Extase 🤩"><label class="form-check-label btn btn-outline-primary" for="emo-extase">Extase 🤩</label></div>
-                        <div class="form-check"><input type="radio" class="form-check-input btn-check" name="emotion" id="emo-fierte" value="Fierté 😎"><label class="form-check-label btn btn-outline-primary" for="emo-fierte">Fierté 😎</label></div>
-                        <div class="form-check"><input type="radio" class="form-check-input btn-check" name="emotion" id="emo-frustration" value="Frustration 😤"><label class="form-check-label btn btn-outline-primary" for="emo-frustration">Frustration 😤</label></div>
-                        <div class="form-check"><input type="radio" class="form-check-input btn-check" name="emotion" id="emo-gratitude" value="Gratitude 🙌"><label class="form-check-label btn btn-outline-primary" for="emo-gratitude">Gratitude 🙌</label></div>
-                        <div class="form-check"><input type="radio" class="form-check-input btn-check" name="emotion" id="emo-honte" value="Honte 😳"><label class="form-check-label btn btn-outline-primary" for="emo-honte">Honte 😳</label></div>
-                        <div class="form-check"><input type="radio" class="form-check-input btn-check" name="emotion" id="emo-inquietude" value="Inquiétude 😟"><label class="form-check-label btn btn-outline-primary" for="emo-inquietude">Inquiétude 😟</label></div>
-                        <div class="form-check"><input type="radio" class="form-check-input btn-check" name="emotion" id="emo-irritation" value="Irritation 😤"><label class="form-check-label btn btn-outline-primary" for="emo-irritation">Irritation 😤</label></div>
-                        <div class="form-check"><input type="radio" class="form-check-input btn-check" name="emotion" id="emo-jalousie" value="Jalousie 😒"><label class="form-check-label btn btn-outline-primary" for="emo-jalousie">Jalousie 😒</label></div>
-                        <div class="form-check"><input type="radio" class="form-check-input btn-check" name="emotion" id="emo-joie" value="Joie 😊"><label class="form-check-label btn btn-outline-primary" for="emo-joie">Joie 😊</label></div>
-                        <div class="form-check"><input type="radio" class="form-check-input btn-check" name="emotion" id="emo-liberte" value="Liberté 🕊️"><label class="form-check-label btn btn-outline-primary" for="emo-liberte">Liberté 🕊️</label></div>
-                        <div class="form-check"><input type="radio" class="form-check-input btn-check" name="emotion" id="emo-melancolie" value="Mélancolie 😔"><label class="form-check-label btn btn-outline-primary" for="emo-melancolie">Mélancolie 😔</label></div>
-                        <div class="form-check"><input type="radio" class="form-check-input btn-check" name="emotion" id="emo-nostalgie" value="Nostalgie 😥"><label class="form-check-label btn btn-outline-primary" for="emo-nostalgie">Nostalgie 😥</label></div>
-                        <div class="form-check"><input type="radio" class="form-check-input btn-check" name="emotion" id="emo-peur" value="Peur 😨"><label class="form-check-label btn btn-outline-primary" for="emo-peur">Peur 😨</label></div>
-                        <div class="form-check"><input type="radio" class="form-check-input btn-check" name="emotion" id="emo-puissance" value="Puissance 🔥"><label class="form-check-label btn btn-outline-primary" for="emo-puissance">Puissance 🔥</label></div>
-                        <div class="form-check"><input type="radio" class="form-check-input btn-check" name="emotion" id="emo-rage" value="Rage 😡"><label class="form-check-label btn btn-outline-primary" for="emo-rage">Rage 😡</label></div>
-                        <div class="form-check"><input type="radio" class="form-check-input btn-check" name="emotion" id="emo-satisfaction" value="Satisfaction 😌"><label class="form-check-label btn btn-outline-primary" for="emo-satisfaction">Satisfaction 😌</label></div>
-                        <div class="form-check"><input type="radio" class="form-check-input btn-check" name="emotion" id="emo-serenite" value="Sérénité 🧘"><label class="form-check-label btn btn-outline-primary" for="emo-serenite">Sérénité 🧘</label></div>
-                        <div class="form-check"><input type="radio" class="form-check-input btn-check" name="emotion" id="emo-solitude" value="Solitude 😔"><label class="form-check-label btn btn-outline-primary" for="emo-solitude">Solitude 😔</label></div>
-                        <div class="form-check"><input type="radio" class="form-check-input btn-check" name="emotion" id="emo-surprise" value="Surprise 😮"><label class="form-check-label btn btn-outline-primary" for="emo-surprise">Surprise 😮</label></div>
-                        <div class="form-check"><input type="radio" class="form-check-input btn-check" name="emotion" id="emo-timidite" value="Timidité 😳"><label class="form-check-label btn btn-outline-primary" for="emo-timidite">Timidité 😳</label></div>
-                        <div class="form-check"><input type="radio" class="form-check-input btn-check" name="emotion" id="emo-tristesse" value="Tristesse 😢"><label class="form-check-label btn btn-outline-primary" for="emo-tristesse">Tristesse 😢</label></div>
-                        <div class="form-check"><input type="radio" class="form-check-input btn-check" name="emotion" id="emo-vulnerabilite" value="Vulnérabilité 🥺"><label class="form-check-label btn btn-outline-primary" for="emo-vulnerabilite">Vulnérabilité 🥺</label></div>
-                    </div>
+                <div class="form-section">
+                    <h2>Étape 1: Ressentez dans votre corps <span class="required">*</span></h2>
+                    <div id="sensation-categories-container"></div>
                 </div>
                 
-                <!-- Intensité (sélection unique) -->
-                <div class="mb-4 choice-selector">
-                    <h5>Intensité <span class="text-danger">*</span></h5>
-                    <div class="d-flex flex-wrap" id="intensity-options">
-                        <div class="form-check"><input type="radio" class="form-check-input btn-check" name="intensity" id="int-1" value="Très faible (1)" required><label class="form-check-label btn btn-outline-primary" for="int-1">Très faible (1)</label></div>
-                        <div class="form-check"><input type="radio" class="form-check-input btn-check" name="intensity" id="int-2" value="Faible (2)"><label class="form-check-label btn btn-outline-primary" for="int-2">Faible (2)</label></div>
-                        <div class="form-check"><input type="radio" class="form-check-input btn-check" name="intensity" id="int-3" value="Moyenne (3)"><label class="form-check-label btn btn-outline-primary" for="int-3">Moyenne (3)</label></div>
-                        <div class="form-check"><input type="radio" class="form-check-input btn-check" name="intensity" id="int-4" value="Forte (4)"><label class="form-check-label btn btn-outline-primary" for="int-4">Forte (4)</label></div>
-                        <div class="form-check"><input type="radio" class="form-check-input btn-check" name="intensity" id="int-5" value="Très forte (5)"><label class="form-check-label btn btn-outline-primary" for="int-5">Très forte (5)</label></div>
-                    </div>
+                <div class="form-section">
+                    <h2>Étape 2: Nommez l'émotion <span class="required">*</span></h2>
+                    <div class="tag-container" id="emotion-tags"></div>
                 </div>
 
-                <!-- Section de tags personnalisables -->
-                <div id="tagSections">
-                    <div class="mb-4 choice-selector">
-                        <h5>Déclencheur(s)</h5>
-                        <div class="d-flex flex-wrap" id="trigger-options">
-                            <div class="form-check"><input type="checkbox" class="form-check-input btn-check" name="trigger" id="trig-interaction" value="Interaction sociale"><label class="form-check-label btn btn-outline-primary" for="trig-interaction">Interaction sociale</label></div>
-                            <div class="form-check"><input type="checkbox" class="form-check-input btn-check" name="trigger" id="trig-travail" value="Travail ou études"><label class="form-check-label btn btn-outline-primary" for="trig-travail">Travail ou études</label></div>
-                            <div class="form-check"><input type="checkbox" class="form-check-input btn-check" name="trigger" id="trig-pensees" value="Pensées ou souvenirs"><label class="form-check-label btn btn-outline-primary" for="trig-pensees">Pensées ou souvenirs</label></div>
-                        </div>
-                        <div class="input-group input-group-sm mt-2"><input type="text" class="form-control" placeholder="Ajouter un nouveau déclencheur..." id="new-trigger-tag"><button class="btn btn-outline-secondary" type="button" data-category="trigger">Ajouter</button></div>
-                    </div>
-                    <div class="mb-4 choice-selector">
-                        <h5>Réaction(s)</h5>
-                        <div class="d-flex flex-wrap" id="reaction-options">
-                            <div class="form-check"><input type="checkbox" class="form-check-input btn-check" name="reaction" id="react-parler" value="J'ai parlé à quelqu'un"><label class="form-check-label btn btn-outline-primary" for="react-parler">J'ai parlé à quelqu'un</label></div>
-                            <div class="form-check"><input type="checkbox" class="form-check-input btn-check" name="reaction" id="react-isoler" value="Je me suis isolé(e)"><label class="form-check-label btn btn-outline-primary" for="react-isoler">Je me suis isolé(e)</label></div>
-                            <div class="form-check"><input type="checkbox" class="form-check-input btn-check" name="reaction" id="react-solution" value="J'ai cherché une solution"><label class="form-check-label btn btn-outline-primary" for="react-solution">J'ai cherché une solution</label></div>
-                        </div>
-                        <div class="input-group input-group-sm mt-2"><input type="text" class="form-control" placeholder="Ajouter une nouvelle réaction..." id="new-reaction-tag"><button class="btn btn-outline-secondary" type="button" data-category="reaction">Ajouter</button></div>
-                    </div>
-                    <div class="mb-4 choice-selector">
-                        <h5>Contexte(s)</h5>
-                        <div class="d-flex flex-wrap" id="context-options">
-                             <div class="form-check"><input type="checkbox" class="form-check-input btn-check" name="context" id="ctx-maison" value="À la maison"><label class="form-check-label btn btn-outline-primary" for="ctx-maison">À la maison</label></div>
-                             <div class="form-check"><input type="checkbox" class="form-check-input btn-check" name="context" id="ctx-travail" value="Au travail"><label class="form-check-label btn btn-outline-primary" for="ctx-travail">Au travail</label></div>
-                             <div class="form-check"><input type="checkbox" class="form-check-input btn-check" name="context" id="ctx-seul" value="Seul(e)"><label class="form-check-label btn btn-outline-primary" for="ctx-seul">Seul(e)</label></div>
-                        </div>
-                        <div class="input-group input-group-sm mt-2"><input type="text" class="form-control" placeholder="Ajouter un nouveau contexte..." id="new-context-tag"><button class="btn btn-outline-secondary" type="button" data-category="context">Ajouter</button></div>
-                    </div>
+                <div class="form-section">
+                    <h2>Étape 3: Ajoutez du contexte</h2>
+                    <div id="details-sections"></div>
                 </div>
 
-                <!-- Description -->
-                <div class="mb-3">
-                    <label for="description" class="form-label">Description (optionnel)</label>
-                    <textarea class="form-control" id="description" rows="3" placeholder="Décrivez plus en détail ce qui s'est passé..."></textarea>
-                </div>
-                
-                <!-- Boutons -->
-                <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-3">
-                    <button type="button" class="btn btn-secondary me-md-2" id="cancelButton">Annuler</button>
-                    <button type="submit" class="btn btn-primary">Sauvegarder</button>
-                </div>
+                <button type="submit">Enregistrer l'Entrée</button>
             </form>
-        </div>
 
-        <!-- Le reste de la page (Journal, Modales, etc.) -->
-        <div class="mt-5">
-            <div class="d-flex flex-wrap justify-content-center align-items-center mb-4 gap-2">
-                <h2 class="text-center mb-0">Mon Journal</h2>
-                <button class="btn btn-sm btn-info" id="statsButton" style="display: none;">Statistiques</button>
-                <button class="btn btn-sm btn-light border" id="exportButton" style="display: none;">Exporter pour IA</button>
-            </div>
-            
-            <div class="mb-3">
-                <input type="search" id="searchInput" class="form-control" placeholder="Rechercher dans les entrées...">
-            </div>
-
-            <div id="journalEntries" class="list-group"></div>
-        </div>
+            <section class="journal-section">
+                <h2>Mon Journal</h2>
+                <div id="journal-entries"></div>
+                <div class="journal-actions">
+                    <button type="button" id="export-journal" style="display: none;">Exporter pour Analyse IA</button>
+                    <button type="button" id="clear-journal" style="display: none;">Effacer tout le journal</button>
+                </div>
+            </section>
+        </main>
     </div>
-    
-    <!-- Modales (Statistiques et Réglages) -->
-    <div class="modal fade" id="statsModal" tabindex="-1" aria-hidden="true"><div class="modal-dialog modal-xl"><div class="modal-content"><div class="modal-header"><h5 class="modal-title">Statistiques</h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><div class="row"><div class="col-lg-6 mb-4"><h6>Fréquence des Émotions</h6><canvas id="emotionChart"></canvas></div><div class="col-lg-6 mb-4"><h6>Déclencheurs Courants</h6><canvas id="triggerChart"></canvas></div></div></div></div></div></div>
-    <div class="modal fade" id="settingsModal" tabindex="-1" aria-hidden="true"><div class="modal-dialog"><div class="modal-content"><div class="modal-header"><h5 class="modal-title">Réglages</h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><h6>Rappels Quotidiens</h6><p class="text-muted small">Requiert l'autorisation d'envoyer des notifications.</p><div class="d-flex align-items-center gap-2"><input type="time" class="form-control" id="reminderTime" value="20:00"><button class="btn btn-success" id="enableReminderBtn">Activer</button><button class="btn btn-danger" id="disableReminderBtn">Arrêter</button></div><div id="reminderStatus" class="mt-2 small"></div></div></div></div></div>
-    <button class="btn btn-secondary position-fixed bottom-0 end-0 m-3" data-bs-toggle="modal" data-bs-target="#settingsModal" title="Réglages">⚙️</button>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-<script>
-// LE CODE JAVASCRIPT RESTE EXACTEMENT LE MÊME
-(() => {
-    const STORAGE_KEYS = { ENTRIES: 'emotionJournalEntries', CUSTOM_TAGS: 'emotionJournalCustomTags', THEME: 'emotionJournalTheme', REMINDER: 'emotionJournalReminder' };
-    const emotionForm = document.getElementById('emotionForm');
-    const journalEntriesContainer = document.getElementById('journalEntries');
-    const formTitle = document.getElementById('formTitle');
-    const editEntryIdInput = document.getElementById('editEntryId');
-    const searchInput = document.getElementById('searchInput');
-    const getFromStorage = (key, defaultValue = []) => { const item = localStorage.getItem(key); return item ? JSON.parse(item) : defaultValue; };
-    const saveToStorage = (key, value) => localStorage.setItem(key, JSON.stringify(value));
-    const themeToggle = document.getElementById('themeToggle');
-    const setTheme = (theme) => { document.documentElement.setAttribute('data-bs-theme', theme); themeToggle.textContent = theme === 'dark' ? '☀️' : '🌙'; saveToStorage(STORAGE_KEYS.THEME, theme); };
-    themeToggle.addEventListener('click', () => setTheme(document.documentElement.getAttribute('data-bs-theme') === 'dark' ? 'light' : 'dark'));
-    setTheme(getFromStorage(STORAGE_KEYS.THEME, window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'));
-    const createTagOption = (category, value) => {
-        const id = `${category}-${value.replace(/\s+/g, '-').replace(/[^\w-]/g, '')}`;
-        return `<div class="form-check"><input type="checkbox" class="form-check-input btn-check" name="${category}" id="${id}" value="${value}"><label class="form-check-label btn btn-outline-primary" for="${id}">${value}</label></div>`;
-    };
-    const loadCustomTags = () => {
-        const customTags = getFromStorage(STORAGE_KEYS.CUSTOM_TAGS, {});
-        for (const category in customTags) {
-            const container = document.getElementById(`${category}-options`);
-            if (container) {
-                customTags[category].forEach(tag => {
-                    if (!document.getElementById(`${category}-${tag.replace(/\s+/g, '-').replace(/[^\w-]/g, '')}`)) {
-                       container.insertAdjacentHTML('beforeend', createTagOption(category, tag));
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const emotionForm = document.getElementById('emotion-form');
+        const journalEntriesContainer = document.getElementById('journal-entries');
+        const clearJournalButton = document.getElementById('clear-journal');
+        const exportJournalButton = document.getElementById('export-journal');
+        
+        const sensationEmotionMap = {
+            'Palpitations cardiaques': ['Anxiété', 'Peur', 'Excitation', 'Surprise 😮', 'Colère 😡', 'Joie', 'Anticipation'],
+            'Sensation d\'oppression thoracique': ['Tristesse 😢', 'Anxiété', 'Angoisse', 'Honte', 'Déception', 'Amour ❤️', 'Gratitude 🙏'],
+            'Respiration courte et saccadée': ['Anxiété', 'Peur', 'Panique', 'Rage'],
+            'Souffle coupé': ['Surprise 😮', 'Choc', 'Émerveillement ✨', 'Peur', 'Admiration', 'Amusement'],
+            'Sensation d\'étouffement': ['Peur', 'Panique', 'Angoisse', 'Tristesse 😢'],
+            'Bouffées de chaleur au visage': ['Honte', 'Colère 😡', 'Gêne', 'Frustration', 'Jalousie'],
+            'Frissons dans le dos': ['Peur', 'Émerveillement ✨', 'Fierté', 'Admiration', 'Joie', 'Gratitude 🙏'],
+            'Mains moites et froides': ['Anxiété', 'Peur', 'Nervosité', 'Inquiétude'],
+            'Sensation de brûlure interne': ['Colère 😡', 'Rage', 'Jalousie', 'Frustration'],
+            'Chair de poule': ['Peur', 'Fierté', 'Émerveillement ✨', 'Admiration', 'Nostalgie'],
+            'Crispation des poings': ['Colère 😡', 'Frustration', 'Détermination', 'Courage', 'Rage'],
+            'Raideur dans la nuque': ['Anxiété', 'Stress', 'Frustration', 'Inquiétude', 'Colère 😡'],
+            'Nœud dans la gorge': ['Tristesse 😢', 'Anxiété', 'Vulnérabilité', 'Peur', 'Honte'],
+            'Serrement des dents': ['Colère 😡', 'Frustration', 'Stress', 'Détermination', 'Courage'],
+            'Contraction du diaphragme': ['Anxiété', 'Nervosité', 'Surprise 😮', 'Peur'],
+            'Papillons dans le ventre': ['Excitation', 'Amour ❤️', 'Anticipation', 'Nervosité', 'Joie', 'Espoir', 'Curiosité'],
+            'Crampes d\'estomac': ['Anxiété', 'Peur', 'Stress', 'Dégoût'],
+            'Sensation de vide abdominal': ['Peur', 'Tristesse 😢', 'Solitude', 'Déception'],
+            'Boule au ventre': ['Anxiété', 'Peur', 'Inquiétude', 'appréhension', 'Nervosité'],
+            'Spasmes intestinaux': ['Stress', 'Anxiété', 'Dégoût'],
+            'Pression dans les tempes': ['Frustration', 'Colère 😡', 'Stress', 'Inquiétude'],
+            'Sensation de tête lourde': ['Tristesse 😢', 'Fatigue', 'Déception', 'Ennui', 'Mélancolie'],
+            'Vertiges légers': ['Anxiété', 'Peur', 'Surprise 😮', 'Choc'],
+            'Picotements du cuir chevelu': ['Peur', 'Émerveillement ✨', 'Fierté', 'Joie intense'],
+            'Sensation de flottement': ['Calme 🧘', 'Détachement', 'Sérénité', 'Satisfaction', 'Liberté 🕊️'],
+            'Tremblements des mains': ['Peur', 'Anxiété', 'Excitation', 'Nervosité', 'Rage'],
+            'Jambes en coton': ['Peur', 'Vulnérabilité', 'Choc', 'Anxiété forte'],
+            'Sensation d\'engourdissement': ['Choc', 'Peur', 'Tristesse 😢', 'Détachement', 'Solitude'],
+            'Picotements dans les extrémités': ['Anxiété', 'Peur', 'Excitation', 'Joie'],
+            'Impression de déconnexion corporelle': ['Anxiété', 'Choc', 'Traumatisme', 'Peur intense', 'Solitude'],
+            'Détente générale': ['Sérénité', 'Calme 🧘', 'Satisfaction', 'Contentement 😊', 'Confiance', 'Gratitude 🙏']
+        };
+
+        const initialData = {
+            emotions: ['Allégresse', 'Amour ❤️', 'Amusement', 'Anticipation', 'Anxiété', 'Calme 🧘', 'Colère 😡', 'Confiance', 'Contentement 😊', 'Courage', 'Curiosité', 'Déception', 'Dégoût', 'Émerveillement ✨', 'Ennui', 'Espoir', 'Fierté', 'Frustration', 'Gratitude 🙏', 'Honte', 'Inquiétude', 'Irritation', 'Jalousie', 'Joie', 'Liberté 🕊️', 'Mélancolie', 'Nostalgie', 'Peur', 'Rage', 'Satisfaction', 'Sérénité', 'Solitude', 'Surprise 😮', 'Tristesse 😢', 'Vulnérabilité'],
+            sensationCategories: [
+                { title: 'Sensations cardiovasculaires et respiratoires', items: ['Palpitations cardiaques', 'Sensation d\'oppression thoracique', 'Respiration courte et saccadée', 'Souffle coupé', 'Sensation d\'étouffement'] },
+                { title: 'Sensations de température', items: ['Bouffées de chaleur au visage', 'Frissons dans le dos', 'Mains moites et froides', 'Sensation de brûlure interne', 'Chair de poule'] },
+                { title: 'Tensions et contractions musculaires', items: ['Crispation des poings', 'Raideur dans la nuque', 'Nœud dans la gorge', 'Serrement des dents', 'Contraction du diaphragme', 'Détente générale'] },
+                { title: 'Sensations abdominales', items: ['Papillons dans le ventre', 'Crampes d\'estomac', 'Sensation de vide abdominal', 'Boule au ventre', 'Spasmes intestinaux'] },
+                { title: 'Sensations dans la tête', items: ['Pression dans les tempes', 'Sensation de tête lourde', 'Vertiges légers', 'Picotements du cuir chevelu', 'Sensation de flottement'] },
+                { title: 'Autres sensations corporelles', items: ['Tremblements des mains', 'Jambes en coton', 'Sensation d\'engourdissement', 'Picotements dans les extrémités', 'Impression de déconnexion corporelle', 'Autre / Sensation non listée'] }
+            ],
+            details: [
+                { id: 'intensities', title: 'Intensité', options: ['Très faible (1)', 'Faible (2)', 'Moyenne (3)', 'Forte (4)', 'Très forte (5)'], isMultiSelect: false, isRequired: true },
+                { id: 'triggers', title: 'Déclencheur(s)', initial: ['Interaction sociale', 'Travail ou études', 'Pensées ou souvenirs', 'Famille'], isMultiSelect: true, placeholder: 'Ajouter un nouveau déclencheur...' },
+                { id: 'reactions', title: 'Réaction(s)', initial: ["J'ai parlé à quelqu'un", 'Je me suis isolé(e)', "J'ai cherché une solution"], isMultiSelect: true, placeholder: 'Ajouter une nouvelle réaction...' }
+            ]
+        };
+
+        const STORAGE_KEYS = { entries: 'emotionJournalEntries_v7', customTags: 'emotionJournalCustomTags_v7' };
+        
+        function getCustomTags() { return JSON.parse(localStorage.getItem(STORAGE_KEYS.customTags) || '{}'); }
+        function saveCustomTags(tags) { localStorage.setItem(STORAGE_KEYS.customTags, JSON.stringify(tags)); }
+
+        function filterEmotions() {
+            const selectedSensationTags = Array.from(document.querySelectorAll('#sensation-categories-container .tag.active'));
+            const emotionTags = document.querySelectorAll('#emotion-tags .tag');
+            if (selectedSensationTags.some(tag => tag.textContent === 'Autre / Sensation non listée') || selectedSensationTags.length === 0) {
+                emotionTags.forEach(tag => tag.classList.remove('disabled'));
+                return;
+            }
+            const suggestedEmotions = new Set();
+            selectedSensationTags.forEach(sensationTag => {
+                const sensationText = sensationTag.textContent;
+                const relatedEmotions = sensationEmotionMap[sensationText];
+                if (relatedEmotions) {
+                    relatedEmotions.forEach(emotion => suggestedEmotions.add(emotion));
+                }
+            });
+            emotionTags.forEach(emotionTag => {
+                if (suggestedEmotions.has(emotionTag.textContent)) {
+                    emotionTag.classList.remove('disabled');
+                } else {
+                    emotionTag.classList.add('disabled');
+                    emotionTag.classList.remove('active');
+                }
+            });
+        }
+
+        function createTag(text, isMultiSelect = true) {
+            const tag = document.createElement('button');
+            tag.type = 'button';
+            tag.className = 'tag';
+            tag.textContent = text;
+            tag.addEventListener('click', () => {
+                if (!isMultiSelect) {
+                    const siblings = tag.closest('.tag-container').querySelectorAll('.tag');
+                    if (!tag.classList.contains('active')) {
+                       siblings.forEach(t => t.classList.remove('active'));
+                    }
+                }
+                tag.classList.toggle('active');
+                if (tag.closest('#sensation-categories-container')) {
+                    filterEmotions();
+                }
+            });
+            return tag;
+        }
+        
+        function renderTagSection(container, items, isMultiSelect) {
+            container.innerHTML = '';
+            items.forEach(item => container.appendChild(createTag(item, isMultiSelect)));
+        }
+
+        function setupSensationSection() {
+            const container = document.getElementById('sensation-categories-container');
+            container.innerHTML = '';
+            initialData.sensationCategories.forEach(category => {
+                const categoryDiv = document.createElement('div');
+                categoryDiv.className = 'sensation-category';
+                const tagContainer = document.createElement('div');
+                tagContainer.className = 'tag-container';
+                category.items.forEach(item => tagContainer.appendChild(createTag(item, true)));
+                categoryDiv.innerHTML = `<h3>${category.title}</h3>`;
+                categoryDiv.appendChild(tagContainer);
+                container.appendChild(categoryDiv);
+            });
+        }
+        
+        function setupDetailSection(sectionData, container) {
+            const isMultiSelect = sectionData.isMultiSelect !== false;
+            const requiredSpan = sectionData.isRequired ? ' <span class="required">*</span>' : '';
+            const sectionDiv = document.createElement('div');
+            sectionDiv.className = 'detail-section';
+            const header = document.createElement('h4');
+            header.innerHTML = `${sectionData.title}${requiredSpan}`;
+            const tagContainer = document.createElement('div');
+            tagContainer.className = 'tag-container';
+            tagContainer.id = `${sectionData.id}-tags`;
+            sectionDiv.appendChild(header);
+            sectionDiv.appendChild(tagContainer);
+            container.appendChild(sectionDiv);
+            
+            const customTags = getCustomTags();
+            let allItems = [...new Set([...(sectionData.options || sectionData.initial || []), ...(customTags[sectionData.id] || [])])];
+            renderTagSection(tagContainer, allItems, isMultiSelect);
+
+            if (sectionData.placeholder) {
+                const addForm = document.createElement('div');
+                addForm.className = 'add-tag-form';
+                const input = document.createElement('input');
+                input.type = 'text';
+                input.placeholder = sectionData.placeholder;
+                const button = document.createElement('button');
+                button.type = 'button';
+                button.textContent = 'Ajouter';
+                
+                button.addEventListener('click', () => {
+                    const newTagText = input.value.trim();
+                    if (newTagText && !allItems.includes(newTagText)) {
+                        const currentCustomTags = getCustomTags();
+                        if (!currentCustomTags[sectionData.id]) currentCustomTags[sectionData.id] = [];
+                        currentCustomTags[sectionData.id].push(newTagText);
+                        saveCustomTags(currentCustomTags);
+                        allItems.push(newTagText);
+                        renderTagSection(tagContainer, allItems, isMultiSelect);
+                        input.value = '';
                     }
                 });
+                
+                addForm.appendChild(input);
+                addForm.appendChild(button);
+                sectionDiv.appendChild(addForm);
             }
         }
-    };
-    document.getElementById('tagSections').addEventListener('click', e => {
-        if (e.target.tagName === 'BUTTON' && e.target.dataset.category) {
-            const category = e.target.dataset.category;
-            const input = document.getElementById(`new-${category}-tag`);
-            const value = input.value.trim();
-            if (value) {
-                const customTags = getFromStorage(STORAGE_KEYS.CUSTOM_TAGS, {});
-                if (!customTags[category]) customTags[category] = [];
-                if (!customTags[category].includes(value)) {
-                    customTags[category].push(value);
-                    saveToStorage(STORAGE_KEYS.CUSTOM_TAGS, customTags);
-                    document.getElementById(`${category}-options`).insertAdjacentHTML('beforeend', createTagOption(category, value));
-                }
-                input.value = '';
-            }
+
+        function loadJournal() {
+            const entries = JSON.parse(localStorage.getItem(STORAGE_KEYS.entries) || '[]');
+            displayJournal(entries);
         }
-    });
-    const resetForm = () => {
-        emotionForm.reset();
-        editEntryIdInput.value = '';
-        formTitle.textContent = "Nouvelle Entrée";
-        const submitBtn = emotionForm.querySelector('button[type="submit"]');
-        submitBtn.textContent = 'Sauvegarder';
-        submitBtn.classList.remove('btn-warning');
-        submitBtn.classList.add('btn-primary');
-        document.querySelectorAll('.journal-entry.editing').forEach(el => el.classList.remove('editing'));
-    };
-    const startEdit = (entryId) => {
-        const entry = getFromStorage(STORAGE_KEYS.ENTRIES).find(e => e.id.toString() === entryId);
-        if (!entry) return;
-        resetForm();
-        editEntryIdInput.value = entry.id;
-        Object.entries(entry).forEach(([key, value]) => {
-            if (Array.isArray(value)) {
-                 value.forEach(v => {
-                    const cb = document.querySelector(`input[name="${key}"][value="${v}"]`);
-                    if (cb) cb.checked = true;
-                });
+
+        function displayJournal(entries) {
+            journalEntriesContainer.innerHTML = '';
+            const hasEntries = entries.length > 0;
+            
+            if (!hasEntries) {
+                journalEntriesContainer.innerHTML = `<p id="no-entries">Votre journal est vide.</p>`;
             } else {
-                const el = document.querySelector(`[name="${key}"][value="${value}"]`) || document.getElementById(key);
-                if (el) {
-                    if (el.type === 'radio') el.checked = true;
-                    else el.value = value;
+                 entries.slice().reverse().forEach((entry, index) => {
+                    const originalIndex = entries.length - 1 - index;
+                    const entryCard = document.createElement('div');
+                    entryCard.className = 'entry';
+                    const intensityLevel = entry.intensity ? entry.intensity.match(/\d+/)[0] : '?';
+                    let contentHTML = `
+                        <div class="entry-header">
+                            <h3>${escapeHTML(entry.emotion)} - Niv. ${intensityLevel}</h3>
+                            <span class="timestamp">${entry.timestamp}</span>
+                        </div>
+                        <div class="entry-content">`;
+                    const renderField = (label, data) => data && data.length > 0 ? `<div class="entry-field"><strong>${label}:</strong><p>${Array.isArray(data) ? data.map(escapeHTML).join(', ') : escapeHTML(data)}</p></div>` : '';
+                    contentHTML += renderField('Sensations Physiques', entry.sensations);
+                    contentHTML += renderField('Déclencheur(s)', entry.triggers);
+                    contentHTML += renderField('Réaction(s)', entry.reactions);
+                    contentHTML += renderField('Description', entry.description);
+                    contentHTML += `</div><button class="delete-btn" data-index="${originalIndex}" title="Supprimer">&times;</button>`;
+                    entryCard.innerHTML = contentHTML;
+                    journalEntriesContainer.appendChild(entryCard);
+                });
+            }
+            
+            clearJournalButton.style.display = hasEntries ? 'block' : 'none';
+            exportJournalButton.style.display = hasEntries ? 'block' : 'none';
+        }
+        
+        function exportJournal() {
+            const entries = JSON.parse(localStorage.getItem(STORAGE_KEYS.entries) || '[]');
+            if (entries.length === 0) {
+                alert("Le journal est vide. Il n'y a rien à exporter.");
+                return;
+            }
+
+            const prompt = `
+# PROMPT POUR ANALYSE PSYCHOLOGIQUE PAR IA
+
+## Contexte
+Vous êtes un assistant d'analyse psychologique. Votre rôle est d'analyser les données d'un journal émotionnel ci-dessous. L'utilisateur a suivi ses émotions en partant de ses sensations corporelles. Votre analyse doit être bienveillante, constructive et orientée vers la prise de conscience (mindfulness).
+
+**AVERTISSEMENT IMPORTANT :** Rappelez à l'utilisateur au début de votre réponse que vous êtes une IA et que votre analyse n'est pas un diagnostic médical ou psychologique. Conseillez-lui de consulter un professionnel de la santé pour tout problème de santé mentale.
+
+## Instructions
+Analysez les entrées du journal suivantes et fournissez une synthèse structurée en suivant ces points :
+
+1.  **Synthèse Émotionnelle Générale :**
+    *   Quelles sont les émotions les plus fréquemment rapportées ?
+    *   Y a-t-il une polarité dominante (émotions plutôt "positives" ou "difficiles") ?
+    *   Quelle est l'intensité moyenne des émotions vécues ?
+
+2.  **Corrélations Clés Corps-Esprit :**
+    *   Identifiez les 3 liens les plus récurrents entre une sensation physique et une émotion. (Ex: "Il semble que les 'papillons dans le ventre' soient souvent associés à de l' 'Anticipation' ou de l' 'Excitation' pour vous.")
+    *   Y a-t-il des sensations physiques qui sont des indicateurs fiables d'une émotion spécifique pour cet utilisateur ?
+
+3.  **Analyse des Déclencheurs et Réactions :**
+    *   Quels sont les déclencheurs (triggers) les plus courants ? Sont-ils liés à des contextes spécifiques (sociaux, travail, solitude) ?
+    *   Quelles sont les réactions les plus fréquentes face à ces émotions ? S'agit-il de réactions d'approche (ex: parler à quelqu'un) ou de retrait (ex: s'isoler) ?
+    *   Y a-t-il des schémas intéressants (ex: "Le déclencheur 'Interaction sociale' mène souvent à de l' 'Anxiété' et à la réaction 'Je me suis isolé(e)'") ?
+
+4.  **Pistes de Réflexion et d'Action (avec bienveillance) :**
+    *   Proposez 1 ou 2 questions ouvertes pour aider l'utilisateur à approfondir sa réflexion sur un des schémas que vous avez identifiés. (Ex: "Comment pourriez-vous prendre soin de la sensation de 'nœud dans la gorge' lorsqu'elle apparaît ?")
+    *   Suggérez une piste positive à explorer, basée sur les données. (Ex: "Vos moments de 'Gratitude' semblent liés à une 'détente générale'. Comment pourriez-vous cultiver davantage ces moments ?")
+
+## Format de la Réponse
+Structurez votre réponse avec des titres clairs pour chaque section. Utilisez un ton encourageant et non-jugeant.
+
+---
+# DONNÉES DU JOURNAL ÉMOTIONNEL À ANALYSER
+---
+`;
+
+            let formattedEntries = entries.map(entry => {
+                let entryText = `Date: ${entry.timestamp}\n`;
+                entryText += `Émotion: ${entry.emotion} (Intensité: ${entry.intensity})\n`;
+                entryText += `Sensations Physiques: ${entry.sensations.join(', ')}\n`;
+                if (entry.triggers && entry.triggers.length > 0) entryText += `Déclencheur(s): ${entry.triggers.join(', ')}\n`;
+                if (entry.reactions && entry.reactions.length > 0) entryText += `Réaction(s): ${entry.reactions.join(', ')}\n`;
+                if (entry.description) entryText += `Description: ${entry.description}\n`;
+                return entryText;
+            }).join('\n---\n');
+
+            const fileContent = prompt + formattedEntries;
+            const blob = new Blob([fileContent], { type: 'text/plain;charset=utf-8' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            const date = new Date().toISOString().split('T')[0];
+            a.href = url;
+            a.download = `Journal_Emotions_Analyse_IA_${date}.txt`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+        
+        emotionForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const getSelectedTags = (selector) => Array.from(document.querySelectorAll(`${selector} .tag.active`)).map(t => t.textContent);
+            const getSelectedTag = (selector) => document.querySelector(`${selector} .tag.active`);
+
+            const selectedSensations = getSelectedTags('#sensation-categories-container');
+            const selectedEmotion = getSelectedTag('#emotion-tags');
+            const selectedIntensity = getSelectedTag('#intensities-tags');
+
+            if (selectedSensations.length === 0 || !selectedEmotion || !selectedIntensity) {
+                alert('Veuillez remplir tous les champs obligatoires (*).');
+                return;
+            }
+
+            const newEntry = {
+                sensations: selectedSensations,
+                emotion: selectedEmotion.textContent,
+                intensity: selectedIntensity.textContent,
+                triggers: getSelectedTags('#triggers-tags'),
+                reactions: getSelectedTags('#reactions-tags'),
+                description: document.getElementById('add-description')?.value.trim() || '',
+                timestamp: new Date().toLocaleString('fr-FR', { dateStyle: 'short', timeStyle: 'short' })
+            };
+            
+            const entries = JSON.parse(localStorage.getItem(STORAGE_KEYS.entries) || '[]');
+            entries.push(newEntry);
+            localStorage.setItem(STORAGE_KEYS.entries, JSON.stringify(entries));
+            displayJournal(entries);
+
+            emotionForm.reset();
+            document.querySelectorAll('.tag.active').forEach(t => t.classList.remove('active'));
+            filterEmotions();
+        });
+
+        journalEntriesContainer.addEventListener('click', (event) => {
+            if (event.target.classList.contains('delete-btn')) {
+                const index = parseInt(event.target.dataset.index, 10);
+                if (confirm('Voulez-vous vraiment supprimer cette entrée ?')) {
+                    let entries = JSON.parse(localStorage.getItem(STORAGE_KEYS.entries) || '[]');
+                    entries.splice(index, 1);
+                    localStorage.setItem(STORAGE_KEYS.entries, JSON.stringify(entries));
+                    displayJournal(entries);
                 }
             }
         });
-        formTitle.textContent = "Modifier l'Entrée";
-        const submitBtn = emotionForm.querySelector('button[type="submit"]');
-        submitBtn.textContent = 'Sauvegarder les modifications';
-        submitBtn.classList.add('btn-warning');
-        document.querySelector(`[data-id="${entryId}"]`).closest('.journal-entry').classList.add('editing');
-        document.getElementById('formCard').scrollIntoView();
-    };
-    const renderJournal = (filterText = '') => {
-        const entries = getFromStorage(STORAGE_KEYS.ENTRIES);
-        const filteredEntries = filterText ? entries.filter(e => JSON.stringify(e).toLowerCase().includes(filterText.toLowerCase())) : entries;
-        const uiControls = [document.getElementById('statsButton'), document.getElementById('exportButton')];
-        uiControls.forEach(btn => btn.style.display = entries.length > 0 ? 'inline-block' : 'none');
-        if (entries.length === 0) { journalEntriesContainer.innerHTML = '<p class="text-center text-muted">Aucune entrée pour le moment.</p>'; return; }
-        journalEntriesContainer.innerHTML = filteredEntries.length > 0
-            ? filteredEntries.slice().reverse().map(entry => {
-                const createBadges = (items) => items && items.length > 0 ? items.map(item => `<span class="badge text-bg-secondary me-1 mb-1">${item}</span>`).join(' ') : '';
-                return `
-                    <div class="list-group-item list-group-item-action flex-column align-items-start mb-3 p-3 rounded-3 shadow-sm journal-entry">
-                        <div class="d-flex w-100 justify-content-between">
-                            <h6 class="mb-1 fw-bold">${entry.emotion}</h6>
-                            <div><small class="text-muted me-2">${new Date(entry.id).toLocaleString('fr-FR', { dateStyle: 'short', timeStyle: 'short' })}</small><button class="btn btn-sm btn-outline-secondary py-0 px-1 me-1 edit-btn" title="Modifier" data-id="${entry.id}">✏️</button><button class="btn btn-sm btn-outline-danger py-0 px-1 delete-btn" title="Supprimer" data-id="${entry.id}">🗑️</button></div>
-                        </div>
-                        <p class="mb-2"><strong>Intensité:</strong> <span class="badge text-bg-primary">${entry.intensity}</span></p>
-                        ${createBadges(entry.triggers) ? `<div class="mb-2 small"><strong>Déclencheur(s):</strong> ${createBadges(entry.triggers)}</div>` : ''}
-                        ${createBadges(entry.reactions) ? `<div class="mb-2 small"><strong>Réaction(s):</strong> ${createBadges(entry.reactions)}</div>` : ''}
-                        ${createBadges(entry.contexts) ? `<div class="mb-2 small"><strong>Contexte(s):</strong> ${createBadges(entry.contexts)}</div>` : ''}
-                        ${entry.description ? `<p class="mb-0 mt-2 fst-italic text-muted small">"${entry.description}"</p>` : ''}
-                    </div>`;
-            }).join('')
-            : '<p class="text-center text-muted">Aucun résultat pour votre recherche.</p>';
-    };
-    emotionForm.addEventListener('submit', e => {
-        e.preventDefault();
-        const getCheckedValues = (name) => Array.from(document.querySelectorAll(`input[name="${name}"]:checked`)).map(cb => cb.value);
-        const entryData = { emotion: emotionForm.elements['emotion'].value, intensity: emotionForm.elements['intensity'].value, triggers: getCheckedValues('trigger'), reactions: getCheckedValues('reaction'), contexts: getCheckedValues('context'), description: document.getElementById('description').value.trim() };
-        if (!entryData.emotion || !entryData.intensity) return alert("Veuillez sélectionner une émotion et une intensité.");
-        let entries = getFromStorage(STORAGE_KEYS.ENTRIES);
-        const idToEdit = editEntryIdInput.value;
-        if (idToEdit) { const index = entries.findIndex(entry => entry.id.toString() === idToEdit); if (index > -1) entries[index] = { ...entryData, id: parseInt(idToEdit) }; }
-        else { entries.push({ ...entryData, id: Date.now() }); }
-        saveToStorage(STORAGE_KEYS.ENTRIES, entries);
-        resetForm();
-        renderJournal();
+
+        clearJournalButton.addEventListener('click', () => {
+            if (confirm('Êtes-vous sûr de vouloir effacer TOUT le journal ?')) {
+                localStorage.removeItem(STORAGE_KEYS.entries);
+                loadJournal();
+            }
+        });
+        
+        exportJournalButton.addEventListener('click', exportJournal);
+        
+        function escapeHTML(str) {
+            const p = document.createElement('p');
+            p.textContent = str;
+            return p.innerHTML;
+        }
+
+        function initializeApp() {
+            setupSensationSection();
+            renderTagSection(document.getElementById('emotion-tags'), initialData.emotions, false);
+            const detailsContainer = document.getElementById('details-sections');
+            initialData.details.forEach(section => setupDetailSection(section, detailsContainer));
+            
+            const descSection = document.createElement('div');
+            descSection.className = 'detail-section';
+            const descHeader = document.createElement('h4');
+            descHeader.textContent = 'Description (optionnel)';
+            const descTextarea = document.createElement('textarea');
+            descTextarea.id = 'add-description';
+            descTextarea.rows = 4;
+            descTextarea.placeholder = 'Décrivez plus en détail ce qui s\'est passé...';
+            descSection.appendChild(descHeader);
+            descSection.appendChild(descTextarea);
+            detailsContainer.appendChild(descSection);
+            
+            loadJournal();
+        }
+
+        initializeApp();
     });
-    journalEntriesContainer.addEventListener('click', e => {
-        const btn = e.target.closest('button');
-        if (!btn || !btn.dataset.id) return;
-        if (btn.classList.contains('delete-btn')) { if (confirm("Êtes-vous sûr de vouloir supprimer cette entrée ?")) { saveToStorage(STORAGE_KEYS.ENTRIES, getFromStorage(STORAGE_KEYS.ENTRIES).filter(entry => entry.id.toString() !== btn.dataset.id)); renderJournal(); } }
-        else if (btn.classList.contains('edit-btn')) { startEdit(btn.dataset.id); }
-    });
-    document.getElementById('cancelButton').addEventListener('click', resetForm);
-    searchInput.addEventListener('input', () => renderJournal(searchInput.value));
-    let charts = {};
-    document.getElementById('statsButton').addEventListener('click', () => {
-        const entries = getFromStorage(STORAGE_KEYS.ENTRIES);
-        const processData = (key) => { const counts = entries.flatMap(e => e[key] || []).reduce((acc, val) => ({ ...acc, [val]: (acc[val] || 0) + 1 }), {}); return Object.entries(counts).sort((a,b) => b[1] - a[1]); };
-        const createChart = (canvasId, type, label, data) => { if (charts[canvasId]) charts[canvasId].destroy(); charts[canvasId] = new Chart(document.getElementById(canvasId), { type, data: { labels: data.map(d=>d[0]), datasets: [{ label, data: data.map(d=>d[1]) }] }, options: { responsive: true, maintainAspectRatio: false } }); };
-        createChart('emotionChart', 'pie', 'Émotions', processData('emotion'));
-        createChart('triggerChart', 'bar', 'Déclencheurs', processData('triggers'));
-        new bootstrap.Modal(document.getElementById('statsModal')).show();
-    });
-    const reminderStatus = document.getElementById('reminderStatus');
-    const updateReminderStatus = () => { const r = getFromStorage(STORAGE_KEYS.REMINDER, {}); reminderStatus.textContent = r.enabled ? `Rappel activé pour ${r.time}.` : 'Rappel désactivé.'; };
-    document.getElementById('enableReminderBtn').addEventListener('click', async () => { /* Logic for notifications */ });
-    updateReminderStatus();
-    document.getElementById('exportButton').addEventListener('click', () => { /* Logic for export */ });
-    loadCustomTags();
-    renderJournal();
-})();
-</script>
+    </script>
 </body>
 </html>
