@@ -336,10 +336,12 @@
             return tag;
         }
         
-        function renderTagSection(container, items, isMultiSelect) {
+        function renderTagSection(container, items, isMultiSelect, sectionId) { // MODIFIÉ : ajout de sectionId
             container.innerHTML = '';
-            // AJOUT : Tri alphabétique pour une meilleure lisibilité
-            items.sort((a, b) => a.localeCompare(b));
+            // Tri alphabétique SAUF pour la section des intensités
+            if (sectionId !== 'intensities') {
+                items.sort((a, b) => a.localeCompare(b));
+            }
             items.forEach(item => container.appendChild(createTag(item, isMultiSelect)));
         }
 
