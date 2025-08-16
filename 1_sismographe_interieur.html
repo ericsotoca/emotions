@@ -396,7 +396,7 @@
                         currentCustomTags[sectionData.id].push(newTagText);
                         saveCustomTags(currentCustomTags);
                         allItems.push(newTagText);
-                        renderTagSection(tagContainer, allItems, isMultiSelect);
+                        renderTagSection(tagContainer, allItems, isMultiSelect, sectionData.id);
                         input.value = '';
                     }
                 });
@@ -579,7 +579,7 @@ Structurez votre réponse avec des titres clairs pour chaque section. Utilisez u
 
         function initializeApp() {
             setupSensationSection();
-            renderTagSection(document.getElementById('emotion-tags'), initialData.emotions, false);
+            renderTagSection(document.getElementById('emotion-tags'), initialData.emotions, false, 'emotions'); 
             const detailsContainer = document.getElementById('details-sections');
             initialData.details.forEach(section => setupDetailSection(section, detailsContainer));
             
