@@ -376,7 +376,7 @@
             
             const customTags = getCustomTags();
             let allItems = [...new Set([...(sectionData.options || sectionData.initial || []), ...(customTags[sectionData.id] || [])])];
-            renderTagSection(tagContainer, allItems, isMultiSelect);
+            renderTagSection(tagContainer, allItems, isMultiSelect, sectionData.id);
 
             if (sectionData.placeholder) {
                 const addForm = document.createElement('div');
