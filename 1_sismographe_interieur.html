@@ -38,6 +38,25 @@
         }
         header h1 { color: var(--text-color); font-size: 2.2em; }
         header p { color: var(--text-muted-color); margin-top: 5px; }
+
+        /* --- AJOUT : Style pour le Sas de Respiration --- */
+        .breathing-section {
+            background-color: var(--primary-color);
+            border: 1px dashed var(--success-color);
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 35px;
+            text-align: center;
+        }
+        .breathing-section h2 {
+            font-size: 1.2em;
+            color: var(--success-color);
+            margin-bottom: 10px;
+        }
+        .breathing-section p {
+            color: var(--text-muted-color);
+            font-size: 1em;
+        }
         
         /* --- Sections du formulaire --- */
         .form-section { margin-bottom: 35px; }
@@ -101,6 +120,17 @@
         #journal-entries { margin-top: 20px; display: grid; grid-template-columns: 1fr; gap: 20px; }
         #no-entries { color: var(--text-muted-color); text-align: center; padding: 40px; border: 2px dashed var(--border-color); border-radius: 8px; }
 
+        /* --- AJOUT : Style pour le Conseil d'Analyse --- */
+        .analysis-tip {
+            background-color: var(--primary-color);
+            border-left: 4px solid var(--success-color);
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 4px;
+            font-size: 0.9em;
+            color: var(--text-muted-color);
+        }
+
         .entry {
             background-color: var(--primary-color); border-left: 5px solid var(--accent-color); padding: 20px;
             border-radius: 8px; position: relative;
@@ -144,6 +174,12 @@
         <main>
             <form id="emotion-form">
                 
+                <!-- AJOUT : Étape 0 - Le Sas de Respiration -->
+                <div class="breathing-section">
+                    <h2>Étape 0 : Une Pause Consciente</h2>
+                    <p>Avant de commencer, prenez 3 respirations profondes.<br>Accueillez simplement la sensation dominante dans votre corps, sans la juger.</p>
+                </div>
+                
                 <div class="form-section">
                     <h2>Étape 1: Ressentez dans votre corps <span class="required">*</span></h2>
                     <div id="sensation-categories-container"></div>
@@ -164,6 +200,12 @@
 
             <section class="journal-section">
                 <h2>Mon Journal</h2>
+                
+                <!-- AJOUT : Conseil pour l'Heure de l'Analyste -->
+                <div class="analysis-tip" id="analysis-tip-container" style="display: none;">
+                    <p><strong>Conseil pour l'analyse :</strong> Pensez à prendre 30 minutes chaque semaine pour relire vos entrées. L'export pour IA est un excellent outil pour identifier des schémas récurrents et des pistes de croissance.</p>
+                </div>
+
                 <div id="journal-entries"></div>
                 <div class="journal-actions">
                     <button type="button" id="export-journal" style="display: none;">Exporter pour Analyse IA</button>
@@ -179,7 +221,10 @@
         const journalEntriesContainer = document.getElementById('journal-entries');
         const clearJournalButton = document.getElementById('clear-journal');
         const exportJournalButton = document.getElementById('export-journal');
+        // AJOUT : Sélecteur pour le conseil d'analyse
+        const analysisTipContainer = document.getElementById('analysis-tip-container');
         
+        // AJOUT : Mise à jour de la carte sensations <-> émotions
         const sensationEmotionMap = {
             'Palpitations cardiaques': ['Anxiété', 'Peur', 'Excitation', 'Surprise 😮', 'Colère 😡', 'Joie', 'Anticipation'],
             'Sensation d\'oppression thoracique': ['Tristesse 😢', 'Anxiété', 'Angoisse', 'Honte', 'Déception', 'Amour ❤️', 'Gratitude 🙏'],
@@ -211,15 +256,24 @@
             'Sensation d\'engourdissement': ['Choc', 'Peur', 'Tristesse 😢', 'Détachement', 'Solitude'],
             'Picotements dans les extrémités': ['Anxiété', 'Peur', 'Excitation', 'Joie'],
             'Impression de déconnexion corporelle': ['Anxiété', 'Choc', 'Traumatisme', 'Peur intense', 'Solitude'],
-            'Détente générale': ['Sérénité', 'Calme 🧘', 'Satisfaction', 'Contentement 😊', 'Confiance', 'Gratitude 🙏']
+            'Détente générale': ['Sérénité', 'Calme 🧘', 'Satisfaction', 'Contentement 😊', 'Confiance', 'Gratitude 🙏'],
+            // AJOUT : liens pour les nouvelles sensations positives
+            'Respiration lente et profonde': ['Calme 🧘', 'Sérénité', 'Satisfaction', 'Détente'],
+            'Épaules relâchées': ['Calme 🧘', 'Sérénité', 'Liberté 🕊️', 'Soulagement'],
+            'Chaleur agréable dans la poitrine': ['Amour ❤️', 'Gratitude 🙏', 'Joie', 'Contentement 😊'],
+            'Sourire intérieur': ['Joie', 'Contentement 😊', 'Satisfaction', 'Amusement', 'Sérénité'],
+            'Légèreté': ['Joie', 'Liberté 🕊️', 'Allégresse', 'Soulagement']
         };
 
         const initialData = {
-            emotions: ['Allégresse', 'Amour ❤️', 'Amusement', 'Anticipation', 'Anxiété', 'Calme 🧘', 'Colère 😡', 'Confiance', 'Contentement 😊', 'Courage', 'Curiosité', 'Déception', 'Dégoût', 'Émerveillement ✨', 'Ennui', 'Espoir', 'Fierté', 'Frustration', 'Gratitude 🙏', 'Honte', 'Inquiétude', 'Irritation', 'Jalousie', 'Joie', 'Liberté 🕊️', 'Mélancolie', 'Nostalgie', 'Peur', 'Rage', 'Satisfaction', 'Sérénité', 'Solitude', 'Surprise 😮', 'Tristesse 😢', 'Vulnérabilité'],
+            // AJOUT : Quelques émotions positives supplémentaires pour correspondre aux nouvelles sensations
+            emotions: ['Allégresse', 'Amour ❤️', 'Amusement', 'Anticipation', 'Anxiété', 'Calme 🧘', 'Colère 😡', 'Confiance', 'Contentement 😊', 'Courage', 'Curiosité', 'Déception', 'Dégoût', 'Détente', 'Émerveillement ✨', 'Ennui', 'Espoir', 'Fierté', 'Frustration', 'Gratitude 🙏', 'Honte', 'Inquiétude', 'Irritation', 'Jalousie', 'Joie', 'Légèreté', 'Liberté 🕊️', 'Mélancolie', 'Nostalgie', 'Peur', 'Rage', 'Satisfaction', 'Sérénité', 'Solitude', 'Soulagement', 'Surprise 😮', 'Tristesse 😢', 'Vulnérabilité'],
             sensationCategories: [
                 { title: 'Sensations cardiovasculaires et respiratoires', items: ['Palpitations cardiaques', 'Sensation d\'oppression thoracique', 'Respiration courte et saccadée', 'Souffle coupé', 'Sensation d\'étouffement'] },
                 { title: 'Sensations de température', items: ['Bouffées de chaleur au visage', 'Frissons dans le dos', 'Mains moites et froides', 'Sensation de brûlure interne', 'Chair de poule'] },
-                { title: 'Tensions et contractions musculaires', items: ['Crispation des poings', 'Raideur dans la nuque', 'Nœud dans la gorge', 'Serrement des dents', 'Contraction du diaphragme', 'Détente générale'] },
+                { title: 'Tensions et contractions musculaires', items: ['Crispation des poings', 'Raideur dans la nuque', 'Nœud dans la gorge', 'Serrement des dents', 'Contraction du diaphragme'] },
+                // AJOUT : Nouvelle catégorie pour les sensations positives
+                { title: 'Signes de Détente et de Bien-être', items: ['Détente générale', 'Respiration lente et profonde', 'Épaules relâchées', 'Chaleur agréable dans la poitrine', 'Sourire intérieur', 'Légèreté'] },
                 { title: 'Sensations abdominales', items: ['Papillons dans le ventre', 'Crampes d\'estomac', 'Sensation de vide abdominal', 'Boule au ventre', 'Spasmes intestinaux'] },
                 { title: 'Sensations dans la tête', items: ['Pression dans les tempes', 'Sensation de tête lourde', 'Vertiges légers', 'Picotements du cuir chevelu', 'Sensation de flottement'] },
                 { title: 'Autres sensations corporelles', items: ['Tremblements des mains', 'Jambes en coton', 'Sensation d\'engourdissement', 'Picotements dans les extrémités', 'Impression de déconnexion corporelle', 'Autre / Sensation non listée'] }
@@ -231,7 +285,7 @@
             ]
         };
 
-        const STORAGE_KEYS = { entries: 'emotionJournalEntries_v7', customTags: 'emotionJournalCustomTags_v7' };
+        const STORAGE_KEYS = { entries: 'emotionJournalEntries_v8', customTags: 'emotionJournalCustomTags_v8' }; // Version bump to avoid conflicts
         
         function getCustomTags() { return JSON.parse(localStorage.getItem(STORAGE_KEYS.customTags) || '{}'); }
         function saveCustomTags(tags) { localStorage.setItem(STORAGE_KEYS.customTags, JSON.stringify(tags)); }
@@ -283,6 +337,8 @@
         
         function renderTagSection(container, items, isMultiSelect) {
             container.innerHTML = '';
+            // AJOUT : Tri alphabétique pour une meilleure lisibilité
+            items.sort((a, b) => a.localeCompare(b));
             items.forEach(item => container.appendChild(createTag(item, isMultiSelect)));
         }
 
@@ -384,6 +440,8 @@
             
             clearJournalButton.style.display = hasEntries ? 'block' : 'none';
             exportJournalButton.style.display = hasEntries ? 'block' : 'none';
+            // AJOUT : Affiche le conseil s'il y a au moins une entrée
+            analysisTipContainer.style.display = hasEntries ? 'block' : 'none';
         }
         
         function exportJournal() {
@@ -393,6 +451,7 @@
                 return;
             }
 
+            // AJOUT : Amélioration du prompt pour l'IA
             const prompt = `
 # PROMPT POUR ANALYSE PSYCHOLOGIQUE PAR IA
 
@@ -419,8 +478,9 @@ Analysez les entrées du journal suivantes et fournissez une synthèse structur�
     *   Y a-t-il des schémas intéressants (ex: "Le déclencheur 'Interaction sociale' mène souvent à de l' 'Anxiété' et à la réaction 'Je me suis isolé(e)'") ?
 
 4.  **Pistes de Réflexion et d'Action (avec bienveillance) :**
-    *   Proposez 1 ou 2 questions ouvertes pour aider l'utilisateur à approfondir sa réflexion sur un des schémas que vous avez identifiés. (Ex: "Comment pourriez-vous prendre soin de la sensation de 'nœud dans la gorge' lorsqu'elle apparaît ?")
-    *   Suggérez une piste positive à explorer, basée sur les données. (Ex: "Vos moments de 'Gratitude' semblent liés à une 'détente générale'. Comment pourriez-vous cultiver davantage ces moments ?")
+    *   **Mettre en lumière les schémas positifs :** Identifiez les déclencheurs ou sensations qui mènent à des émotions positives (Joie, Gratitude, Sérénité). Comment l'utilisateur pourrait-il consciemment cultiver davantage ces moments ?
+    *   **Explorer les schémas difficiles :** Proposez 1 ou 2 questions ouvertes pour aider l'utilisateur à approfondir sa réflexion sur un des schémas difficiles que vous avez identifiés. (Ex: "La 'raideur dans la nuque' semble apparaître lors des interactions professionnelles. Que pourrait symboliser cette tension pour vous ?")
+    *   **Suggestion d'expérimentation :** Proposez une petite action ou expérimentation concrète et douce, basée sur votre analyse, que l'utilisateur pourrait tenter. (Ex: "La prochaine fois que vous sentez la 'boule au ventre' avant un événement, pourriez-vous essayer de prendre trois respirations lentes avant d'agir ?")
 
 ## Format de la Réponse
 Structurez votre réponse avec des titres clairs pour chaque section. Utilisez un ton encourageant et non-jugeant.
