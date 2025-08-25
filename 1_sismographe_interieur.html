@@ -17,49 +17,146 @@
             --success-color: #50e3c2;
         }
 
+        /* --- Style Général --- */
         * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; background-color: var(--bg-color); color: var(--text-color); line-height: 1.6; padding: 20px; }
-        .container { max-width: 900px; margin: 0 auto; background-color: var(--card-color); padding: 30px; border-radius: 12px; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3); }
-        header { text-align: center; border-bottom: 2px solid var(--primary-color); padding-bottom: 15px; margin-bottom: 30px; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            padding: 20px;
+        }
+        .container {
+            max-width: 900px; margin: 0 auto; background-color: var(--card-color);
+            padding: 30px; border-radius: 12px; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        /* --- En-tête --- */
+        header {
+            text-align: center; border-bottom: 2px solid var(--primary-color);
+            padding-bottom: 15px; margin-bottom: 30px;
+        }
         header h1 { color: var(--text-color); font-size: 2.2em; }
         header p { color: var(--text-muted-color); margin-top: 5px; }
-        .breathing-section { background-color: var(--primary-color); border: 1px dashed var(--success-color); border-radius: 8px; padding: 20px; margin-bottom: 35px; text-align: center; }
-        .breathing-section h2 { font-size: 1.2em; color: var(--success-color); margin-bottom: 10px; }
-        .breathing-section p { color: var(--text-muted-color); font-size: 1em; }
+
+        /* --- AJOUT : Style pour le Sas de Respiration --- */
+        .breathing-section {
+            background-color: var(--primary-color);
+            border: 1px dashed var(--success-color);
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 35px;
+            text-align: center;
+        }
+        .breathing-section h2 {
+            font-size: 1.2em;
+            color: var(--success-color);
+            margin-bottom: 10px;
+        }
+        .breathing-section p {
+            color: var(--text-muted-color);
+            font-size: 1em;
+        }
+        
+        /* --- Sections du formulaire --- */
         .form-section { margin-bottom: 35px; }
-        .form-section h2 { font-size: 1.2em; color: var(--success-color); margin-bottom: 15px; border-bottom: 1px solid var(--border-color); padding-bottom: 8px; }
+        .form-section h2 {
+            font-size: 1.2em; color: var(--success-color); margin-bottom: 15px;
+            border-bottom: 1px solid var(--border-color); padding-bottom: 8px;
+        }
         .form-section h2 .required { color: var(--accent-color); }
-        .sensation-category h3, .detail-section h4 { color: var(--text-muted-color); font-size: 1em; margin-top: 20px; margin-bottom: 10px; }
+        .sensation-category h3, .detail-section h4 {
+            color: var(--text-muted-color);
+            font-size: 1em;
+            margin-top: 20px;
+            margin-bottom: 10px;
+        }
+
+        /* --- Système de Tags --- */
         .tag-container { display: flex; flex-wrap: wrap; gap: 10px; }
-        .tag { background-color: var(--primary-color); color: var(--text-color); border: 2px solid transparent; padding: 8px 15px; border-radius: 20px; cursor: pointer; font-size: 0.9em; transition: all 0.2s ease; }
+        .tag {
+            background-color: var(--primary-color); color: var(--text-color); border: 2px solid transparent;
+            padding: 8px 15px; border-radius: 20px; cursor: pointer; font-size: 0.9em;
+            transition: all 0.2s ease;
+        }
         .tag:hover { background-color: #1e4f8a; }
-        .tag.active { background-color: var(--accent-color); border-color: var(--accent-color); color: white; font-weight: bold; }
-        .tag.disabled { opacity: 0.4; pointer-events: none; background-color: #2c3e50; }
+        .tag.active {
+            background-color: var(--accent-color); border-color: var(--accent-color);
+            color: white; font-weight: bold;
+        }
+        .tag.disabled {
+            opacity: 0.4; pointer-events: none; background-color: #2c3e50;
+        }
+        
+        /* --- Champs et Boutons --- */
         .add-tag-form { display: flex; gap: 10px; margin-top: 15px; }
-        .add-tag-form input { flex-grow: 1; width: 100%; padding: 10px; background-color: var(--primary-color); border: 1px solid var(--border-color); border-radius: 8px; font-size: 0.9em; color: var(--text-color); }
-        .add-tag-form button { white-space: nowrap; padding: 10px 15px; flex-shrink: 0; font-size: 0.9em; background-color: var(--success-color); color: var(--bg-color); font-weight: bold; border: none; border-radius: 8px; cursor: pointer; }
+        .add-tag-form input {
+            flex-grow: 1; width: 100%; padding: 10px; background-color: var(--primary-color);
+            border: 1px solid var(--border-color); border-radius: 8px; font-size: 0.9em; color: var(--text-color);
+        }
+        .add-tag-form button {
+            white-space: nowrap; padding: 10px 15px; flex-shrink: 0; font-size: 0.9em;
+            background-color: var(--success-color); color: var(--bg-color); font-weight: bold; border: none; border-radius: 8px; cursor: pointer;
+        }
         .add-tag-form button:hover { background-color: #48c9b0; }
-        textarea { width: 100%; padding: 12px; background-color: var(--primary-color); border: 1px solid var(--border-color); border-radius: 8px; font-size: 1em; color: var(--text-color); }
+        
+        textarea {
+            width: 100%; padding: 12px; background-color: var(--primary-color);
+            border: 1px solid var(--border-color); border-radius: 8px; font-size: 1em; color: var(--text-color);
+        }
         textarea:focus, .add-tag-form input:focus { outline: none; border-color: var(--accent-color); }
-        button[type="submit"] { width: 100%; background-color: var(--accent-color); color: white; border: none; border-radius: 8px; font-size: 1.1em; font-weight: bold; cursor: pointer; padding: 15px; transition: background-color 0.3s, transform 0.1s; }
+        
+        button[type="submit"] {
+            width: 100%; background-color: var(--accent-color); color: white; border: none; border-radius: 8px;
+            font-size: 1.1em; font-weight: bold; cursor: pointer; padding: 15px;
+            transition: background-color 0.3s, transform 0.1s;
+        }
         button[type="submit"]:hover { background-color: #d13c53; }
         button[type="submit"]:active { transform: scale(0.98); }
+
+        /* --- Section Journal --- */
         .journal-section { margin-top: 50px; }
         .journal-section h2 { color: var(--text-color); border-bottom: 1px solid var(--border-color); padding-bottom: 10px; }
         #journal-entries { margin-top: 20px; display: grid; grid-template-columns: 1fr; gap: 20px; }
         #no-entries { color: var(--text-muted-color); text-align: center; padding: 40px; border: 2px dashed var(--border-color); border-radius: 8px; }
-        .analysis-tip { background-color: var(--primary-color); border-left: 4px solid var(--success-color); padding: 15px; margin: 20px 0; border-radius: 4px; font-size: 0.9em; color: var(--text-muted-color); }
-        .entry { background-color: var(--primary-color); border-left: 5px solid var(--accent-color); padding: 20px; border-radius: 8px; position: relative; }
+
+        /* --- AJOUT : Style pour le Conseil d'Analyse --- */
+        .analysis-tip {
+            background-color: var(--primary-color);
+            border-left: 4px solid var(--success-color);
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 4px;
+            font-size: 0.9em;
+            color: var(--text-muted-color);
+        }
+
+        .entry {
+            background-color: var(--primary-color); border-left: 5px solid var(--accent-color); padding: 20px;
+            border-radius: 8px; position: relative;
+        }
         .entry-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
         .entry-header h3 { font-size: 1.5em; color: var(--success-color); }
         .entry-header .timestamp { font-size: 0.85em; color: var(--text-muted-color); }
         .entry-content .entry-field { margin-bottom: 12px; }
         .entry-content strong { color: var(--text-muted-color); }
         .entry-content p { margin-left: 10px; white-space: pre-wrap; }
-        .delete-btn { position: absolute; top: 10px; right: 10px; background: none; border: none; cursor: pointer; font-size: 1.5em; color: var(--text-muted-color); padding: 5px; }
+
+        .delete-btn {
+            position: absolute; top: 10px; right: 10px; background: none; border: none; cursor: pointer;
+            font-size: 1.5em; color: var(--text-muted-color); padding: 5px;
+        }
         .delete-btn:hover { color: var(--accent-color); }
-        .journal-actions { margin-top: 20px; display: flex; gap: 15px; }
-        .journal-actions button { flex-grow: 1; padding: 15px; font-size: 1em; font-weight: bold; border: none; border-radius: 8px; color: white; cursor: pointer; }
+        
+        .journal-actions {
+            margin-top: 20px;
+            display: flex;
+            gap: 15px;
+        }
+        .journal-actions button {
+            flex-grow: 1; padding: 15px; font-size: 1em; font-weight: bold; border: none;
+            border-radius: 8px; color: white; cursor: pointer;
+        }
         #clear-journal { background-color: #6c757d; }
         #clear-journal:hover { background-color: #5a6268; }
         #export-journal { background-color: var(--success-color); color: var(--bg-color); }
@@ -67,36 +164,48 @@
     </style>
 </head>
 <body>
+
     <div class="container">
         <header>
             <h1>Sismographe Intérieur</h1>
             <p>"Ressentir dans mon corps avant de pouvoir exprimer."</p>
         </header>
+
         <main>
             <form id="emotion-form">
+                
+                <!-- AJOUT : Étape 0 - Le Sas de Respiration -->
                 <div class="breathing-section">
                     <h2>Étape 0 : Une Pause Consciente</h2>
                     <p>Avant de commencer, prenez 3 respirations profondes.<br>Accueillez simplement la sensation dominante dans votre corps, sans la juger.</p>
                 </div>
+                
                 <div class="form-section">
                     <h2>Étape 1: Ressentez dans votre corps <span class="required">*</span></h2>
                     <div id="sensation-categories-container"></div>
                 </div>
+                
                 <div class="form-section">
                     <h2>Étape 2: Nommez l'émotion <span class="required">*</span></h2>
                     <div class="tag-container" id="emotion-tags"></div>
                 </div>
+
                 <div class="form-section">
                     <h2>Étape 3: Ajoutez du contexte</h2>
                     <div id="details-sections"></div>
                 </div>
+
                 <button type="submit">Enregistrer l'Entrée</button>
             </form>
+
             <section class="journal-section">
                 <h2>Mon Journal</h2>
+                
+                <!-- AJOUT : Conseil pour l'Heure de l'Analyste -->
                 <div class="analysis-tip" id="analysis-tip-container" style="display: none;">
                     <p><strong>Conseil pour l'analyse :</strong> Pensez à prendre 30 minutes chaque semaine pour relire vos entrées. L'export pour IA est un excellent outil pour identifier des schémas récurrents et des pistes de croissance.</p>
                 </div>
+
                 <div id="journal-entries"></div>
                 <div class="journal-actions">
                     <button type="button" id="export-journal" style="display: none;">Exporter pour Analyse IA</button>
@@ -112,33 +221,63 @@
         const journalEntriesContainer = document.getElementById('journal-entries');
         const clearJournalButton = document.getElementById('clear-journal');
         const exportJournalButton = document.getElementById('export-journal');
+        // AJOUT : Sélecteur pour le conseil d'analyse
         const analysisTipContainer = document.getElementById('analysis-tip-container');
+        
+        // AJOUT : Mise à jour de la carte sensations <-> émotions
+        const sensationEmotionMap = {
+            'Palpitations cardiaques': ['Anxiété', 'Peur', 'Excitation', 'Surprise 😮', 'Colère 😡', 'Joie', 'Anticipation'],
+            'Sensation d\'oppression thoracique': ['Tristesse 😢', 'Anxiété', 'Angoisse', 'Honte', 'Déception', 'Amour ❤️', 'Gratitude 🙏'],
+            'Respiration courte et saccadée': ['Anxiété', 'Peur', 'Panique', 'Rage'],
+            'Souffle coupé': ['Surprise 😮', 'Choc', 'Émerveillement ✨', 'Peur', 'Admiration', 'Amusement'],
+            'Sensation d\'étouffement': ['Peur', 'Panique', 'Angoisse', 'Tristesse 😢'],
+            'Bouffées de chaleur au visage': ['Honte', 'Colère 😡', 'Gêne', 'Frustration', 'Jalousie'],
+            'Frissons dans le dos': ['Peur', 'Émerveillement ✨', 'Fierté', 'Admiration', 'Joie', 'Gratitude 🙏'],
+            'Mains moites et froides': ['Anxiété', 'Peur', 'Nervosité', 'Inquiétude'],
+            'Sensation de brûlure interne': ['Colère 😡', 'Rage', 'Jalousie', 'Frustration'],
+            'Chair de poule': ['Peur', 'Fierté', 'Émerveillement ✨', 'Admiration', 'Nostalgie'],
+            'Crispation des poings': ['Colère 😡', 'Frustration', 'Détermination', 'Courage', 'Rage'],
+            'Raideur dans la nuque': ['Anxiété', 'Stress', 'Frustration', 'Inquiétude', 'Colère 😡'],
+            'Nœud dans la gorge': ['Tristesse 😢', 'Anxiété', 'Vulnérabilité', 'Peur', 'Honte'],
+            'Serrement des dents': ['Colère 😡', 'Frustration', 'Stress', 'Détermination', 'Courage'],
+            'Contraction du diaphragme': ['Anxiété', 'Nervosité', 'Surprise 😮', 'Peur'],
+            'Papillons dans le ventre': ['Excitation', 'Amour ❤️', 'Anticipation', 'Nervosité', 'Joie', 'Espoir', 'Curiosité'],
+            'Crampes d\'estomac': ['Anxiété', 'Peur', 'Stress', 'Dégoût'],
+            'Sensation de vide abdominal': ['Peur', 'Tristesse 😢', 'Solitude', 'Déception'],
+            'Boule au ventre': ['Anxiété', 'Peur', 'Inquiétude', 'appréhension', 'Nervosité'],
+            'Spasmes intestinaux': ['Stress', 'Anxiété', 'Dégoût'],
+            'Pression dans les tempes': ['Frustration', 'Colère 😡', 'Stress', 'Inquiétude'],
+            'Sensation de tête lourde': ['Tristesse 😢', 'Fatigue', 'Déception', 'Ennui', 'Mélancolie'],
+            'Vertiges légers': ['Anxiété', 'Peur', 'Surprise 😮', 'Choc'],
+            'Picotements du cuir chevelu': ['Peur', 'Émerveillement ✨', 'Fierté', 'Joie intense'],
+            'Sensation de flottement': ['Calme 🧘', 'Détachement', 'Sérénité', 'Satisfaction', 'Liberté 🕊️'],
+            'Tremblements des mains': ['Peur', 'Anxiété', 'Excitation', 'Nervosité', 'Rage'],
+            'Jambes en coton': ['Peur', 'Vulnérabilité', 'Choc', 'Anxiété forte'],
+            'Sensation d\'engourdissement': ['Choc', 'Peur', 'Tristesse 😢', 'Détachement', 'Solitude'],
+            'Picotements dans les extrémités': ['Anxiété', 'Peur', 'Excitation', 'Joie'],
+            'Impression de déconnexion corporelle': ['Anxiété', 'Choc', 'Traumatisme', 'Peur intense', 'Solitude'],
+            'Détente générale': ['Sérénité', 'Calme 🧘', 'Satisfaction', 'Contentement 😊', 'Confiance', 'Gratitude 🙏'],
+            'Larmes / Yeux humides': ['Tristesse 😢', 'Joie', 'Gratitude 🙏', 'Soulagement', 'Émerveillement ✨', 'Colère 😡', 'Peur', 'Frustration'],
+            'Respiration lente et profonde': ['Calme 🧘', 'Sérénité', 'Satisfaction', 'Détente'],
+            'Respiration lente et profonde': ['Calme 🧘', 'Sérénité', 'Satisfaction', 'Détente'],
+            'Épaules relâchées': ['Calme 🧘', 'Sérénité', 'Liberté 🕊️', 'Soulagement'],
+            'Chaleur agréable dans la poitrine': ['Amour ❤️', 'Gratitude 🙏', 'Joie', 'Contentement 😊'],
+            'Sourire intérieur': ['Joie', 'Contentement 😊', 'Satisfaction', 'Amusement', 'Sérénité'],
+            'Légèreté': ['Joie', 'Liberté 🕊️', 'Allégresse', 'Soulagement']
+        };
 
         const initialData = {
+            // AJOUT : Quelques émotions positives supplémentaires pour correspondre aux nouvelles sensations
             emotions: ['Allégresse', 'Amour ❤️', 'Amusement', 'Anticipation', 'Anxiété', 'Calme 🧘', 'Colère 😡', 'Confiance', 'Contentement 😊', 'Courage', 'Curiosité', 'Déception', 'Dégoût', 'Détente', 'Émerveillement ✨', 'Ennui', 'Espoir', 'Fierté', 'Frustration', 'Gratitude 🙏', 'Honte', 'Inquiétude', 'Irritation', 'Jalousie', 'Joie', 'Légèreté', 'Liberté 🕊️', 'Mélancolie', 'Nostalgie', 'Peur', 'Rage', 'Satisfaction', 'Sérénité', 'Solitude', 'Soulagement', 'Surprise 😮', 'Tristesse 😢', 'Vulnérabilité'],
             sensationCategories: [
-                { title: 'Ressentis principaux', items: [
-                    'Bouffées de chaleur / frissons',
-                    'Chaleur agréable dans la poitrine / sourire intérieur',
-                    'Contraction diaphragmatique / gorge nouée',
-                    'Détente générale / respiration profonde / épaules relâchées',
-                    'Impression de flottement / déconnexion corporelle',
-                    'Larmes / yeux humides',
-                    'Légèreté / joie / allégresse',
-                    'Mains moites / froides',
-                    'Oppression ou lourdeur thoracique',
-                    'Palpitations / rythme cardiaque rapide',
-                    'Papillons / boule au ventre / crampes abdominales',
-                    'Picotements / chair de poule',
-                    'Respiration courte / saccadée',
-                    'Sensation de vide abdominal / engourdissement',
-                    'Serrement des dents / mâchoire crispée',
-                    'Souffle coupé / étouffement',
-                    'Tension ou crispation musculaire',
-                    'Tremblements / jambes en coton',
-                    'Vertiges / sensation de tête lourde',
-                    'Autre / sensation non listée'
-                ]}
+                { title: 'Sensations cardiovasculaires et respiratoires', items: ['Palpitations cardiaques', 'Sensation d\'oppression thoracique', 'Respiration courte et saccadée', 'Souffle coupé', 'Sensation d\'étouffement'] },
+                { title: 'Sensations de température', items: ['Bouffées de chaleur au visage', 'Frissons dans le dos', 'Mains moites et froides', 'Sensation de brûlure interne', 'Chair de poule'] },
+                { title: 'Tensions et contractions musculaires', items: ['Crispation des poings', 'Raideur dans la nuque', 'Nœud dans la gorge', 'Serrement des dents', 'Contraction du diaphragme'] },
+                // AJOUT : Nouvelle catégorie pour les sensations positives
+                { title: 'Signes de Détente et de Bien-être', items: ['Détente générale', 'Respiration lente et profonde', 'Épaules relâchées', 'Chaleur agréable dans la poitrine', 'Sourire intérieur', 'Légèreté'] },
+                { title: 'Sensations abdominales', items: ['Papillons dans le ventre', 'Crampes d\'estomac', 'Sensation de vide abdominal', 'Boule au ventre', 'Spasmes intestinaux'] },
+                { title: 'Sensations dans la tête', items: ['Pression dans les tempes', 'Sensation de tête lourde', 'Vertiges légers', 'Picotements du cuir chevelu', 'Sensation de flottement'] },
+                { title: 'Autres sensations corporelles', items: ['Tremblements des mains', 'Jambes en coton', 'Sensation d\'engourdissement', 'Picotements dans les extrémités', 'Larmes / Yeux humides', 'Impression de déconnexion corporelle', 'Autre / Sensation non listée'] }              
             ],
             details: [
                 { id: 'intensities', title: 'Intensité', options: ['Très faible (1)', 'Faible (2)', 'Moyenne (3)', 'Forte (4)', 'Très forte (5)'], isMultiSelect: false, isRequired: true },
@@ -147,7 +286,35 @@
             ]
         };
 
-        // Fonctions createTag, renderTagSection, setupSensationSection, setupDetailSection, loadJournal, displayJournal, exportJournal, escapeHTML et initializeApp restent identiques à ton code original
+        const STORAGE_KEYS = { entries: 'emotionJournalEntries_v8', customTags: 'emotionJournalCustomTags_v8' }; // Version bump to avoid conflicts
+        
+        function getCustomTags() { return JSON.parse(localStorage.getItem(STORAGE_KEYS.customTags) || '{}'); }
+        function saveCustomTags(tags) { localStorage.setItem(STORAGE_KEYS.customTags, JSON.stringify(tags)); }
+
+        function filterEmotions() {
+            const selectedSensationTags = Array.from(document.querySelectorAll('#sensation-categories-container .tag.active'));
+            const emotionTags = document.querySelectorAll('#emotion-tags .tag');
+            if (selectedSensationTags.some(tag => tag.textContent === 'Autre / Sensation non listée') || selectedSensationTags.length === 0) {
+                emotionTags.forEach(tag => tag.classList.remove('disabled'));
+                return;
+            }
+            const suggestedEmotions = new Set();
+            selectedSensationTags.forEach(sensationTag => {
+                const sensationText = sensationTag.textContent;
+                const relatedEmotions = sensationEmotionMap[sensationText];
+                if (relatedEmotions) {
+                    relatedEmotions.forEach(emotion => suggestedEmotions.add(emotion));
+                }
+            });
+            emotionTags.forEach(emotionTag => {
+                if (suggestedEmotions.has(emotionTag.textContent)) {
+                    emotionTag.classList.remove('disabled');
+                } else {
+                    emotionTag.classList.add('disabled');
+                    emotionTag.classList.remove('active');
+                }
+            });
+        }
 
         function createTag(text, isMultiSelect = true) {
             const tag = document.createElement('button');
@@ -157,15 +324,24 @@
             tag.addEventListener('click', () => {
                 if (!isMultiSelect) {
                     const siblings = tag.closest('.tag-container').querySelectorAll('.tag');
-                    if (!tag.classList.contains('active')) siblings.forEach(t => t.classList.remove('active'));
+                    if (!tag.classList.contains('active')) {
+                       siblings.forEach(t => t.classList.remove('active'));
+                    }
                 }
                 tag.classList.toggle('active');
+                if (tag.closest('#sensation-categories-container')) {
+                    filterEmotions();
+                }
             });
             return tag;
         }
-
-        function renderTagSection(container, items, isMultiSelect) {
+        
+        function renderTagSection(container, items, isMultiSelect, sectionId) { // MODIFIÉ : ajout de sectionId
             container.innerHTML = '';
+            // Tri alphabétique SAUF pour la section des intensités
+            if (sectionId !== 'intensities') {
+                items.sort((a, b) => a.localeCompare(b));
+            }
             items.forEach(item => container.appendChild(createTag(item, isMultiSelect)));
         }
 
@@ -183,7 +359,7 @@
                 container.appendChild(categoryDiv);
             });
         }
-
+        
         function setupDetailSection(sectionData, container) {
             const isMultiSelect = sectionData.isMultiSelect !== false;
             const requiredSpan = sectionData.isRequired ? ' <span class="required">*</span>' : '';
@@ -197,9 +373,10 @@
             sectionDiv.appendChild(header);
             sectionDiv.appendChild(tagContainer);
             container.appendChild(sectionDiv);
-
-            let allItems = [...new Set(sectionData.options || sectionData.initial || [])];
-            renderTagSection(tagContainer, allItems, isMultiSelect);
+            
+            const customTags = getCustomTags();
+            let allItems = [...new Set([...(sectionData.options || sectionData.initial || []), ...(customTags[sectionData.id] || [])])];
+            renderTagSection(tagContainer, allItems, isMultiSelect, sectionData.id);
 
             if (sectionData.placeholder) {
                 const addForm = document.createElement('div');
@@ -210,36 +387,215 @@
                 const button = document.createElement('button');
                 button.type = 'button';
                 button.textContent = 'Ajouter';
+                
                 button.addEventListener('click', () => {
                     const newTagText = input.value.trim();
                     if (newTagText && !allItems.includes(newTagText)) {
+                        const currentCustomTags = getCustomTags();
+                        if (!currentCustomTags[sectionData.id]) currentCustomTags[sectionData.id] = [];
+                        currentCustomTags[sectionData.id].push(newTagText);
+                        saveCustomTags(currentCustomTags);
                         allItems.push(newTagText);
-                        renderTagSection(tagContainer, allItems, isMultiSelect);
+                        renderTagSection(tagContainer, allItems, isMultiSelect, sectionData.id);
                         input.value = '';
                     }
                 });
+                
                 addForm.appendChild(input);
                 addForm.appendChild(button);
                 sectionDiv.appendChild(addForm);
             }
         }
 
+        function loadJournal() {
+            const entries = JSON.parse(localStorage.getItem(STORAGE_KEYS.entries) || '[]');
+            displayJournal(entries);
+        }
+
+        function displayJournal(entries) {
+            journalEntriesContainer.innerHTML = '';
+            const hasEntries = entries.length > 0;
+            
+            if (!hasEntries) {
+                journalEntriesContainer.innerHTML = `<p id="no-entries">Votre journal est vide.</p>`;
+            } else {
+                 entries.slice().reverse().forEach((entry, index) => {
+                    const originalIndex = entries.length - 1 - index;
+                    const entryCard = document.createElement('div');
+                    entryCard.className = 'entry';
+                    const intensityLevel = entry.intensity ? entry.intensity.match(/\d+/)[0] : '?';
+                    let contentHTML = `
+                        <div class="entry-header">
+                            <h3>${escapeHTML(entry.emotion)} - Niv. ${intensityLevel}</h3>
+                            <span class="timestamp">${entry.timestamp}</span>
+                        </div>
+                        <div class="entry-content">`;
+                    const renderField = (label, data) => data && data.length > 0 ? `<div class="entry-field"><strong>${label}:</strong><p>${Array.isArray(data) ? data.map(escapeHTML).join(', ') : escapeHTML(data)}</p></div>` : '';
+                    contentHTML += renderField('Sensations Physiques', entry.sensations);
+                    contentHTML += renderField('Déclencheur(s)', entry.triggers);
+                    contentHTML += renderField('Réaction(s)', entry.reactions);
+                    contentHTML += renderField('Description', entry.description);
+                    contentHTML += `</div><button class="delete-btn" data-index="${originalIndex}" title="Supprimer">&times;</button>`;
+                    entryCard.innerHTML = contentHTML;
+                    journalEntriesContainer.appendChild(entryCard);
+                });
+            }
+            
+            clearJournalButton.style.display = hasEntries ? 'block' : 'none';
+            exportJournalButton.style.display = hasEntries ? 'block' : 'none';
+            // AJOUT : Affiche le conseil s'il y a au moins une entrée
+            analysisTipContainer.style.display = hasEntries ? 'block' : 'none';
+        }
+        
+        function exportJournal() {
+            const entries = JSON.parse(localStorage.getItem(STORAGE_KEYS.entries) || '[]');
+            if (entries.length === 0) {
+                alert("Le journal est vide. Il n'y a rien à exporter.");
+                return;
+            }
+
+            // AJOUT : Amélioration du prompt pour l'IA
+            const prompt = `
+# PROMPT POUR ANALYSE PSYCHOLOGIQUE PAR IA
+
+## Contexte
+Vous êtes un assistant d'analyse psychologique. Votre rôle est d'analyser les données d'un journal émotionnel ci-dessous. L'utilisateur a suivi ses émotions en partant de ses sensations corporelles. Votre analyse doit être bienveillante, constructive et orientée vers la prise de conscience (mindfulness).
+
+**AVERTISSEMENT IMPORTANT :** Rappelez à l'utilisateur au début de votre réponse que vous êtes une IA et que votre analyse n'est pas un diagnostic médical ou psychologique. Conseillez-lui de consulter un professionnel de la santé pour tout problème de santé mentale.
+
+## Instructions
+Analysez les entrées du journal suivantes et fournissez une synthèse structurée en suivant ces points :
+
+1.  **Synthèse Émotionnelle Générale :**
+    *   Quelles sont les émotions les plus fréquemment rapportées ?
+    *   Y a-t-il une polarité dominante (émotions plutôt "positives" ou "difficiles") ?
+    *   Quelle est l'intensité moyenne des émotions vécues ?
+
+2.  **Corrélations Clés Corps-Esprit :**
+    *   Identifiez les 3 liens les plus récurrents entre une sensation physique et une émotion. (Ex: "Il semble que les 'papillons dans le ventre' soient souvent associés à de l' 'Anticipation' ou de l' 'Excitation' pour vous.")
+    *   Y a-t-il des sensations physiques qui sont des indicateurs fiables d'une émotion spécifique pour cet utilisateur ?
+
+3.  **Analyse des Déclencheurs et Réactions :**
+    *   Quels sont les déclencheurs (triggers) les plus courants ? Sont-ils liés à des contextes spécifiques (sociaux, travail, solitude) ?
+    *   Quelles sont les réactions les plus fréquentes face à ces émotions ? S'agit-il de réactions d'approche (ex: parler à quelqu'un) ou de retrait (ex: s'isoler) ?
+    *   Y a-t-il des schémas intéressants (ex: "Le déclencheur 'Interaction sociale' mène souvent à de l' 'Anxiété' et à la réaction 'Je me suis isolé(e)'") ?
+
+4.  **Pistes de Réflexion et d'Action (avec bienveillance) :**
+    *   **Mettre en lumière les schémas positifs :** Identifiez les déclencheurs ou sensations qui mènent à des émotions positives (Joie, Gratitude, Sérénité). Comment l'utilisateur pourrait-il consciemment cultiver davantage ces moments ?
+    *   **Explorer les schémas difficiles :** Proposez 1 ou 2 questions ouvertes pour aider l'utilisateur à approfondir sa réflexion sur un des schémas difficiles que vous avez identifiés. (Ex: "La 'raideur dans la nuque' semble apparaître lors des interactions professionnelles. Que pourrait symboliser cette tension pour vous ?")
+    *   **Suggestion d'expérimentation :** Proposez une petite action ou expérimentation concrète et douce, basée sur votre analyse, que l'utilisateur pourrait tenter. (Ex: "La prochaine fois que vous sentez la 'boule au ventre' avant un événement, pourriez-vous essayer de prendre trois respirations lentes avant d'agir ?")
+
+## Format de la Réponse
+Structurez votre réponse avec des titres clairs pour chaque section. Utilisez un ton encourageant et non-jugeant.
+
+---
+# DONNÉES DU JOURNAL ÉMOTIONNEL À ANALYSER
+---
+`;
+
+            let formattedEntries = entries.map(entry => {
+                let entryText = `Date: ${entry.timestamp}\n`;
+                entryText += `Émotion: ${entry.emotion} (Intensité: ${entry.intensity})\n`;
+                entryText += `Sensations Physiques: ${entry.sensations.join(', ')}\n`;
+                if (entry.triggers && entry.triggers.length > 0) entryText += `Déclencheur(s): ${entry.triggers.join(', ')}\n`;
+                if (entry.reactions && entry.reactions.length > 0) entryText += `Réaction(s): ${entry.reactions.join(', ')}\n`;
+                if (entry.description) entryText += `Description: ${entry.description}\n`;
+                return entryText;
+            }).join('\n---\n');
+
+            const fileContent = prompt + formattedEntries;
+            const blob = new Blob([fileContent], { type: 'text/plain;charset=utf-8' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            const date = new Date().toISOString().split('T')[0];
+            a.href = url;
+            a.download = `Journal_Emotions_Analyse_IA_${date}.txt`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+        
+        emotionForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const getSelectedTags = (selector) => Array.from(document.querySelectorAll(`${selector} .tag.active`)).map(t => t.textContent);
+            const getSelectedTag = (selector) => document.querySelector(`${selector} .tag.active`);
+
+            const selectedSensations = getSelectedTags('#sensation-categories-container');
+            const selectedEmotion = getSelectedTag('#emotion-tags');
+            const selectedIntensity = getSelectedTag('#intensities-tags');
+
+            if (selectedSensations.length === 0 || !selectedEmotion || !selectedIntensity) {
+                alert('Veuillez remplir tous les champs obligatoires (*).');
+                return;
+            }
+
+            const newEntry = {
+                sensations: selectedSensations,
+                emotion: selectedEmotion.textContent,
+                intensity: selectedIntensity.textContent,
+                triggers: getSelectedTags('#triggers-tags'),
+                reactions: getSelectedTags('#reactions-tags'),
+                description: document.getElementById('add-description')?.value.trim() || '',
+                timestamp: new Date().toLocaleString('fr-FR', { dateStyle: 'short', timeStyle: 'short' })
+            };
+            
+            const entries = JSON.parse(localStorage.getItem(STORAGE_KEYS.entries) || '[]');
+            entries.push(newEntry);
+            localStorage.setItem(STORAGE_KEYS.entries, JSON.stringify(entries));
+            displayJournal(entries);
+
+            emotionForm.reset();
+            document.querySelectorAll('.tag.active').forEach(t => t.classList.remove('active'));
+            filterEmotions();
+        });
+
+        journalEntriesContainer.addEventListener('click', (event) => {
+            if (event.target.classList.contains('delete-btn')) {
+                const index = parseInt(event.target.dataset.index, 10);
+                if (confirm('Voulez-vous vraiment supprimer cette entrée ?')) {
+                    let entries = JSON.parse(localStorage.getItem(STORAGE_KEYS.entries) || '[]');
+                    entries.splice(index, 1);
+                    localStorage.setItem(STORAGE_KEYS.entries, JSON.stringify(entries));
+                    displayJournal(entries);
+                }
+            }
+        });
+
+        clearJournalButton.addEventListener('click', () => {
+            if (confirm('Êtes-vous sûr de vouloir effacer TOUT le journal ?')) {
+                localStorage.removeItem(STORAGE_KEYS.entries);
+                loadJournal();
+            }
+        });
+        
+        exportJournalButton.addEventListener('click', exportJournal);
+        
+        function escapeHTML(str) {
+            const p = document.createElement('p');
+            p.textContent = str;
+            return p.innerHTML;
+        }
+
         function initializeApp() {
             setupSensationSection();
-            renderTagSection(document.getElementById('emotion-tags'), initialData.emotions, false); 
+            renderTagSection(document.getElementById('emotion-tags'), initialData.emotions, false, 'emotions'); 
             const detailsContainer = document.getElementById('details-sections');
             initialData.details.forEach(section => setupDetailSection(section, detailsContainer));
+            
             const descSection = document.createElement('div');
             descSection.className = 'detail-section';
             const descHeader = document.createElement('h4');
             descHeader.textContent = 'Description (optionnel)';
             const descTextarea = document.createElement('textarea');
-            descTextarea.id = 'description-textarea';
-            descTextarea.rows = 3;
-            descTextarea.placeholder = 'Ajouter des précisions sur le contexte ou vos ressentis...';
+            descTextarea.id = 'add-description';
+            descTextarea.rows = 4;
+            descTextarea.placeholder = 'Décrivez plus en détail ce qui s\'est passé...';
             descSection.appendChild(descHeader);
             descSection.appendChild(descTextarea);
             detailsContainer.appendChild(descSection);
+            
+            loadJournal();
         }
 
         initializeApp();
