@@ -157,8 +157,8 @@
             flex-grow: 1; padding: 15px; font-size: 1em; font-weight: bold; border: none;
             border-radius: 8px; color: white; cursor: pointer;
         }
-        #clear-journal { background-color: #6c757d; }
-        #clear-journal:hover { background-color: #5a6268; }
+        #import-journal { background-color: #6c757d; }
+        #import-journal:hover { background-color: #5a6268; }
         #export-journal { background-color: var(--success-color); color: var(--bg-color); }
         #export-journal:hover { background-color: #48c9b0; }
     </style>
@@ -207,11 +207,14 @@
                 </div>
 
                 <div id="journal-entries"></div>
+                <!-- MODIFIÉ : Le bouton "Effacer" est remplacé par "Importer" -->
                 <div class="journal-actions">
-                    <button type="button" id="export-journal" style="display: none;">Exporter pour Analyse IA</button>
-                    <button type="button" id="clear-journal" style="display: none;">Effacer tout le journal</button>
+                    <button type="button" id="export-journal" style="display: none;">Exporter le journal</button>
+                    <button type="button" id="import-journal">Importer des données</button>
                 </div>
             </section>
+            <!-- AJOUT : Input caché pour gérer l'import de fichier -->
+            <input type="file" id="import-file-input" accept=".json" style="display: none;">
         </main>
     </div>
 
@@ -219,12 +222,12 @@
     document.addEventListener('DOMContentLoaded', () => {
         const emotionForm = document.getElementById('emotion-form');
         const journalEntriesContainer = document.getElementById('journal-entries');
-        const clearJournalButton = document.getElementById('clear-journal');
         const exportJournalButton = document.getElementById('export-journal');
-        // AJOUT : Sélecteur pour le conseil d'analyse
+        // MODIFIÉ : Nouveaux sélecteurs pour l'import
+        const importJournalButton = document.getElementById('import-journal');
+        const importFileInput = document.getElementById('import-file-input');
         const analysisTipContainer = document.getElementById('analysis-tip-container');
         
-        // AJOUT : Mise à jour de la carte sensations <-> émotions
         const sensationEmotionMap = {
             'Palpitations cardiaques': ['Anxiété', 'Peur', 'Excitation', 'Surprise 😮', 'Colère 😡', 'Joie', 'Anticipation'],
             'Sensation d\'oppression thoracique': ['Tristesse 😢', 'Anxiété', 'Angoisse', 'Honte', 'Déception', 'Amour ❤️', 'Gratitude 🙏'],
@@ -267,13 +270,11 @@
         };
 
         const initialData = {
-            // AJOUT : Quelques émotions positives supplémentaires pour correspondre aux nouvelles sensations
             emotions: ['Allégresse', 'Amour ❤️', 'Amusement', 'Anticipation', 'Anxiété', 'Calme 🧘', 'Colère 😡', 'Confiance', 'Contentement 😊', 'Courage', 'Curiosité', 'Déception', 'Dégoût', 'Détente', 'Émerveillement ✨', 'Ennui', 'Espoir', 'Fierté', 'Frustration', 'Gratitude 🙏', 'Honte', 'Inquiétude', 'Irritation', 'Jalousie', 'Joie', 'Légèreté', 'Liberté 🕊️', 'Mélancolie', 'Nostalgie', 'Peur', 'Rage', 'Satisfaction', 'Sérénité', 'Solitude', 'Soulagement', 'Surprise 😮', 'Tristesse 😢', 'Vulnérabilité'],
             sensationCategories: [
                 { title: 'Sensations cardiovasculaires et respiratoires', items: ['Palpitations cardiaques', 'Sensation d\'oppression thoracique', 'Respiration courte et saccadée', 'Souffle coupé', 'Sensation d\'étouffement'] },
                 { title: 'Sensations de température', items: ['Bouffées de chaleur au visage', 'Frissons dans le dos', 'Mains moites et froides', 'Sensation de brûlure interne', 'Chair de poule'] },
                 { title: 'Tensions et contractions musculaires', items: ['Crispation des poings', 'Raideur dans la nuque', 'Nœud dans la gorge', 'Serrement des dents', 'Contraction du diaphragme'] },
-                // AJOUT : Nouvelle catégorie pour les sensations positives
                 { title: 'Signes de Détente et de Bien-être', items: ['Détente générale', 'Respiration lente et profonde', 'Épaules relâchées', 'Chaleur agréable dans la poitrine', 'Sourire intérieur', 'Légèreté'] },
                 { title: 'Sensations abdominales', items: ['Papillons dans le ventre', 'Crampes d\'estomac', 'Sensation de vide abdominal', 'Boule au ventre', 'Spasmes intestinaux'] },
                 { title: 'Sensations dans la tête', items: ['Pression dans les tempes', 'Sensation de tête lourde', 'Vertiges légers', 'Picotements du cuir chevelu', 'Sensation de flottement'] },
@@ -286,7 +287,7 @@
             ]
         };
 
-        const STORAGE_KEYS = { entries: 'emotionJournalEntries_v8', customTags: 'emotionJournalCustomTags_v8' }; // Version bump to avoid conflicts
+        const STORAGE_KEYS = { entries: 'emotionJournalEntries_v8', customTags: 'emotionJournalCustomTags_v8' };
         
         function getCustomTags() { return JSON.parse(localStorage.getItem(STORAGE_KEYS.customTags) || '{}'); }
         function saveCustomTags(tags) { localStorage.setItem(STORAGE_KEYS.customTags, JSON.stringify(tags)); }
@@ -336,9 +337,8 @@
             return tag;
         }
         
-        function renderTagSection(container, items, isMultiSelect, sectionId) { // MODIFIÉ : ajout de sectionId
+        function renderTagSection(container, items, isMultiSelect, sectionId) {
             container.innerHTML = '';
-            // Tri alphabétique SAUF pour la section des intensités
             if (sectionId !== 'intensities') {
                 items.sort((a, b) => a.localeCompare(b));
             }
@@ -441,20 +441,16 @@
                 });
             }
             
-            clearJournalButton.style.display = hasEntries ? 'block' : 'none';
+            // MODIFIÉ : Visibilité du bouton Exporter, le bouton Importer est toujours visible
             exportJournalButton.style.display = hasEntries ? 'block' : 'none';
-            // AJOUT : Affiche le conseil s'il y a au moins une entrée
             analysisTipContainer.style.display = hasEntries ? 'block' : 'none';
         }
         
-        function exportJournal() {
+        // MODIFIÉ : La fonction d'export a été renommée pour plus de clarté
+        function exportForAI() {
             const entries = JSON.parse(localStorage.getItem(STORAGE_KEYS.entries) || '[]');
-            if (entries.length === 0) {
-                alert("Le journal est vide. Il n'y a rien à exporter.");
-                return;
-            }
+            if (entries.length === 0) return; // Le choix a déjà été fait, pas besoin d'alerte
 
-            // AJOUT : Amélioration du prompt pour l'IA
             const prompt = `
 # PROMPT POUR ANALYSE PSYCHOLOGIQUE PAR IA
 
@@ -466,24 +462,10 @@ Vous êtes un assistant d'analyse psychologique. Votre rôle est d'analyser les 
 ## Instructions
 Analysez les entrées du journal suivantes et fournissez une synthèse structurée en suivant ces points :
 
-1.  **Synthèse Émotionnelle Générale :**
-    *   Quelles sont les émotions les plus fréquemment rapportées ?
-    *   Y a-t-il une polarité dominante (émotions plutôt "positives" ou "difficiles") ?
-    *   Quelle est l'intensité moyenne des émotions vécues ?
-
-2.  **Corrélations Clés Corps-Esprit :**
-    *   Identifiez les 3 liens les plus récurrents entre une sensation physique et une émotion. (Ex: "Il semble que les 'papillons dans le ventre' soient souvent associés à de l' 'Anticipation' ou de l' 'Excitation' pour vous.")
-    *   Y a-t-il des sensations physiques qui sont des indicateurs fiables d'une émotion spécifique pour cet utilisateur ?
-
-3.  **Analyse des Déclencheurs et Réactions :**
-    *   Quels sont les déclencheurs (triggers) les plus courants ? Sont-ils liés à des contextes spécifiques (sociaux, travail, solitude) ?
-    *   Quelles sont les réactions les plus fréquentes face à ces émotions ? S'agit-il de réactions d'approche (ex: parler à quelqu'un) ou de retrait (ex: s'isoler) ?
-    *   Y a-t-il des schémas intéressants (ex: "Le déclencheur 'Interaction sociale' mène souvent à de l' 'Anxiété' et à la réaction 'Je me suis isolé(e)'") ?
-
-4.  **Pistes de Réflexion et d'Action (avec bienveillance) :**
-    *   **Mettre en lumière les schémas positifs :** Identifiez les déclencheurs ou sensations qui mènent à des émotions positives (Joie, Gratitude, Sérénité). Comment l'utilisateur pourrait-il consciemment cultiver davantage ces moments ?
-    *   **Explorer les schémas difficiles :** Proposez 1 ou 2 questions ouvertes pour aider l'utilisateur à approfondir sa réflexion sur un des schémas difficiles que vous avez identifiés. (Ex: "La 'raideur dans la nuque' semble apparaître lors des interactions professionnelles. Que pourrait symboliser cette tension pour vous ?")
-    *   **Suggestion d'expérimentation :** Proposez une petite action ou expérimentation concrète et douce, basée sur votre analyse, que l'utilisateur pourrait tenter. (Ex: "La prochaine fois que vous sentez la 'boule au ventre' avant un événement, pourriez-vous essayer de prendre trois respirations lentes avant d'agir ?")
+1.  **Synthèse Émotionnelle Générale :** Quelles sont les émotions les plus fréquemment rapportées ? Y a-t-il une polarité dominante ? Quelle est l'intensité moyenne ?
+2.  **Corrélations Clés Corps-Esprit :** Identifiez les 3 liens les plus récurrents entre une sensation physique et une émotion.
+3.  **Analyse des Déclencheurs et Réactions :** Quels sont les déclencheurs les plus courants ? Quels schémas observez-vous ?
+4.  **Pistes de Réflexion et d'Action (avec bienveillance) :** Mettez en lumière les schémas positifs. Proposez 1-2 questions ouvertes sur les schémas difficiles. Suggérez une petite expérimentation douce.
 
 ## Format de la Réponse
 Structurez votre réponse avec des titres clairs pour chaque section. Utilisez un ton encourageant et non-jugeant.
@@ -510,6 +492,25 @@ Structurez votre réponse avec des titres clairs pour chaque section. Utilisez u
             const date = new Date().toISOString().split('T')[0];
             a.href = url;
             a.download = `Journal_Emotions_Analyse_IA_${date}.txt`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+
+        // AJOUT : Nouvelle fonction pour exporter les données brutes en JSON (pour sauvegarde)
+        function exportData() {
+            const entriesJSON = localStorage.getItem(STORAGE_KEYS.entries) || '[]';
+            const entries = JSON.parse(entriesJSON);
+
+            if (entries.length === 0) return; // Le choix a déjà été fait, pas besoin d'alerte
+
+            const blob = new Blob([entriesJSON], { type: 'application/json;charset=utf-8' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            const date = new Date().toISOString().split('T')[0];
+            a.href = url;
+            a.download = `Sismographe_Interieur_Sauvegarde_${date}.json`;
             document.body.appendChild(a);
             a.click();
             document.body.removeChild(a);
@@ -562,14 +563,69 @@ Structurez votre réponse avec des titres clairs pour chaque section. Utilisez u
             }
         });
 
-        clearJournalButton.addEventListener('click', () => {
-            if (confirm('Êtes-vous sûr de vouloir effacer TOUT le journal ?')) {
-                localStorage.removeItem(STORAGE_KEYS.entries);
-                loadJournal();
+        // MODIFIÉ : Le bouton d'export propose maintenant deux options
+        exportJournalButton.addEventListener('click', () => {
+            const entries = JSON.parse(localStorage.getItem(STORAGE_KEYS.entries) || '[]');
+            if (entries.length === 0) {
+                alert("Le journal est vide. Il n'y a rien à exporter.");
+                return;
+            }
+            
+            const choice = confirm(
+                "Voulez-vous exporter les données pour une sauvegarde (format JSON) ?\n\n" +
+                "Cliquez sur 'OK' pour une sauvegarde (JSON).\n" +
+                "Cliquez sur 'Annuler' pour un export pour Analyse IA (format TXT)."
+            );
+
+            if (choice) {
+                exportData();
+            } else {
+                exportForAI();
             }
         });
-        
-        exportJournalButton.addEventListener('click', exportJournal);
+
+        // AJOUT : Logique pour le bouton d'importation
+        importJournalButton.addEventListener('click', () => {
+            importFileInput.click(); // Ouvre la boîte de dialogue de sélection de fichier
+        });
+
+        // AJOUT : Logique pour gérer le fichier sélectionné
+        importFileInput.addEventListener('change', (event) => {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                try {
+                    const importedEntries = JSON.parse(e.target.result);
+                    if (!Array.isArray(importedEntries) || (importedEntries.length > 0 && typeof importedEntries[0].timestamp === 'undefined')) {
+                        throw new Error("Le fichier ne semble pas être une sauvegarde valide.");
+                    }
+                    
+                    const currentEntries = JSON.parse(localStorage.getItem(STORAGE_KEYS.entries) || '[]');
+                    if (currentEntries.length > 0) {
+                        if (!confirm("Attention : cela remplacera toutes les entrées actuelles par le contenu du fichier. Voulez-vous continuer ?")) {
+                            importFileInput.value = ''; // Réinitialise l'input
+                            return;
+                        }
+                    }
+
+                    localStorage.setItem(STORAGE_KEYS.entries, JSON.stringify(importedEntries));
+                    loadJournal();
+                    alert(`${importedEntries.length} entrée(s) importée(s) avec succès.`);
+
+                } catch (error) {
+                    alert(`Erreur lors de la lecture du fichier : ${error.message}`);
+                } finally {
+                    importFileInput.value = ''; // Réinitialise l'input pour permettre de réimporter le même fichier
+                }
+            };
+            reader.onerror = () => {
+                alert("Impossible de lire le fichier.");
+                importFileInput.value = '';
+            };
+            reader.readAsText(file);
+        });
         
         function escapeHTML(str) {
             const p = document.createElement('p');
