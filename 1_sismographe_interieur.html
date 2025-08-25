@@ -174,7 +174,6 @@
         <main>
             <form id="emotion-form">
                 
-                <!-- AJOUT : Étape 0 - Le Sas de Respiration -->
                 <div class="breathing-section">
                     <h2>Étape 0 : Une Pause Consciente</h2>
                     <p>Avant de commencer, prenez 3 respirations profondes.<br>Accueillez simplement la sensation dominante dans votre corps, sans la juger.</p>
@@ -201,19 +200,16 @@
             <section class="journal-section">
                 <h2>Mon Journal</h2>
                 
-                <!-- AJOUT : Conseil pour l'Heure de l'Analyste -->
                 <div class="analysis-tip" id="analysis-tip-container" style="display: none;">
                     <p><strong>Conseil pour l'analyse :</strong> Pensez à prendre 30 minutes chaque semaine pour relire vos entrées. L'export pour IA est un excellent outil pour identifier des schémas récurrents et des pistes de croissance.</p>
                 </div>
 
                 <div id="journal-entries"></div>
-                <!-- MODIFIÉ : Le bouton "Effacer" est remplacé par "Importer" -->
                 <div class="journal-actions">
                     <button type="button" id="export-journal" style="display: none;">Exporter le journal</button>
                     <button type="button" id="import-journal">Importer des données</button>
                 </div>
             </section>
-            <!-- AJOUT : Input caché pour gérer l'import de fichier -->
             <input type="file" id="import-file-input" accept=".json" style="display: none;">
         </main>
     </div>
@@ -223,63 +219,62 @@
         const emotionForm = document.getElementById('emotion-form');
         const journalEntriesContainer = document.getElementById('journal-entries');
         const exportJournalButton = document.getElementById('export-journal');
-        // MODIFIÉ : Nouveaux sélecteurs pour l'import
         const importJournalButton = document.getElementById('import-journal');
         const importFileInput = document.getElementById('import-file-input');
         const analysisTipContainer = document.getElementById('analysis-tip-container');
         
+        // MODIFIÉ : Mise à jour de la carte sensations <-> émotions pour correspondre à la nouvelle liste
         const sensationEmotionMap = {
-            'Palpitations cardiaques': ['Anxiété', 'Peur', 'Excitation', 'Surprise 😮', 'Colère 😡', 'Joie', 'Anticipation'],
-            'Sensation d\'oppression thoracique': ['Tristesse 😢', 'Anxiété', 'Angoisse', 'Honte', 'Déception', 'Amour ❤️', 'Gratitude 🙏'],
-            'Respiration courte et saccadée': ['Anxiété', 'Peur', 'Panique', 'Rage'],
-            'Souffle coupé': ['Surprise 😮', 'Choc', 'Émerveillement ✨', 'Peur', 'Admiration', 'Amusement'],
-            'Sensation d\'étouffement': ['Peur', 'Panique', 'Angoisse', 'Tristesse 😢'],
-            'Bouffées de chaleur au visage': ['Honte', 'Colère 😡', 'Gêne', 'Frustration', 'Jalousie'],
-            'Frissons dans le dos': ['Peur', 'Émerveillement ✨', 'Fierté', 'Admiration', 'Joie', 'Gratitude 🙏'],
-            'Mains moites et froides': ['Anxiété', 'Peur', 'Nervosité', 'Inquiétude'],
-            'Sensation de brûlure interne': ['Colère 😡', 'Rage', 'Jalousie', 'Frustration'],
-            'Chair de poule': ['Peur', 'Fierté', 'Émerveillement ✨', 'Admiration', 'Nostalgie'],
-            'Crispation des poings': ['Colère 😡', 'Frustration', 'Détermination', 'Courage', 'Rage'],
-            'Raideur dans la nuque': ['Anxiété', 'Stress', 'Frustration', 'Inquiétude', 'Colère 😡'],
-            'Nœud dans la gorge': ['Tristesse 😢', 'Anxiété', 'Vulnérabilité', 'Peur', 'Honte'],
-            'Serrement des dents': ['Colère 😡', 'Frustration', 'Stress', 'Détermination', 'Courage'],
-            'Contraction du diaphragme': ['Anxiété', 'Nervosité', 'Surprise 😮', 'Peur'],
-            'Papillons dans le ventre': ['Excitation', 'Amour ❤️', 'Anticipation', 'Nervosité', 'Joie', 'Espoir', 'Curiosité'],
-            'Crampes d\'estomac': ['Anxiété', 'Peur', 'Stress', 'Dégoût'],
-            'Sensation de vide abdominal': ['Peur', 'Tristesse 😢', 'Solitude', 'Déception'],
-            'Boule au ventre': ['Anxiété', 'Peur', 'Inquiétude', 'appréhension', 'Nervosité'],
-            'Spasmes intestinaux': ['Stress', 'Anxiété', 'Dégoût'],
-            'Pression dans les tempes': ['Frustration', 'Colère 😡', 'Stress', 'Inquiétude'],
-            'Sensation de tête lourde': ['Tristesse 😢', 'Fatigue', 'Déception', 'Ennui', 'Mélancolie'],
-            'Vertiges légers': ['Anxiété', 'Peur', 'Surprise 😮', 'Choc'],
-            'Picotements du cuir chevelu': ['Peur', 'Émerveillement ✨', 'Fierté', 'Joie intense'],
-            'Sensation de flottement': ['Calme 🧘', 'Détachement', 'Sérénité', 'Satisfaction', 'Liberté 🕊️'],
-            'Tremblements des mains': ['Peur', 'Anxiété', 'Excitation', 'Nervosité', 'Rage'],
-            'Jambes en coton': ['Peur', 'Vulnérabilité', 'Choc', 'Anxiété forte'],
-            'Sensation d\'engourdissement': ['Choc', 'Peur', 'Tristesse 😢', 'Détachement', 'Solitude'],
-            'Picotements dans les extrémités': ['Anxiété', 'Peur', 'Excitation', 'Joie'],
-            'Impression de déconnexion corporelle': ['Anxiété', 'Choc', 'Traumatisme', 'Peur intense', 'Solitude'],
-            'Détente générale': ['Sérénité', 'Calme 🧘', 'Satisfaction', 'Contentement 😊', 'Confiance', 'Gratitude 🙏'],
-            'Larmes / Yeux humides': ['Tristesse 😢', 'Joie', 'Gratitude 🙏', 'Soulagement', 'Émerveillement ✨', 'Colère 😡', 'Peur', 'Frustration'],
-            'Respiration lente et profonde': ['Calme 🧘', 'Sérénité', 'Satisfaction', 'Détente'],
-            'Respiration lente et profonde': ['Calme 🧘', 'Sérénité', 'Satisfaction', 'Détente'],
-            'Épaules relâchées': ['Calme 🧘', 'Sérénité', 'Liberté 🕊️', 'Soulagement'],
-            'Chaleur agréable dans la poitrine': ['Amour ❤️', 'Gratitude 🙏', 'Joie', 'Contentement 😊'],
-            'Sourire intérieur': ['Joie', 'Contentement 😊', 'Satisfaction', 'Amusement', 'Sérénité'],
-            'Légèreté': ['Joie', 'Liberté 🕊️', 'Allégresse', 'Soulagement']
+            'Bouffées de chaleur / frissons': ['Honte', 'Colère 😡', 'Gêne', 'Frustration', 'Jalousie', 'Peur', 'Émerveillement ✨', 'Fierté', 'Admiration', 'Joie', 'Gratitude 🙏'],
+            'Chaleur agréable dans la poitrine / sourire intérieur': ['Amour ❤️', 'Gratitude 🙏', 'Joie', 'Contentement 😊', 'Satisfaction', 'Amusement', 'Sérénité'],
+            'Contraction diaphragmatique / gorge nouée': ['Anxiété', 'Nervosité', 'Surprise 😮', 'Peur', 'Tristesse 😢', 'Vulnérabilité', 'Honte'],
+            'Détente générale / respiration profonde / épaules relâchées': ['Sérénité', 'Calme 🧘', 'Satisfaction', 'Contentement 😊', 'Confiance', 'Gratitude 🙏', 'Liberté 🕊️', 'Soulagement', 'Détente'],
+            'Impression de flottement / déconnexion corporelle': ['Calme 🧘', 'Détachement', 'Sérénité', 'Satisfaction', 'Liberté 🕊️', 'Anxiété', 'Choc', 'Traumatisme', 'Peur intense', 'Solitude'],
+            'Larmes / yeux humides': ['Tristesse 😢', 'Joie', 'Gratitude 🙏', 'Soulagement', 'Émerveillement ✨', 'Colère 😡', 'Peur', 'Frustration'],
+            'Légèreté / joie / allégresse': ['Joie', 'Liberté 🕊️', 'Allégresse', 'Soulagement', 'Contentement 😊', 'Amusement'],
+            'Mains moites / froides': ['Anxiété', 'Peur', 'Nervosité', 'Inquiétude'],
+            'Oppression ou lourdeur thoracique': ['Tristesse 😢', 'Anxiété', 'Angoisse', 'Honte', 'Déception', 'Amour ❤️', 'Gratitude 🙏'],
+            'Palpitations / rythme cardiaque rapide': ['Anxiété', 'Peur', 'Excitation', 'Surprise 😮', 'Colère 😡', 'Joie', 'Anticipation'],
+            'Papillons / boule au ventre / crampes abdominales': ['Excitation', 'Amour ❤️', 'Anticipation', 'Nervosité', 'Joie', 'Espoir', 'Curiosité', 'Anxiété', 'Peur', 'Inquiétude', 'Stress', 'Dégoût'],
+            'Picotements / chair de poule': ['Peur', 'Émerveillement ✨', 'Fierté', 'Admiration', 'Nostalgie', 'Anxiété', 'Excitation', 'Joie'],
+            'Respiration courte / saccadée': ['Anxiété', 'Peur', 'Panique', 'Rage'],
+            'Sensation de vide abdominal / engourdissement': ['Peur', 'Tristesse 😢', 'Solitude', 'Déception', 'Choc', 'Détachement'],
+            'Serrement des dents / mâchoire crispée': ['Colère 😡', 'Frustration', 'Stress', 'Détermination', 'Courage'],
+            'Souffle coupé / étouffement': ['Surprise 😮', 'Choc', 'Émerveillement ✨', 'Peur', 'Admiration', 'Amusement', 'Panique', 'Angoisse', 'Tristesse 😢'],
+            'Tension ou crispation musculaire': ['Colère 😡', 'Frustration', 'Détermination', 'Courage', 'Rage', 'Anxiété', 'Stress', 'Inquiétude'],
+            'Tremblements / jambes en coton': ['Peur', 'Anxiété', 'Excitation', 'Nervosité', 'Rage', 'Vulnérabilité', 'Choc'],
+            'Vertiges / sensation de tête lourde': ['Anxiété', 'Peur', 'Surprise 😮', 'Choc', 'Tristesse 😢', 'Fatigue', 'Déception', 'Ennui', 'Mélancolie'],
         };
 
         const initialData = {
             emotions: ['Allégresse', 'Amour ❤️', 'Amusement', 'Anticipation', 'Anxiété', 'Calme 🧘', 'Colère 😡', 'Confiance', 'Contentement 😊', 'Courage', 'Curiosité', 'Déception', 'Dégoût', 'Détente', 'Émerveillement ✨', 'Ennui', 'Espoir', 'Fierté', 'Frustration', 'Gratitude 🙏', 'Honte', 'Inquiétude', 'Irritation', 'Jalousie', 'Joie', 'Légèreté', 'Liberté 🕊️', 'Mélancolie', 'Nostalgie', 'Peur', 'Rage', 'Satisfaction', 'Sérénité', 'Solitude', 'Soulagement', 'Surprise 😮', 'Tristesse 😢', 'Vulnérabilité'],
+            
+            // MODIFIÉ : Nouvelle liste de ressentis, simplifiée et triée
             sensationCategories: [
-                { title: 'Sensations cardiovasculaires et respiratoires', items: ['Palpitations cardiaques', 'Sensation d\'oppression thoracique', 'Respiration courte et saccadée', 'Souffle coupé', 'Sensation d\'étouffement'] },
-                { title: 'Sensations de température', items: ['Bouffées de chaleur au visage', 'Frissons dans le dos', 'Mains moites et froides', 'Sensation de brûlure interne', 'Chair de poule'] },
-                { title: 'Tensions et contractions musculaires', items: ['Crispation des poings', 'Raideur dans la nuque', 'Nœud dans la gorge', 'Serrement des dents', 'Contraction du diaphragme'] },
-                { title: 'Signes de Détente et de Bien-être', items: ['Détente générale', 'Respiration lente et profonde', 'Épaules relâchées', 'Chaleur agréable dans la poitrine', 'Sourire intérieur', 'Légèreté'] },
-                { title: 'Sensations abdominales', items: ['Papillons dans le ventre', 'Crampes d\'estomac', 'Sensation de vide abdominal', 'Boule au ventre', 'Spasmes intestinaux'] },
-                { title: 'Sensations dans la tête', items: ['Pression dans les tempes', 'Sensation de tête lourde', 'Vertiges légers', 'Picotements du cuir chevelu', 'Sensation de flottement'] },
-                { title: 'Autres sensations corporelles', items: ['Tremblements des mains', 'Jambes en coton', 'Sensation d\'engourdissement', 'Picotements dans les extrémités', 'Larmes / Yeux humides', 'Impression de déconnexion corporelle', 'Autre / Sensation non listée'] }              
+                { title: 'Ressentis principaux', items: [
+                    'Bouffées de chaleur / frissons',
+                    'Chaleur agréable dans la poitrine / sourire intérieur',
+                    'Contraction diaphragmatique / gorge nouée',
+                    'Détente générale / respiration profonde / épaules relâchées',
+                    'Impression de flottement / déconnexion corporelle',
+                    'Larmes / yeux humides',
+                    'Légèreté / joie / allégresse',
+                    'Mains moites / froides',
+                    'Oppression ou lourdeur thoracique',
+                    'Palpitations / rythme cardiaque rapide',
+                    'Papillons / boule au ventre / crampes abdominales',
+                    'Picotements / chair de poule',
+                    'Respiration courte / saccadée',
+                    'Sensation de vide abdominal / engourdissement',
+                    'Serrement des dents / mâchoire crispée',
+                    'Souffle coupé / étouffement',
+                    'Tension ou crispation musculaire',
+                    'Tremblements / jambes en coton',
+                    'Vertiges / sensation de tête lourde',
+                    'Autre / sensation non listée' // Gardé à la fin pour la clarté
+                ]}
             ],
+
             details: [
                 { id: 'intensities', title: 'Intensité', options: ['Très faible (1)', 'Faible (2)', 'Moyenne (3)', 'Forte (4)', 'Très forte (5)'], isMultiSelect: false, isRequired: true },
                 { id: 'triggers', title: 'Déclencheur(s)', initial: ['Interaction sociale', 'Travail ou études', 'Pensées ou souvenirs', 'Famille'], isMultiSelect: true, placeholder: 'Ajouter un nouveau déclencheur...' },
@@ -287,7 +282,7 @@
             ]
         };
 
-        const STORAGE_KEYS = { entries: 'emotionJournalEntries_v8', customTags: 'emotionJournalCustomTags_v8' };
+        const STORAGE_KEYS = { entries: 'emotionJournalEntries_v9', customTags: 'emotionJournalCustomTags_v9' }; // Version bump
         
         function getCustomTags() { return JSON.parse(localStorage.getItem(STORAGE_KEYS.customTags) || '{}'); }
         function saveCustomTags(tags) { localStorage.setItem(STORAGE_KEYS.customTags, JSON.stringify(tags)); }
@@ -295,7 +290,7 @@
         function filterEmotions() {
             const selectedSensationTags = Array.from(document.querySelectorAll('#sensation-categories-container .tag.active'));
             const emotionTags = document.querySelectorAll('#emotion-tags .tag');
-            if (selectedSensationTags.some(tag => tag.textContent === 'Autre / Sensation non listée') || selectedSensationTags.length === 0) {
+            if (selectedSensationTags.some(tag => tag.textContent === 'Autre / sensation non listée') || selectedSensationTags.length === 0) {
                 emotionTags.forEach(tag => tag.classList.remove('disabled'));
                 return;
             }
@@ -339,7 +334,8 @@
         
         function renderTagSection(container, items, isMultiSelect, sectionId) {
             container.innerHTML = '';
-            if (sectionId !== 'intensities') {
+            // Le tri est déjà fait dans l'objet initialData, sauf pour les émotions et tags personnalisés
+            if (sectionId !== 'intensities' && sectionId !== 'sensationCategories') {
                 items.sort((a, b) => a.localeCompare(b));
             }
             items.forEach(item => container.appendChild(createTag(item, isMultiSelect)));
@@ -433,7 +429,7 @@
                     const renderField = (label, data) => data && data.length > 0 ? `<div class="entry-field"><strong>${label}:</strong><p>${Array.isArray(data) ? data.map(escapeHTML).join(', ') : escapeHTML(data)}</p></div>` : '';
                     contentHTML += renderField('Sensations Physiques', entry.sensations);
                     contentHTML += renderField('Déclencheur(s)', entry.triggers);
-                    contentHTML += renderField('Réaction(s)', entry.reactions);
+                    contentHTML += renderField('Besoin(s) Fondamental(aux)', entry.besoin_fondamental);
                     contentHTML += renderField('Description', entry.description);
                     contentHTML += `</div><button class="delete-btn" data-index="${originalIndex}" title="Supprimer">&times;</button>`;
                     entryCard.innerHTML = contentHTML;
@@ -441,15 +437,13 @@
                 });
             }
             
-            // MODIFIÉ : Visibilité du bouton Exporter, le bouton Importer est toujours visible
             exportJournalButton.style.display = hasEntries ? 'block' : 'none';
             analysisTipContainer.style.display = hasEntries ? 'block' : 'none';
         }
         
-        // MODIFIÉ : La fonction d'export a été renommée pour plus de clarté
         function exportForAI() {
             const entries = JSON.parse(localStorage.getItem(STORAGE_KEYS.entries) || '[]');
-            if (entries.length === 0) return; // Le choix a déjà été fait, pas besoin d'alerte
+            if (entries.length === 0) return;
 
             const prompt = `
 # PROMPT POUR ANALYSE PSYCHOLOGIQUE PAR IA
@@ -464,7 +458,7 @@ Analysez les entrées du journal suivantes et fournissez une synthèse structur�
 
 1.  **Synthèse Émotionnelle Générale :** Quelles sont les émotions les plus fréquemment rapportées ? Y a-t-il une polarité dominante ? Quelle est l'intensité moyenne ?
 2.  **Corrélations Clés Corps-Esprit :** Identifiez les 3 liens les plus récurrents entre une sensation physique et une émotion.
-3.  **Analyse des Déclencheurs et Réactions :** Quels sont les déclencheurs les plus courants ? Quels schémas observez-vous ?
+3.  **Analyse des Déclencheurs et Besoins :** Quels sont les déclencheurs les plus courants ? Quels besoins fondamentaux sont le plus souvent activés (satisfaits ou non) ? Y a-t-il des schémas (ex: Déclencheur X -> Émotion Y -> Besoin Z) ?
 4.  **Pistes de Réflexion et d'Action (avec bienveillance) :** Mettez en lumière les schémas positifs. Proposez 1-2 questions ouvertes sur les schémas difficiles. Suggérez une petite expérimentation douce.
 
 ## Format de la Réponse
@@ -480,7 +474,7 @@ Structurez votre réponse avec des titres clairs pour chaque section. Utilisez u
                 entryText += `Émotion: ${entry.emotion} (Intensité: ${entry.intensity})\n`;
                 entryText += `Sensations Physiques: ${entry.sensations.join(', ')}\n`;
                 if (entry.triggers && entry.triggers.length > 0) entryText += `Déclencheur(s): ${entry.triggers.join(', ')}\n`;
-                if (entry.reactions && entry.reactions.length > 0) entryText += `Réaction(s): ${entry.reactions.join(', ')}\n`;
+                if (entry.besoin_fondamental && entry.besoin_fondamental.length > 0) entryText += `Besoin(s) Fondamental(aux): ${entry.besoin_fondamental.join(', ')}\n`;
                 if (entry.description) entryText += `Description: ${entry.description}\n`;
                 return entryText;
             }).join('\n---\n');
@@ -498,12 +492,10 @@ Structurez votre réponse avec des titres clairs pour chaque section. Utilisez u
             URL.revokeObjectURL(url);
         }
 
-        // AJOUT : Nouvelle fonction pour exporter les données brutes en JSON (pour sauvegarde)
         function exportData() {
             const entriesJSON = localStorage.getItem(STORAGE_KEYS.entries) || '[]';
             const entries = JSON.parse(entriesJSON);
-
-            if (entries.length === 0) return; // Le choix a déjà été fait, pas besoin d'alerte
+            if (entries.length === 0) return;
 
             const blob = new Blob([entriesJSON], { type: 'application/json;charset=utf-8' });
             const url = URL.createObjectURL(blob);
@@ -536,7 +528,7 @@ Structurez votre réponse avec des titres clairs pour chaque section. Utilisez u
                 emotion: selectedEmotion.textContent,
                 intensity: selectedIntensity.textContent,
                 triggers: getSelectedTags('#triggers-tags'),
-                reactions: getSelectedTags('#reactions-tags'),
+                besoin_fondamental: getSelectedTags('#besoin_fondamental-tags'),
                 description: document.getElementById('add-description')?.value.trim() || '',
                 timestamp: new Date().toLocaleString('fr-FR', { dateStyle: 'short', timeStyle: 'short' })
             };
@@ -563,7 +555,6 @@ Structurez votre réponse avec des titres clairs pour chaque section. Utilisez u
             }
         });
 
-        // MODIFIÉ : Le bouton d'export propose maintenant deux options
         exportJournalButton.addEventListener('click', () => {
             const entries = JSON.parse(localStorage.getItem(STORAGE_KEYS.entries) || '[]');
             if (entries.length === 0) {
@@ -584,12 +575,10 @@ Structurez votre réponse avec des titres clairs pour chaque section. Utilisez u
             }
         });
 
-        // AJOUT : Logique pour le bouton d'importation
         importJournalButton.addEventListener('click', () => {
-            importFileInput.click(); // Ouvre la boîte de dialogue de sélection de fichier
+            importFileInput.click();
         });
 
-        // AJOUT : Logique pour gérer le fichier sélectionné
         importFileInput.addEventListener('change', (event) => {
             const file = event.target.files[0];
             if (!file) return;
@@ -605,7 +594,7 @@ Structurez votre réponse avec des titres clairs pour chaque section. Utilisez u
                     const currentEntries = JSON.parse(localStorage.getItem(STORAGE_KEYS.entries) || '[]');
                     if (currentEntries.length > 0) {
                         if (!confirm("Attention : cela remplacera toutes les entrées actuelles par le contenu du fichier. Voulez-vous continuer ?")) {
-                            importFileInput.value = ''; // Réinitialise l'input
+                            importFileInput.value = '';
                             return;
                         }
                     }
@@ -617,7 +606,7 @@ Structurez votre réponse avec des titres clairs pour chaque section. Utilisez u
                 } catch (error) {
                     alert(`Erreur lors de la lecture du fichier : ${error.message}`);
                 } finally {
-                    importFileInput.value = ''; // Réinitialise l'input pour permettre de réimporter le même fichier
+                    importFileInput.value = '';
                 }
             };
             reader.onerror = () => {
