@@ -294,14 +294,14 @@
 
     <script>
     document.addEventListener('DOMContentLoaded', () => {
+        // ... (tout le début de votre script est identique, jusqu'à la fonction displayJournal) ...
+        
         const emotionForm = document.getElementById('emotion-form');
         const journalEntriesContainer = document.getElementById('journal-entries');
         const exportJournalButton = document.getElementById('export-journal');
         const importJournalButton = document.getElementById('import-journal');
         const importFileInput = document.getElementById('import-file-input');
         const analysisTipContainer = document.getElementById('analysis-tip-container');
-
-        // AJOUT : Références aux éléments de la modale
         const reflectionModalOverlay = document.getElementById('reflection-modal-overlay');
         const reflectionEmotion = document.getElementById('reflection-emotion');
         const reflectionSensation = document.getElementById('reflection-sensation');
@@ -329,7 +329,7 @@
             'Tremblements / jambes en coton': ['Peur', 'Anxiété', 'Excitation', 'Nervosité', 'Rage', 'Vulnérabilité', 'Choc'],
             'Vertiges / sensation de tête lourde': ['Anxiété', 'Peur', 'Surprise 😮', 'Choc', 'Tristesse 😢', 'Fatigue', 'Déception', 'Ennui', 'Mélancolie'],
         };
-
+    
         const initialData = {
             emotions: ['Allégresse', 'Amour ❤️', 'Amusement', 'Anticipation', 'Anxiété', 'Calme 🧘', 'Colère 😡', 'Confiance', 'Contentement 😊', 'Courage', 'Curiosité', 'Déception', 'Dégoût', 'Détente', 'Émerveillement ✨', 'Ennui', 'Espoir', 'Fierté', 'Frustration', 'Gratitude 🙏', 'Honte', 'Inquiétude', 'Irritation', 'Jalousie', 'Joie', 'Légèreté', 'Liberté 🕊️', 'Mélancolie', 'Nostalgie', 'Peur', 'Rage', 'Satisfaction', 'Sérénité', 'Solitude', 'Soulagement', 'Surprise 😮', 'Tristesse 😢', 'Vulnérabilité'],
             sensationCategories: [
@@ -343,10 +343,9 @@
                 { id: 'besoin_fondamental', title: 'Besoin fondamental', initial: ['Sécurité','Lien social','Reconnaissance','Autonomie','Réalisation personnelle','Sens','Liberté','Bien-être physique','Apprentissage','Contribution','Spiritualité / Connexion à quelque chose de plus grand'], isMultiSelect: true, placeholder: 'Ajouter un nouveau besoin fondamental...' }
             ]
         };
-
+    
         const STORAGE_KEYS = { entries: 'emotionJournalEntries_v9', customTags: 'emotionJournalCustomTags_v9' };
         
-        // ... (Le reste des fonctions de base reste identique)
         function getCustomTags() { return JSON.parse(localStorage.getItem(STORAGE_KEYS.customTags) || '{}'); }
         function saveCustomTags(tags) { localStorage.setItem(STORAGE_KEYS.customTags, JSON.stringify(tags)); }
         function filterEmotions() {
@@ -489,34 +488,62 @@
             exportJournalButton.style.display = hasEntries ? 'block' : 'none';
             analysisTipContainer.style.display = hasEntries ? 'block' : 'none';
         }
-        function exportForAI() { /* ... (code inchangé) ... */ }
-        function exportData() { /* ... (code inchangé) ... */ }
-
-        // AJOUT : Fonction pour générer une question de réflexion
+    
+        // --- NOUVELLE FONCTION AJOUTÉE ---
+        function exportData() {
+            try {
+                // 1. Récupérer les données depuis le localStorage
+                const entriesString = localStorage.getItem(STORAGE_KEYS.entries);
+                if (!entriesString || entriesString === '[]') {
+                    alert("Votre journal est vide. Il n'y a rien à exporter.");
+                    return;
+                }
+    
+                // 2. Créer un "Blob", qui est une représentation de fichier en mémoire
+                const blob = new Blob([entriesString], { type: 'application/json' });
+    
+                // 3. Créer un lien de téléchargement temporaire
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.style.display = 'none';
+                a.href = url;
+                
+                // 4. Définir le nom du fichier
+                const date = new Date().toISOString().slice(0, 10);
+                a.download = `sismographe-interieur-${date}.json`;
+    
+                // 5. Simuler un clic pour démarrer le téléchargement
+                document.body.appendChild(a);
+                a.click();
+    
+                // 6. Nettoyer en supprimant le lien temporaire
+                window.URL.revokeObjectURL(url);
+                document.body.removeChild(a);
+    
+            } catch (error) {
+                console.error("Erreur lors de l'exportation :", error);
+                alert("Une erreur est survenue lors de la tentative d'exportation. Il est possible que votre journal soit trop volumineux pour votre appareil. Essayez d'exporter depuis un ordinateur.");
+            }
+        }
+    
         function generateReflectionQuestion(entry) {
             const positiveEmotions = ['Joie', 'Gratitude', 'Amour', 'Contentement', 'Fierté', 'Sérénité', 'Calme', 'Soulagement', 'Liberté', 'Émerveillement'];
             const activatingEmotions = ['Colère', 'Frustration', 'Anxiété', 'Peur', 'Rage'];
-            
             if (entry.besoin_fondamental && entry.besoin_fondamental.length > 0) {
                 return `Vous avez identifié un besoin de "${entry.besoin_fondamental[0]}". Quelle toute petite action pourriez-vous faire pour honorer ce besoin aujourd'hui ?`;
             }
-
             if (positiveEmotions.some(e => entry.emotion.includes(e))) {
                 return "Comment pourriez-vous savourer ou partager cette sensation agréable pour la faire durer un peu plus longtemps ?";
             }
-
             if (activatingEmotions.some(e => entry.emotion.includes(e))) {
                 return "Ce sentiment est une source d'énergie. Quel message important essaie-t-il de vous transmettre sur ce qui compte pour vous ?";
             }
-
             if (entry.emotion.includes('Tristesse')) {
                 return "La tristesse signale souvent une perte. De quoi avez-vous besoin pour prendre soin de vous en ce moment ?";
             }
-            
             return "Quelle est la chose la plus importante que cette expérience vous apprend sur vous-même en ce moment ?";
         }
-
-        // AJOUT : Fonction pour afficher la modale de réflexion
+    
         function showReflectionModal(entry) {
             reflectionEmotion.textContent = entry.emotion;
             reflectionSensation.textContent = entry.sensations.join(', ');
@@ -528,16 +555,16 @@
             e.preventDefault();
             const getSelectedTags = (selector) => Array.from(document.querySelectorAll(`${selector} .tag.active`)).map(t => t.textContent);
             const getSelectedTag = (selector) => document.querySelector(`${selector} .tag.active`);
-
+    
             const selectedSensations = getSelectedTags('#sensation-categories-container');
             const selectedEmotion = getSelectedTag('#emotion-tags');
             const selectedIntensity = getSelectedTag('#intensities-tags');
-
+    
             if (selectedSensations.length === 0 || !selectedEmotion || !selectedIntensity) {
                 alert('Veuillez remplir tous les champs obligatoires (*).');
                 return;
             }
-
+    
             const newEntry = {
                 sensations: selectedSensations,
                 emotion: selectedEmotion.textContent,
@@ -552,39 +579,71 @@
             entries.push(newEntry);
             localStorage.setItem(STORAGE_KEYS.entries, JSON.stringify(entries));
             displayJournal(entries);
-
-            // MODIFIÉ : Au lieu de réinitialiser le formulaire, on affiche la modale.
-            // La réinitialisation se fera à la fermeture de la modale.
             showReflectionModal(newEntry);
         });
-
-        // AJOUT : Gestionnaire d'événement pour fermer la modale
+    
         closeReflectionModal.addEventListener('click', () => {
             reflectionModalOverlay.classList.add('hidden');
-            // C'est MAINTENANT qu'on réinitialise le formulaire pour la prochaine entrée
             emotionForm.reset();
             document.querySelectorAll('.tag.active').forEach(t => t.classList.remove('active'));
             filterEmotions();
         });
         
-        // Permet aussi de fermer en cliquant en dehors de la fenêtre
         reflectionModalOverlay.addEventListener('click', (event) => {
             if (event.target === reflectionModalOverlay) {
                 closeReflectionModal.click();
             }
         });
-
-        journalEntriesContainer.addEventListener('click', (event) => { /* ... (code inchangé) ... */ });
-        exportJournalButton.addEventListener('click', () => { /* ... (code inchangé) ... */ });
-        importJournalButton.addEventListener('click', () => { /* ... (code inchangé) ... */ });
-        importFileInput.addEventListener('change', (event) => { /* ... (code inchangé) ... */ });
+    
+        journalEntriesContainer.addEventListener('click', (event) => {
+            if (event.target.classList.contains('delete-btn')) {
+                const indexToDelete = parseInt(event.target.dataset.index, 10);
+                if (confirm('Êtes-vous sûr de vouloir supprimer cette entrée ?')) {
+                    let entries = JSON.parse(localStorage.getItem(STORAGE_KEYS.entries) || '[]');
+                    entries.splice(indexToDelete, 1);
+                    localStorage.setItem(STORAGE_KEYS.entries, JSON.stringify(entries));
+                    displayJournal(entries);
+                }
+            }
+        });
+        
+        // --- CONNEXION DU BOUTON À LA NOUVELLE FONCTION ---
+        exportJournalButton.addEventListener('click', exportData);
+        
+        importJournalButton.addEventListener('click', () => {
+            importFileInput.click();
+        });
+        
+        importFileInput.addEventListener('change', (event) => {
+            const file = event.target.files[0];
+            if (!file) return;
+    
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                try {
+                    const importedEntries = JSON.parse(e.target.result);
+                    if (!Array.isArray(importedEntries)) throw new Error("Le fichier n'est pas un journal valide.");
+                    
+                    if (confirm("Cela remplacera votre journal actuel par les données du fichier. Voulez-vous continuer ?")) {
+                        localStorage.setItem(STORAGE_KEYS.entries, JSON.stringify(importedEntries));
+                        loadJournal();
+                        alert("Importation réussie !");
+                    }
+                } catch (error) {
+                    alert("Erreur lors de l'importation du fichier. Assurez-vous que le fichier est un JSON valide exporté depuis cette application.\n" + error.message);
+                }
+            };
+            reader.readAsText(file);
+            // Réinitialiser pour pouvoir importer le même fichier à nouveau
+            importFileInput.value = ''; 
+        });
         
         function escapeHTML(str) {
             const p = document.createElement('p');
             p.textContent = str;
             return p.innerHTML;
         }
-
+    
         function initializeApp() {
             setupSensationSection();
             renderTagSection(document.getElementById('emotion-tags'), initialData.emotions, false, 'emotions'); 
@@ -603,7 +662,7 @@
             detailsContainer.appendChild(descSection);
             loadJournal();
         }
-
+    
         initializeApp();
     });
     </script>
